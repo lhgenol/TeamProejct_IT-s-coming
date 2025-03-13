@@ -1,4 +1,4 @@
-{
+﻿{
   "dependencies": {
     "com.unity.collab-proxy": {
       "version": "2.7.1",
@@ -67,13 +67,11 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-<<<<<<< HEAD
     "com.unity.scriptablebuildpipeline": {
       "version": "1.21.25",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
-=======
     "com.unity.probuilder": {
       "version": "5.2.3",
       "depth": 0,
@@ -83,7 +81,6 @@
         "com.unity.modules.physics": "1.0.0",
         "com.unity.settings-manager": "1.0.3"
       },
->>>>>>> StageDesingAndPlanning/HD
       "url": "https://packages.unity.com"
     },
     "com.unity.settings-manager": {
