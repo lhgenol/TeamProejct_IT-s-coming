@@ -37,7 +37,7 @@ public class Item : MonoBehaviour
                 // player.GetComponent<PlayerController>().ActivateStar(); //무적 효과
                 break;
             case ItemType.DoubleScore:
-                // player.GetComponent<PlayerController>().ActivateDoubleScore(); // 점수 두 배
+                // GameManager.Instance.ActivateDoubleScore(); // 점수 두 배
                 break;
 
         }
