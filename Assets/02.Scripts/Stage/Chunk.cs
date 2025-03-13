@@ -32,7 +32,11 @@ public class ItemSpawnData : SpawnData
 
 public class Chunk : MonoBehaviour
 {
+    [Header("Theme")]
     public ThemeDataSO themeData;
+
+    [Header("ChunkInfo")]
+    public float chunkSpeed;
 
     [Header("PlacePosition")]
     [SerializeField] private ObstacleSpawnData[] obstaclePosition;
@@ -40,24 +44,20 @@ public class Chunk : MonoBehaviour
     [SerializeField] private ItemSpawnData[] itemPosition;
     [SerializeField] private Transform[] coinPosition;
 
-    public void SpawnChunk()
-    {
 
-    }
-
-    private void PlaceObject()
+    public void PlaceObject()
     {
         PlaceObstacle();
         //PlaceStructure();
         //PlaceItem();
-        //PlaceCoin();
+        PlaceCoin();
     }
 
     void PlaceObstacle()
     {
         foreach (var obs in obstaclePosition)
         {
-            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab.GetComponent<Obstacle>(), obs.spawnPosition, this.transform);
+            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab, obs.spawnPosition, this.transform);
         }
     }
 
@@ -65,7 +65,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obs in structurePosition)
         {
-            MapManager.Instance.structurePool.GetFromPool(obs.Prefab.GetComponent<Structure>(), obs.spawnPosition, this.transform);
+            MapManager.Instance.structurePool.GetFromPool(obs.Prefab, obs.spawnPosition, this.transform);
         }
     }*/
 
@@ -73,7 +73,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var item in itemPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(item.Prefab.GetComponent<Item>(), item.spawnPosition, this.transform);
+            MapManager.Instance.itemPool.GetFromPool(item.Prefab, item.spawnPosition, this.transform);
         }
     }*/
 
@@ -81,7 +81,7 @@ public class Chunk : MonoBehaviour
     {
         foreach(var coin in coinPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(itemPosition[0].Prefab.GetComponent<Item>(), coin, this.transform);// coin<Itme> 넣어줘야함
+            MapManager.Instance.itemPool.GetFromPool(itemPosition[0].Prefab, coin, this.transform);// coin<Itme> 넣어줘야함
         }
     }
 

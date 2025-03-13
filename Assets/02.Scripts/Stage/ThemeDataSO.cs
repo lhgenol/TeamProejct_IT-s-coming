@@ -9,4 +9,5 @@ public class ThemeDataSO : ScriptableObject
     public List<GameObject> itemList;
     public List<GameObject> obstacleList; // 사용할 프리팹 리스트
     public List<GameObject> structureList;
+    public List<GameObject> chunkList;
 }
