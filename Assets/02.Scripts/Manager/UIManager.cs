@@ -94,7 +94,6 @@ public class UIManager : Singleton<UIManager>
 
     public void ChangeState(UIState state)
     {
-        Debug.Log($"전달{state}");
         currentState = state;
         homeUI.SetActive(currentState);
         inGameUI.SetActive(currentState);

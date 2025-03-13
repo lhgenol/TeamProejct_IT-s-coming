@@ -1,18 +1,65 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class SoundManager : Singleton<SoundManager>
+public class SoundManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [Header("Audio Sources")]
+    public AudioSource bgmSource;
+    public AudioSource sfxSource;
+
+    [Header("Audio Clips")]
+    public AudioClip bgmClip;
+    public AudioClip[] sfxClips;
+
+    [Header("UI Sliders")]
+    public Slider bgmVolumeSlider;
+    public Slider sfxVolumeSlider;
+    private float sfxVolume;
+    private float bgmVolume;
+
+    private void Awake()
+    {
+        bgmSource = gameObject.AddComponent<AudioSource>();
+        bgmSource.clip = bgmClip;
+        bgmSource.loop = true;
+        bgmSource.Play();
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+    }
     void Start()
     {
-        
+        if (bgmVolumeSlider != null)
+        {
+            bgmVolumeSlider.value = bgmSource.volume;
+            bgmVolumeSlider.onValueChanged.AddListener(SetBGMVolume);
+        }
+        if (sfxVolumeSlider != null)
+        {
+            sfxVolumeSlider.value = sfxSource.volume;
+            sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetBGMVolume(float volume)
     {
-        
+        bgmVolume = Mathf.Clamp01(volume);
+        bgmSource.volume = bgmVolume;
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+            sfxVolume = Mathf.Clamp01(volume);
+            sfxSource.volume = volume;
+    }
+
+    public void PlaySFX(int clipIndex)
+    {
+        if (sfxSource != null && sfxClips != null)
+        {
+            if (clipIndex >= 0 && clipIndex < sfxClips.Length)
+            {
+                sfxSource.PlayOneShot(sfxClips[clipIndex]);
+            }
+        }
     }
 }
