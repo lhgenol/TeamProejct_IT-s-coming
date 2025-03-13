@@ -7,7 +7,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
     public GameObject[] prefabs;
     public int initialSize = 3;
 
-    private void Start()
+    protected virtual void Start()
     {
         InitObjectPool();
     }
@@ -46,7 +46,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         }
 
         if(newParent != null) obj.transform.SetParent(newParent); // 원하는 부모로 변경
-        obj.transform.localPosition = spawnPosition.localPosition;
+        obj.transform.position = spawnPosition.position;
         obj.gameObject.SetActive(true);
         return obj;
     }

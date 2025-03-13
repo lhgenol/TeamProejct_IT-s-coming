@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class ChunkTemplate
 {
-    public List<int> chunkIndices; //  Inspector에서 쉽게 조합할 수 있도록 List<int> 사용
+    public List<int> chunkIndexCombine; //  Inspector에서 쉽게 조합할 수 있도록 List<int> 사용
 }
 
 [CreateAssetMenu(fileName = "ThemeData", menuName = "ThemeData/themeData")]
