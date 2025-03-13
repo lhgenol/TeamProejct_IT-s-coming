@@ -10,4 +10,5 @@ public class MapManager : Singleton<MapManager>
     //public StructurePool structurePool;
 
     public ChunkContainer chunkContainer;
+    public ChunkSpawner chunkSpawner;
 }

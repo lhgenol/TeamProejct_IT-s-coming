@@ -13,37 +13,94 @@ public class ChunkSpawner : MonoBehaviour
     [Header("SpawnInfo")]
     public Transform spawnPosition;
     public Transform chunkContainer;
+    public Transform startingPosition;
     [SerializeField] private int themeChangeMinThreshold = 3;
     [SerializeField] private int themeChangeMaxThreshold = 5;
 
+    [Header("StartingTemplates")]
+    public ChunkTemplate[] startingTemaplates;
+
     private ThemeDataSO curTheme;
     private int curThemeIndex = 0;
-    ChunkTemplate curTemplet;
-    private int curTempletIndex;
+    ChunkTemplate curTemplate;
+    private int curTemplateIndex;
 
 
-    private int leftTemplet;
+    private int leftTemplate;
     private int i = 0;
 
     private void Start()
     {
-        if (spawnPosition == null) spawnPosition = this.transform;
-        leftTemplet = RandomThemeChangeThreshold();
-        curTheme = themeData[curThemeIndex];
+        MapManager.Instance.chunkSpawner = this;
+        Init();
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Chunk"))
         {
-            if (i >= curTemplet.chunkIndexCombine.Count)
+            if (i >= curTemplate.chunkIndexCombine.Count)
             {
                 SpawnTemplet();
                 i = 0;
             }
 
-            SpawnChunk(curTemplet, i);
+            SpawnChunk(curTemplate, i);
             i++;
+        }
+    }
+
+    public void Reset()
+    {
+        CollectAllChunks();
+        Init();
+    }
+
+    void CollectAllChunks()
+    {
+        Chunk[] allChunksOnContainer = chunkContainer.gameObject.GetComponentsInChildren<Chunk>();
+
+        foreach (Chunk chunk in allChunksOnContainer)
+        {
+            MapManager.Instance.chunkPool.ReturnToPool(chunk, chunk.gameObject);
+        }
+    }
+
+    void Init()
+    {
+        if (spawnPosition == null) spawnPosition = this.transform;
+
+        leftTemplate = RandomThemeChangeThreshold();
+        curThemeIndex = 0;
+        i = 0;
+        curTheme = themeData[curThemeIndex];
+        chunkContainer.position = Vector3.zero;
+
+        if (startingPosition == null)
+        {
+            GameObject tempObj = new GameObject("StartingPosition");
+            tempObj.transform.position = new Vector3(0, 0, -20);
+            startingPosition = tempObj.transform;
+        }
+
+        PlaceStartingTemplate();
+    }
+
+
+    void PlaceStartingTemplate()
+    {
+        if (startingTemaplates == null)
+        {
+            List<int> ints = startingTemaplates[Random.Range(0, startingTemaplates.Length)].chunkIndexCombine;
+            Vector3 origin = startingPosition.position;
+
+            for (int i = 0; i < ints.Count; i++)
+            {
+                MapManager.Instance.chunkPool.GetFromPool(themeData[0].chunkList[i], startingPosition, chunkContainer);
+                startingPosition.position += Vector3.back * 20f;
+            }
+
+            startingPosition.position = origin;
         }
     }
 
@@ -60,9 +117,9 @@ public class ChunkSpawner : MonoBehaviour
             curTempletIndex = RandomTempletIndex();
             j++;
         }
-        while (curTempletIndex != this.curTempletIndex || j > 30);//지금 템플릿과 같다면 다시돌림 최대 30번
+        while (curTempletIndex != this.curTemplateIndex || j > 30);//지금 템플릿과 같다면 다시돌림 최대 30번
 
-        this.curTempletIndex = curTempletIndex;
+        this.curTemplateIndex = curTempletIndex;
 
         return themeData[curThemeIndex].Templates[curTempletIndex];
     }
@@ -74,15 +131,15 @@ public class ChunkSpawner : MonoBehaviour
 
     void SpawnTemplet()
     {
-        if (leftTemplet > 0)
+        if (leftTemplate > 0)
         {
-            curTemplet = RandomTemplet(curTempletIndex);
-            leftTemplet--;
+            curTemplate = RandomTemplet(curTemplateIndex);
+            leftTemplate--;
         }
         else
         {
             curTheme = RandomTheme(curThemeIndex);
-            leftTemplet = RandomThemeChangeThreshold();
+            leftTemplate = RandomThemeChangeThreshold();
         }
     }
 
