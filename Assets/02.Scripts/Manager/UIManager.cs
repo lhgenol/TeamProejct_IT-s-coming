@@ -49,6 +49,7 @@ public class UIManager : Singleton<UIManager>
         customizingUI.Init(this);
 
         ChangeState(UIState.Home);
+        ChangeCanvas();
     }
 
     void Update()
@@ -58,6 +59,7 @@ public class UIManager : Singleton<UIManager>
             if (currentState != UIState.Home && currentState != UIState.GameEnd && currentState != UIState.InGame)
             {
                 ChangeState(UIState.Home);
+                ChangeCanvas();
             }
         }
     }
@@ -99,5 +101,18 @@ public class UIManager : Singleton<UIManager>
         leaderBoardUI.SetActive(currentState);
         optionUI.SetActive(currentState);
         customizingUI.SetActive(currentState);
+    }
+    public void ChangeCanvas()
+    {
+        if (currentState == UIState.Home || currentState == UIState.LeaderBoard || currentState == UIState.Option || currentState == UIState.Customizing)
+        {
+            MainMenuCanvas.SetActive(true);
+            InGameCanvas.SetActive(false);
+        }
+        else if (currentState == UIState.GameEnd || currentState==UIState.InGame)
+        {
+            MainMenuCanvas.SetActive(false);
+            InGameCanvas.SetActive(true);
+        }
     }
 }
