@@ -38,7 +38,7 @@ public class Chunk : MonoBehaviour
     {
         foreach(var obs in obstaclePosition)
         {
-            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab, obs.spawnPosition);
+            //MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab, obs.spawnPosition);
         }
     }
 
