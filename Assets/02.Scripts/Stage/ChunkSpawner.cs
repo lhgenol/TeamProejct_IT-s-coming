@@ -16,6 +16,7 @@ public class ChunkSpawner : MonoBehaviour
     public Transform startingPosition;
     [SerializeField] private int themeChangeMinThreshold = 3;
     [SerializeField] private int themeChangeMaxThreshold = 5;
+    private float chunkLenghth = 60f;
 
     [Header("StartingTemplates")]
     public ChunkTemplate[] startingTemaplates;
@@ -97,7 +98,7 @@ public class ChunkSpawner : MonoBehaviour
             for (int i = 0; i < ints.Count; i++)
             {
                 MapManager.Instance.chunkPool.GetFromPool(themeData[0].chunkList[i], startingPosition, chunkContainer);
-                startingPosition.position += Vector3.back * 20f;
+                startingPosition.position += Vector3.back * chunkLenghth;
             }
 
             startingPosition.position = origin;

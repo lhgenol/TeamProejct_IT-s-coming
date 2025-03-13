@@ -26,3 +26,8 @@ MonoBehaviour:
   structureList:
   - {fileID: 3620372167035148335, guid: 69e58c1e68921664a855aef6ecb9368e, type: 3}
   - {fileID: 3620372167035148335, guid: 69e58c1e68921664a855aef6ecb9368e, type: 3}
+  chunkList:
+  - {fileID: 123016924846779456, guid: 9a0f870cdfa9bb445a43850539c0ea91, type: 3}
+  Templates:
+  - chunkIndexCombine: 
+  - chunkIndexCombine: 

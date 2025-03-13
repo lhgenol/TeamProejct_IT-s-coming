@@ -35,9 +35,6 @@ public class Chunk : MonoBehaviour
     [Header("Theme")]
     public ThemeDataSO themeData;
 
-    [Header("ChunkInfo")]
-    public float chunkSpeed;
-
     [Header("PlacePosition")]
     [SerializeField] private ObstacleSpawnData[] obstaclePosition;
     [SerializeField] private StuctureSpawnData[] structurePosition;

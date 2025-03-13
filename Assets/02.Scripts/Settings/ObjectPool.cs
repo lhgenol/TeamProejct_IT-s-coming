@@ -12,7 +12,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         InitObjectPool();
     }
 
-    public void InitObjectPool()
+    protected void InitObjectPool()
     {
 
         foreach (GameObject prefab in prefabs)
@@ -26,7 +26,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
             {
                 T obj = Instantiate(prefab).GetComponent<T>();
                 obj.name = prefab.name;
-                obj.transform.SetParent(this.transform); // 처음에는 풀의 부모 아래에 배치
+                obj.transform.SetParent(this.transform);
                 obj.gameObject.SetActive(false);
                 poolDictionary[prefab.name].Enqueue(obj);
             }
@@ -44,6 +44,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         {
             // 풀에 남은 오브젝트가 없으면 새로 생성
             obj = Instantiate(prefab).GetComponent<T>();
+            obj.name = prefab.name;
         }
 
         if(newParent != null) obj.transform.SetParent(newParent); 

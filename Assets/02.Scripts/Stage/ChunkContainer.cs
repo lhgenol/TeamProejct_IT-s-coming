@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChunkContainer : MonoBehaviour
 {
-    public float moveSpeed = 5f; // 
+    public float moveSpeed = 5f; 
     public float speedMultiplier = 1f;
     public float knockBackMultiplier = 0.2f;
     public float knockBackDuration = 0.3f;
@@ -26,7 +26,7 @@ public class ChunkContainer : MonoBehaviour
 
     void MoveContainer()
     {
-        transform.Translate(Vector3.back * moveSpeed * speedMultiplier * Time.deltaTime);
+        transform.Translate(-transform.forward * moveSpeed * speedMultiplier * Time.deltaTime);
     }
 
     public void KnockBack()
@@ -41,7 +41,7 @@ public class ChunkContainer : MonoBehaviour
 
         while (time < knockBackDuration)
         {
-            transform.Translate(Vector3.forward * moveSpeed * knockBackMultiplier);
+            transform.Translate(transform.forward * moveSpeed * knockBackMultiplier);
             time += Time.deltaTime;
             yield return null;
         }
@@ -80,6 +80,6 @@ public class ChunkContainer : MonoBehaviour
     public void StopMovement()
     {
         isMoving = false;
-        moveSpeed = 0f; // 속도를 0으로 설정하여 완전히 멈춤
+        moveSpeed = 0f;
     }
 }
