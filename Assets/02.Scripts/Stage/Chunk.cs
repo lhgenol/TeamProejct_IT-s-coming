@@ -45,7 +45,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obs in obstaclePosition)
         {
-            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab.GetComponent<Obstacle>(), obs.spawnPosition);
+            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab.GetComponent<Obstacle>(), obs.spawnPosition, this.transform);
         }
     }
 
@@ -53,7 +53,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var item in itemPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(item.Prefab.GetComponent<Item>(), item.spawnPosition);
+            MapManager.Instance.itemPool.GetFromPool(item.Prefab.GetComponent<Item>(), item.spawnPosition, this.transform);
         }
     }*/
 
@@ -61,7 +61,7 @@ public class Chunk : MonoBehaviour
     {
         foreach(var coin in coinPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(, coin.spawnPosition);// coin<Itme> 넣어줘야함
+            MapManager.Instance.itemPool.GetFromPool(, coin.spawnPosition, this.transform);// coin<Itme> 넣어줘야함
         }
     }*/
 
