@@ -36,18 +36,34 @@ public class Chunk : MonoBehaviour
 
     private void PlaceObject()
     {
-        foreach(var obs in obstaclePosition)
-        {
-            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab, obs.spawnPosition);
-        }
+        PlaceObstacle();
+        //PlaceItem();
+        //PlaceCoin();
     }
 
     void PlaceObstacle()
     {
-
+        foreach (var obs in obstaclePosition)
+        {
+            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab.GetComponent<Obstacle>(), obs.spawnPosition);
+        }
     }
 
+    /*void PlaceItem()
+    {
+        foreach (var item in itemPosition)
+        {
+            MapManager.Instance.itemPool.GetFromPool(item.Prefab.GetComponent<Item>(), item.spawnPosition);
+        }
+    }*/
 
+    /*void PlaceCoin()
+    {
+        foreach(var coin in coinPosition)
+        {
+            MapManager.Instance.itemPool.GetFromPool(, coin.spawnPosition);// coin<Itme> 넣어줘야함
+        }
+    }*/
 
     public List<GameObject> GetPrefabList()
     {
