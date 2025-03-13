@@ -415,6 +415,11 @@ MonoBehaviour:
     prefab: {fileID: 100000, guid: acf38ccf2258add4ba3aa2d89b708d2a, type: 3}
   - spawnPosition: {fileID: 2859328140531822212}
     prefab: {fileID: 100000, guid: 653e28c8a1ae11240a6cdaac2f9ee8ea, type: 3}
+  structurePosition:
+  - spawnPosition: {fileID: 0}
+    prefab: {fileID: 100000, guid: 62125825e49febf4a89f76daf85d9ca7, type: 3}
+  - spawnPosition: {fileID: 0}
+    prefab: {fileID: 100000, guid: 62125825e49febf4a89f76daf85d9ca7, type: 3}
   itemPosition:
   - spawnPosition: {fileID: 0}
     prefab: {fileID: 3620372167035148335, guid: 69e58c1e68921664a855aef6ecb9368e, type: 3}

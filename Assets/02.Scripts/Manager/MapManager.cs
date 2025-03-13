@@ -6,7 +6,7 @@ public class MapManager : Singleton<MapManager>
 {
     public ChunkPool chunkPool;
     public ObstaclePool obstaclePool;
-    // itemPool;
+    public ItemPool itemPool;// itemPool;
 
     void Start()
     {
@@ -18,6 +18,11 @@ public class MapManager : Singleton<MapManager>
         if (obstaclePool == null)
         {
             obstaclePool = FindObjectOfType<ObstaclePool>();
+        }
+
+        if (itemPool == null)
+        {
+            itemPool = FindObjectOfType<ItemPool>();
         }
     }
 
