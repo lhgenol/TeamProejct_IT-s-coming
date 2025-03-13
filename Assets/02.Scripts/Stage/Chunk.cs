@@ -26,6 +26,7 @@ public class Chunk : MonoBehaviour
 
     [Header("PlacePosition")]
     [SerializeField] private ObstacleSpawnData[] obstaclePosition;
+    [SerializeField] private ObstacleSpawnData[] structurePosition;
     [SerializeField] private ItemSpawnData[] itemPosition;
     [SerializeField] private Transform[] coinPosition;
 
@@ -44,6 +45,14 @@ public class Chunk : MonoBehaviour
     void PlaceObstacle()
     {
         foreach (var obs in obstaclePosition)
+        {
+            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab.GetComponent<Obstacle>(), obs.spawnPosition, this.transform);
+        }
+    }
+
+    void PlaceStructure()
+    {
+        foreach (var obs in structurePosition)
         {
             MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab.GetComponent<Obstacle>(), obs.spawnPosition, this.transform);
         }
