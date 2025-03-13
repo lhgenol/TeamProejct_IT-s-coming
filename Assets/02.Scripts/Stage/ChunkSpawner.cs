@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-
 public class ChunkSpawner : MonoBehaviour
 {
     [Header("Themes")]
@@ -25,7 +24,177 @@ public class ChunkSpawner : MonoBehaviour
     private int curThemeIndex = 0;
     ChunkTemplate curTemplate;
     private int curTemplateIndex;
+    Queue<GameObject> chunkQueue = new Queue<GameObject>();
 
+    private int leftTemplate;
+
+    private void Start()
+    {
+        MapManager.Instance.chunkSpawner = this;
+        Init();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Chunk"))
+        {
+            if (chunkQueue.Count <= 0)
+            {
+                SpawnTemplet();
+            }
+
+            SpawnChunk();
+        }
+    }
+
+    void SpawnChunk()
+    {
+        MapManager.Instance.chunkPool.GetFromPool(chunkQueue.Dequeue(), spawnPosition, chunkContainer);
+    }
+
+    void Init()
+    {
+        if (spawnPosition == null) spawnPosition = this.transform;
+
+        leftTemplate = RandomThemeChangeThreshold();
+        curThemeIndex = 0;
+        curTheme = themeData[curThemeIndex];
+        chunkContainer.position = Vector3.zero;
+
+        if (startingPosition == null)
+        {
+            GameObject tempObj = new GameObject("StartingPosition");
+            tempObj.transform.position = new Vector3(0, 0, -20);
+            startingPosition = tempObj.transform;
+        }
+
+        PlaceStartingTemplate();
+        SpawnTemplet();
+    }
+
+
+    void PlaceStartingTemplate()
+    {
+        if (startingTemaplates == null)
+        {
+            List<int> ints = startingTemaplates[Random.Range(0, startingTemaplates.Length)].chunkIndexCombine;
+            Vector3 origin = startingPosition.position;
+
+            for (int i = 0; i < ints.Count; i++)
+            {
+                MapManager.Instance.chunkPool.GetFromPool(themeData[0].chunkList[i], startingPosition, chunkContainer);
+                startingPosition.position += Vector3.back * chunkLenghth;
+            }
+
+            startingPosition.position = origin;
+        }
+    }
+
+    void SpawnTemplet()
+    {
+        if (leftTemplate <= 0)
+        {
+            curTheme = RandomTheme(curThemeIndex);
+            leftTemplate = RandomThemeChangeThreshold();
+        }
+
+        curTemplate = RandomTemplet(curTemplateIndex);
+
+        foreach (int i in curTemplate.chunkIndexCombine)
+        {
+            chunkQueue.Enqueue(themeData[curThemeIndex].chunkList[i]);
+        }
+
+        leftTemplate--;
+    }
+
+
+
+    int RandomThemeChangeThreshold()
+    {
+        return Random.Range(themeChangeMinThreshold, themeChangeMaxThreshold);
+    }
+
+    ChunkTemplate RandomTemplet(int curTempletIndex)
+    {
+        int i = 0;
+        do
+        {
+            curTempletIndex = RandomTempletIndex();
+            i++;
+        }
+        while (curTempletIndex != this.curTemplateIndex || i > 30);//지금 템플릿과 같다면 다시돌림 최대 30번
+
+        this.curTemplateIndex = curTempletIndex;
+
+        return themeData[curThemeIndex].Templates[curTempletIndex];
+    }
+
+    int RandomTempletIndex()
+    {
+        return Random.Range(0, themeData[curThemeIndex].Templates.Count);
+    }
+
+    ThemeDataSO RandomTheme(int curThemeIndex)
+    {
+        int i = 0;
+        do
+        {
+            curThemeIndex = RandomThemeIndex();
+            i++;
+        }
+        while (curThemeIndex != this.curThemeIndex || i > 30);
+
+        this.curThemeIndex = curThemeIndex;
+
+        return themeData[curThemeIndex];
+    }
+
+    int RandomThemeIndex()
+    {
+        return Random.Range(0, themeData.Length);
+    }
+
+    public void Reset()
+    {
+        CollectAllChunks();
+        Init();
+    }
+
+    void CollectAllChunks()
+    {
+        Chunk[] allChunksOnContainer = chunkContainer.gameObject.GetComponentsInChildren<Chunk>();
+
+        foreach (Chunk chunk in allChunksOnContainer)
+        {
+            MapManager.Instance.chunkPool.ReturnToPool(chunk, chunk.gameObject);
+        }
+    }
+}
+
+/*
+public class ChunkSpawner : MonoBehaviour
+{
+    [Header("Themes")]
+    public ThemeDataSO[] themeData;
+
+
+    [Header("SpawnInfo")]
+    public Transform spawnPosition;
+    public Transform chunkContainer;
+    public Transform startingPosition;
+    [SerializeField] private int themeChangeMinThreshold = 3;
+    [SerializeField] private int themeChangeMaxThreshold = 5;
+    private float chunkLenghth = 60f;
+
+    [Header("StartingTemplates")]
+    public ChunkTemplate[] startingTemaplates;
+
+    private ThemeDataSO curTheme;
+    private int curThemeIndex = 0;
+    ChunkTemplate curTemplate;
+    private int curTemplateIndex;
+    Queue<GameObject> chunkQueue = new Queue<GameObject>();
 
     private int leftTemplate;
     private int i = 0;
@@ -169,3 +338,4 @@ public class ChunkSpawner : MonoBehaviour
         MapManager.Instance.chunkPool.GetFromPool(themeData[curThemeIndex].chunkList[curTemplet.chunkIndexCombine[index]], spawnPosition, chunkContainer);
     }
 }
+*/
