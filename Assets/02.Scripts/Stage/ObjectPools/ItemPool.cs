@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemPool : ObjectPool<IItem>
+public class ItemPool : ObjectPool<Item>
 {
 }
