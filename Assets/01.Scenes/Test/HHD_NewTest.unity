@@ -169,8 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45097256db51f9548962171ed1607451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  themeData:
-  - {fileID: 11400000, guid: c7be326de41657041adce88de98c489d, type: 2}
+  themeData: []
   spawnPosition: {fileID: 372745692}
   chunkContainer: {fileID: 897864856}
   startingPosition: {fileID: 478108736}
@@ -255,6 +254,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76735a12f9d32f040848aa7d0980e6e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  themeData:
+  - {fileID: 11400000, guid: 20230a804ab808c4c8375ed2ddfd5040, type: 2}
   chunkPool: {fileID: 0}
   obstaclePool: {fileID: 0}
   itemPool: {fileID: 0}
