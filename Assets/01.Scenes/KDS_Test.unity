@@ -8603,9 +8603,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af09b28a3bb7d64f904d77cb92415fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: {fileID: 0}
-  coin: {fileID: 0}
-  rank: {fileID: 0}
+  score: {fileID: 710494990}
+  coin: {fileID: 1827371825}
+  rank: {fileID: 696827169}
 --- !u!1 &1305070453
 GameObject:
   m_ObjectHideFlags: 0
