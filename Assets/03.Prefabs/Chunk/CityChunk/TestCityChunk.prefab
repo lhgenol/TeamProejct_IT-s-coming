@@ -119,17 +119,17 @@ MonoBehaviour:
   themeData: {fileID: 11400000, guid: 20230a804ab808c4c8375ed2ddfd5040, type: 2}
   obstaclePosition:
   - spawnPosition: {fileID: 1859384443965527691}
-    prefab: {fileID: 8982170698605825144, guid: 0619cd81cf81fbb4d8dc5028bc9953e0, type: 3}
+    prefab: {fileID: 8982170698605825144, guid: 9326ab5cc5d909a4db0f4f584db07282, type: 3}
   - spawnPosition: {fileID: 4271460546042988753}
-    prefab: {fileID: 4125536917984924479, guid: a3b2b557bda5fee47b2249e476cf6af5, type: 3}
+    prefab: {fileID: 8982170698605825144, guid: 9326ab5cc5d909a4db0f4f584db07282, type: 3}
   - spawnPosition: {fileID: 3016259299074558384}
-    prefab: {fileID: 2444322821583412841, guid: 860505ddaa923ee488438caa0eff1720, type: 3}
+    prefab: {fileID: 8982170698605825144, guid: 9326ab5cc5d909a4db0f4f584db07282, type: 3}
   - spawnPosition: {fileID: 1805761326396310403}
-    prefab: {fileID: 100000, guid: b74cff3c5fee6114a9f0a423593d2cc5, type: 3}
+    prefab: {fileID: 8982170698605825144, guid: 9326ab5cc5d909a4db0f4f584db07282, type: 3}
   - spawnPosition: {fileID: 6512507995396793040}
-    prefab: {fileID: 8982170698605825144, guid: 0619cd81cf81fbb4d8dc5028bc9953e0, type: 3}
+    prefab: {fileID: 8982170698605825144, guid: 9326ab5cc5d909a4db0f4f584db07282, type: 3}
   - spawnPosition: {fileID: 7718116732353851159}
-    prefab: {fileID: 100000, guid: dd8345800eb8b7a4cbaaed621fdfff4b, type: 3}
+    prefab: {fileID: 8982170698605825144, guid: 9326ab5cc5d909a4db0f4f584db07282, type: 3}
   structurePosition: []
   itemPosition: []
   coinPosition: []

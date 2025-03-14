@@ -79,6 +79,7 @@ MonoBehaviour:
   - {fileID: 100000, guid: b8365ae9a93a2e8498ae3c2646f3c455, type: 3}
   chunkList:
   - {fileID: 4544382250648707321, guid: 587f9111c831dbd4992757b16018f35c, type: 3}
+  - {fileID: 4544382250648707321, guid: 587f9111c831dbd4992757b16018f35c, type: 3}
+  - {fileID: 4544382250648707321, guid: 587f9111c831dbd4992757b16018f35c, type: 3}
   Templates:
-  - chunkIndexCombine: 
-  - chunkIndexCombine: 
+  - chunkIndexCombine: 00000000
