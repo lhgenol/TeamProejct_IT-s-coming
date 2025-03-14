@@ -43,13 +43,13 @@ public class ChunkSpawner : MonoBehaviour
                 SpawnTemplet();
             }
 
-            SpawnChunk();
+            SpawnChunk(chunkQueue.Dequeue());
         }
     }
 
-    void SpawnChunk()
+    void SpawnChunk(GameObject chunk)
     {
-        MapManager.Instance.chunkPool.GetFromPool(chunkQueue.Dequeue(), spawnPosition, chunkContainer);
+        MapManager.Instance.chunkPool.GetFromPool(chunk, spawnPosition, chunkContainer);
     }
 
     void Init()
@@ -92,15 +92,17 @@ public class ChunkSpawner : MonoBehaviour
 
     void SpawnTemplet()
     {
-        if (leftTemplate <= 0)
+        if (leftTemplate <= 0)//남은 템플릿 0이면 테마를 바꾼다.
         {
-            curTheme = RandomTheme(curThemeIndex);
+            chunkQueue.Enqueue(curTheme.chunkList[1]);//바꾸기 전에 테마 종료 청크 인큐
+            curTheme = RandomTheme(curThemeIndex);//본인제외 랜덤 테마
             leftTemplate = RandomThemeChangeThreshold();
+            chunkQueue.Enqueue(curTheme.chunkList[0]);//바꾼후 테마 시작 청크 인큐
         }
 
         curTemplate = RandomTemplet(curTemplateIndex);
 
-        foreach (int i in curTemplate.chunkIndexCombine)
+        foreach (int i in curTemplate.chunkIndexCombine)//랜덤 템플릿을 받아와서 data의 chunklist에서 골라서 인큐
         {
             chunkQueue.Enqueue(themeData[curThemeIndex].chunkList[i]);
         }
