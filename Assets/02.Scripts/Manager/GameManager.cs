@@ -8,7 +8,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector]
     public int Score { get; private set; }
     [HideInInspector]
-    public int Coin{ get; private set; }
+    public int Coin{ get; set; }
     [HideInInspector]
     public int[] Rank { get; private set; }
 
