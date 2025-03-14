@@ -54,19 +54,21 @@ public class Chunk : MonoBehaviour
 
     private void OnDisable()
     {
-        if (MapManager.Instance == null)
+        if (MapManager.Instance == null || !Application.isPlaying)
         {
             Debug.LogWarning("[Chunk] OnDisable() - MapManager가 null이므로 CollectObjects()를 실행하지 않음");
             return;
         }
 
-        StartCoroutine(DelayedPlace());
+        CollectObjects();
     }
 
     IEnumerator DelayedCollect()
     {
-        CollectObjects();
         yield return null;
+        CollectObjects();
+
+
     }
 
     public void PlaceObjects()
@@ -103,7 +105,7 @@ public class Chunk : MonoBehaviour
 
     void PlaceCoin()
     {
-        foreach(var obj in coinPosition)
+        foreach (var obj in coinPosition)
         {
             MapManager.Instance.itemPool.GetFromPool(themeData.itemList[0], obj, obj);// coin<Itme> [0]에 넣어줘야한다.
         }
@@ -135,13 +137,17 @@ public class Chunk : MonoBehaviour
                 continue;
             }
 
-            if (obj.spawnPosition == null) 
+            if (obj.spawnPosition == null)
             {
                 Debug.LogWarning($"{obj.Prefab.name} is null");
                 continue;
             }
 
-            if (obj.spawnPosition.childCount > 0) //스폰된 오브젝트가 있는지 확인
+            if (obj.spawnPosition.childCount > 1)
+            {
+                DestroyAllChildren(obj.spawnPosition);
+            }
+            else if (obj.spawnPosition.childCount > 0) //스폰된 오브젝트가 있는지 확인
             {
                 GameObject spawnedObstacle = obj.spawnPosition.GetChild(0).gameObject;
                 MapManager.Instance.obstaclePool.ReturnToPool(spawnedObstacle.GetComponent<Obstacle>(), spawnedObstacle);
@@ -168,7 +174,11 @@ public class Chunk : MonoBehaviour
                 continue;
             }
 
-            if (obj.spawnPosition.childCount > 0) // 🚨 실제 스폰된 오브젝트가 있는지 확인
+            if (obj.spawnPosition.childCount > 1)
+            {
+                DestroyAllChildren(obj.spawnPosition);
+            }
+            else if (obj.spawnPosition.childCount > 0) // 🚨 실제 스폰된 오브젝트가 있는지 확인
             {
                 GameObject spawnedStructure = obj.spawnPosition.GetChild(0).gameObject;
                 MapManager.Instance.structurePool.ReturnToPool(spawnedStructure.GetComponent<Structure>(), spawnedStructure);
@@ -194,10 +204,14 @@ public class Chunk : MonoBehaviour
                 continue;
             }
 
-            if (obj.spawnPosition.childCount > 0) // 🚨 실제 스폰된 오브젝트가 있는지 확인
+            if (obj.spawnPosition.childCount > 1)
+            {
+                DestroyAllChildren(obj.spawnPosition);
+            }
+            else if (obj.spawnPosition.childCount > 0) //  실제 스폰된 오브젝트가 있는지 확인
             {
                 GameObject spawnedItem = obj.spawnPosition.GetChild(0).gameObject;
-                MapManager.Instance.structurePool.ReturnToPool(spawnedItem.GetComponent<Structure>(), spawnedItem);
+                MapManager.Instance.itemPool.ReturnToPool(spawnedItem.GetComponent<Item>(), spawnedItem);
             }
         }
     }
@@ -214,7 +228,11 @@ public class Chunk : MonoBehaviour
                 continue;
             }
 
-            if (coinTransform.childCount > 0)
+            if (coinTransform.childCount > 1)
+            {
+                DestroyAllChildren(coinTransform);
+            }
+            else if (coinTransform.childCount > 0)
             {
                 GameObject coinObject = coinTransform.GetChild(0).gameObject;
                 MapManager.Instance.itemPool.ReturnToPool(coinObject.GetComponent<Item>(), coinObject);
@@ -222,11 +240,19 @@ public class Chunk : MonoBehaviour
         }
     }
 
+    void DestroyAllChildren(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     public List<GameObject> GetPrefabList(int index)
     {
         if (themeData == null) return null;
 
-        switch(index)
+        switch (index)
         {
             case 0:
                 return themeData.obstacleList != null ? themeData.obstacleList : new List<GameObject>();

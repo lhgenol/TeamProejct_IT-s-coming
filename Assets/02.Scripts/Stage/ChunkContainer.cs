@@ -8,10 +8,11 @@ public class ChunkContainer : MonoBehaviour
     public float speedMultiplier = 1f;
     [SerializeField]private bool isMoving = false;
 
-    private void Start()
+    private void Awake()
     {
         MapManager.Instance.chunkContainer = this;
     }
+
 
     void Update()
     {
