@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
@@ -24,34 +25,69 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 
             for (int i = 0; i < initialSize; i++)
             {
-                T obj = Instantiate(prefab).GetComponent<T>();
+                GameObject obj = Instantiate(prefab);
                 obj.name = prefab.name;
                 obj.transform.SetParent(this.transform);
                 obj.gameObject.SetActive(false);
-                poolDictionary[prefab.name].Enqueue(obj);
+                poolDictionary[prefab.name].Enqueue(obj.GetComponent<T>());
             }
         }
     }
 
-    public T GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
+    public void GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
     {
-        T obj;
+        GameObject obj;
         if (poolDictionary.ContainsKey(prefab.name) && poolDictionary[prefab.name].Count > 0)
         {
-            obj = poolDictionary[prefab.name].Dequeue();
+            obj = poolDictionary[prefab.name].Dequeue().gameObject;
         }
         else
         {
             // 풀에 남은 오브젝트가 없으면 새로 생성
-            obj = Instantiate(prefab).GetComponent<T>();
+            obj = Instantiate(prefab);
             obj.name = prefab.name;
         }
 
         if(newParent != null) obj.transform.SetParent(newParent); 
         obj.transform.position = spawnPosition.position;
         obj.gameObject.SetActive(true);
-        return obj;
     }
+
+    /*public GameObject GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError("[ObjectPool] GetFromPool() - prefab이 null입니다!");
+            return null;
+        }
+
+        GameObject obj;
+
+        if (poolDictionary.ContainsKey(prefab.name) && poolDictionary[prefab.name].Count > 0)
+        {
+            obj = poolDictionary[prefab.name].Dequeue().gameObject;
+
+            // 🚨 원본 프리팹을 참조하는 경우 방지
+            if (PrefabUtility.IsPartOfPrefabAsset(obj))
+            {
+                Debug.LogError($"[ObjectPool] {obj.name}은 원본 프리팹입니다! 새로 인스턴스화합니다.");
+                obj = Instantiate(prefab);
+            }
+        }
+        else
+        {
+            obj = Instantiate(prefab); // ✅ 새 인스턴스 생성
+            obj.name = prefab.name + " (clone)";
+        }
+
+        if (newParent != null)
+            obj.transform.SetParent(newParent, false); // ✅ 부모 설정 (로컬 좌표 유지)
+
+        obj.transform.position = spawnPosition.position;
+        obj.SetActive(true);
+
+        return obj;
+    }*/
 
     public void ReturnToPool(T obj, GameObject prefab)
     {
