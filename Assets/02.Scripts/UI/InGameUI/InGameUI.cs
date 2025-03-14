@@ -16,7 +16,6 @@ public class InGameUI : BaseUI
     public GameObject[] items;
     public Image[] gauge;
 
-
     private int lastCoin=0;
     public override void Init(UIManager uiManager)
     {
@@ -24,7 +23,14 @@ public class InGameUI : BaseUI
     }
     private void OnEnable()
     {
-        GameManager.Instance.StartGame();
+        if(!GameManager.Instance.Started)
+        {
+            GameManager.Instance.StartGame();
+        }
+        else
+        {
+            GameManager.Instance.Resume();
+        }
     }
     public void Update()
     {

@@ -8,6 +8,13 @@ public class HomeUI : BaseUI
     {
         base.Init(uiManager);
     }
+    public void OnEnable()
+    {
+        if(GameManager.Instance.Started)
+        {
+            GameManager.Instance.StopGame();
+        }
+    }
     protected override UIState GetUIState()
     {
         return UIState.Home;

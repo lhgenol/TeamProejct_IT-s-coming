@@ -8,6 +8,11 @@ public class PauseUI : BaseUI
     {
         base.Init(uiManager);
     }
+    private void OnEnable()
+    {
+        GameManager.Instance.PauseGame();
+    }
+
     protected override UIState GetUIState()
     {
         return UIState.Pause;

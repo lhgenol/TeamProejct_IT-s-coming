@@ -6,10 +6,12 @@ public class GameManager : Singleton<GameManager>
 {
     public int Score { get; private set; }
     public int Coin{ get; private set; }
+    public bool Started {get; private set; }
 
     public int[] Rank {  get; private set; }
 
     private bool nowPlaying;
+
     private float lastUpdateTime = 0;
     protected override void Awake()
     {
@@ -29,6 +31,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void StartGame()
     {
+        Started = true;
         nowPlaying = true;
         Score = 0;
         Coin = 0;
@@ -38,11 +41,16 @@ public class GameManager : Singleton<GameManager>
         Score += 10;
         Coin += 1;
     }
-   
+
+    public void StopGame()
+    {
+        Started = false;
+        nowPlaying = false;
+    }
 
     public void EndGame()
     {
-        nowPlaying=false;
+        StopGame();
         UIManager.Instance.ChangeState(UIState.GameEnd);
     }
 
@@ -50,6 +58,11 @@ public class GameManager : Singleton<GameManager>
     {
         nowPlaying = false;
         //일시정지
+    }
+
+    public void Resume()
+    {
+        nowPlaying = true;
     }
 
     public void ManagementLeaderBorad()
