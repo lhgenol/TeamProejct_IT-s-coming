@@ -43,6 +43,12 @@ public class Chunk : MonoBehaviour
 
     private void OnEnable()
     {
+        StartCoroutine(DelayedPlace());
+    }
+
+    IEnumerator DelayedPlace()
+    {
+        yield return null;
         PlaceObjects();
     }
 
@@ -54,7 +60,13 @@ public class Chunk : MonoBehaviour
             return;
         }
 
+        StartCoroutine(DelayedPlace());
+    }
+
+    IEnumerator DelayedCollect()
+    {
         CollectObjects();
+        yield return null;
     }
 
     public void PlaceObjects()
