@@ -10,9 +10,11 @@ public enum UIState
     Home,
     InGame,
     GameEnd,
+    Pause,
     LeaderBoard,
     Option,
     Customizing,
+
 }
 
 public class UIManager : Singleton<UIManager>
@@ -24,6 +26,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] LeaderBoardUI leaderBoardUI;
     [SerializeField] OptionUI optionUI;
     [SerializeField] CustomizingUI customizingUI;
+    [SerializeField] PauseUI pauseUI;
 
     [Header("Canvas")]
     public GameObject MainMenuCanvas;
@@ -39,6 +42,8 @@ public class UIManager : Singleton<UIManager>
         homeUI.Init(this);
         inGameUI = GetComponentInChildren<InGameUI>(true);
         inGameUI.Init(this);
+        pauseUI = GetComponentInChildren<PauseUI>(true);
+        pauseUI.Init(this);
         gameEndUI = GetComponentInChildren<GameEndUI>(true);
         gameEndUI.Init(this);
         leaderBoardUI = GetComponentInChildren<LeaderBoardUI>(true);
@@ -62,34 +67,6 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void SetHome()
-    {
-        ChangeState(UIState.Home);
-    }
-
-    public void SetInGame()
-    {
-        ChangeState(UIState.InGame);
-    }
-    public void SetGameEnd()
-    {
-        ChangeState(UIState.GameEnd);
-    }
-    public void SetLeaderBoard()
-    {
-        ChangeState(UIState.LeaderBoard);
-    }
-
-    public void SetOptionUI()
-    {
-        ChangeState(UIState.Option);
-    }
-
-    public void SetCustomizing()
-    {
-        ChangeState(UIState.Customizing);
-    }
-
     public void ChangeState(UIState state)
     {
         currentState = state;
@@ -99,5 +76,6 @@ public class UIManager : Singleton<UIManager>
         leaderBoardUI.SetActive(currentState);
         optionUI.SetActive(currentState);
         customizingUI.SetActive(currentState);
+        pauseUI.SetActive(currentState);
     }
 }
