@@ -4,4 +4,9 @@ using UnityEngine;
 
 public class ItemPool : ObjectPool<Item>
 {
+    protected override void Start()
+    {
+        base.Start();
+        MapManager.Instance.itemPool = this;
+    }
 }

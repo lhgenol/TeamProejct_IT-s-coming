@@ -177,7 +177,6 @@ GameObject:
   - component: {fileID: 5139979076025614974}
   - component: {fileID: 4534013220845572183}
   - component: {fileID: 7648334520830282225}
-  - component: {fileID: 263684135253134616}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -250,27 +249,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &263684135253134616
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2578267393592575845}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2585730432016876954
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,7 +795,6 @@ GameObject:
   - component: {fileID: 2085313396390431911}
   - component: {fileID: 8826835588919121377}
   - component: {fileID: 4355105254547043}
-  - component: {fileID: 8508740352822755003}
   m_Layer: 0
   m_Name: NewRoadTile
   m_TagString: Untagged
@@ -894,27 +871,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8508740352822755003
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8496114296144024382}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 20.000002, y: 0.0000008742278, z: 19.999998}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8515917779245838985
 GameObject:
   m_ObjectHideFlags: 0
