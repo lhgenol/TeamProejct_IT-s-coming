@@ -9,7 +9,6 @@ public class ChunkSpawner : MonoBehaviour
     [Header("Themes")]
     public ThemeDataSO[] themeData;
 
-
     [Header("SpawnInfo")]
     public Transform spawnPosition;
     public Transform chunkContainer;
@@ -33,8 +32,10 @@ public class ChunkSpawner : MonoBehaviour
     {
         MapManager.Instance.chunkSpawner = this;
     }
+
     private void Start()
     {
+        this.themeData = MapManager.Instance.themeData;
         Init();
     }
 

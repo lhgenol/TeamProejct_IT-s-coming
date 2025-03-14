@@ -6,6 +6,9 @@ TagManager:
   tags:
   - ExcludeUI
   - Chunk
+  - Obstacle1
+  - Obstacle2_Hit
+  - Obstacle2_Top
   layers:
   - Default
   - TransparentFX
@@ -14,9 +17,9 @@ TagManager:
   - Water
   - UI
   - OverUI
-  - 
-  - 
-  - 
+  - groundLayerMask
+  - ObstacleLayer
+  - Player
   - 
   - 
   - 

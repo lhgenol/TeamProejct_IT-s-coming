@@ -54,7 +54,7 @@ public class Chunk : MonoBehaviour
 
     private void OnDisable()
     {
-        if (MapManager.Instance == null)
+        if (MapManager.Instance == null || !Application.isPlaying)
         {
             Debug.LogWarning("[Chunk] OnDisable() - MapManager가 null이므로 CollectObjects()를 실행하지 않음");
             return;

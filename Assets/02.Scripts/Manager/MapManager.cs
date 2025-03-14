@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class MapManager : Singleton<MapManager>
 {
+    [Header("ThemeData")]
+    public ThemeDataSO[] themeData;
+
+    [Header("ObjectPool")]
     public ChunkPool chunkPool;
     public ObstaclePool obstaclePool;
     public ItemPool itemPool;
