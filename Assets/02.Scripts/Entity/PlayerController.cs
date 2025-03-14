@@ -5,27 +5,26 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// 플레이어의 좌우 이동, 점프, 슬라이드 등을 관리하는 클래스
+// 플레이어의 좌우 이동, 점프, 슬라이드, 아이템 효과 등을 관리하는 클래스
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed;             // 이동 속도
-    public float jumpHeight;            // 점프 높이 (jumpForce 대신)
-    public float jumpDuration;          // 점프 지속 시간
-    private Vector2 curMovementInput;   // 현재 이동 입력 값
-    public float laneDistance;          // 트랙 간 거리 (왼쪽, 중앙, 오른쪽)
+    public float moveSpeed;             // 플레이어의 이동 속도
+    public float jumpHeight;            // 점프 높이 (jumpForce 대신 사용)
+    public float jumpDuration;          // 점프 지속 시간 (올라가고 내려오는 데 걸리는 시간)
+    private Vector2 curMovementInput;   // 현재 입력된 이동 값 저장
+    public float laneDistance;          // 트랙 간 거리 (좌/중/우 이동 시 거리 차이)
     public float slideDuration;         // 슬라이드 지속 시간
     public LayerMask groundLayerMask;   // 바닥 체크를 위한 레이어 마스크
-    private bool isSliding = false;     // 현재 슬라이드 중인지 체크
-    private bool isJumping = false;     // 점프 중인지 체크
-
-    private float jumpTime;             // 점프한 시간을 기록
-    private int currentLane = 1;        // 현재 플레이어 위치 (1 = 중앙)
-    private Vector3 targetPosition;     // 목표 위치 저장
+    
+    private bool isSliding = false;     // 현재 슬라이드 상태 여부
+    private bool isJumping = false;     // 현재 점프 상태인지 여부
+    private int currentLane = 1;        // 현재 플레이어 위치 (0=왼쪽, 1=중앙, 2=오른쪽)
+    private Vector3 targetPosition;     // 목표 위치 저장 (좌/중/우 이동 시 활용)
     
     private bool isInvincible = false;  // 무적 상태 여부
     private bool isDoubleScore = false; // 2배 점수 상태 여부
-    private float defaultMoveSpeed;     // 원래 이동 속도 저장
+    private float defaultMoveSpeed;     // 기본 이동 속도를 저장하여 원래 상태로 복구할 때 사용
     
     private Animator _animator;         // 애니메이터 변수 추가
     
@@ -36,19 +35,18 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        targetPosition = transform.position; // 시작 위치를 현재 위치로 설정
-        defaultMoveSpeed = moveSpeed; // 기본 속도 저장
+        targetPosition = transform.position;    // 시작 시 플레이어 위치를 기준으로 설정
+        defaultMoveSpeed = moveSpeed;           // 기본 이동 속도 저장
         
-        // 게임 시작하자마자 달리기 애니메이션 실행
-        _animator.SetBool("IsRun", true);
+        _animator.SetBool("IsRun", true); // 게임 시작 시 바로 Run 애니메이션 실행
     }
 
     private void Update()
     {
-        if (!isJumping) // 점프 중에는 좌우 이동 금지
+        if (!isJumping) // 점프 중이 아닐 때만 좌/우 이동 가능
         {
             Vector3 pos = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            pos.y = transform.position.y; // y값은 그대로 유지
+            pos.y = transform.position.y; // y값 고정 (점프 시 위치 유지)
             transform.position = pos;
         }
     }
@@ -56,7 +54,7 @@ public class PlayerController : MonoBehaviour
    // 왼쪽 이동 입력 처리 (A 키)
     public void OnMoveLeft(InputAction.CallbackContext context) // context는 현재 상태를 받아올 수가 있음
     {
-        // 키를 누른 순간만 실행
+        // 키가 눌린 순간 실행
         if (context.phase == InputActionPhase.Started)
         {
             MoveLeft();
@@ -66,7 +64,7 @@ public class PlayerController : MonoBehaviour
     // 오른쪽 이동 입력 처리 (D 키)
     public void OnMoveRight(InputAction.CallbackContext context)
     {
-        // 키를 누른 순간만 실행
+        // 키가 눌린 순간 실행
         if (context.phase == InputActionPhase.Started)
         {
             MoveRight();
@@ -76,7 +74,7 @@ public class PlayerController : MonoBehaviour
     // 왼쪽으로 이동하는 함수
     private void MoveLeft()
     {
-        if (currentLane > 0)    // 왼쪽으로 이동 가능할 경우
+        if (currentLane > 0)    // 왼쪽 이동 가능 여부 체크
         {
             currentLane--;
             UpdatePosition();   // 목표 위치 갱신
@@ -86,20 +84,20 @@ public class PlayerController : MonoBehaviour
     // 오른쪽으로 이동하는 함수
     private void MoveRight()
     {
-        if (currentLane < 2)    // 오른쪽으로 이동 가능할 경우
+        if (currentLane < 2)    // 오른쪽 이동 가능 여부 체크
         {
             currentLane++;
             UpdatePosition();   // 목표 위치 갱신
         }
     }
 
-    // 목표 위치 갱신하는 함수 (현재 레인의 x 좌표를 기반으로 설정)
+    // 목표 위치 갱신하는 함수 (현재 레인을 기반으로 X 좌표 설정)
     private void UpdatePosition()
     {
         targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
     }
     
-    // 점프 입력 처리
+    // 점프 입력 처리 (스페이스바)
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started && isGrounded() && !isJumping)
@@ -110,14 +108,13 @@ public class PlayerController : MonoBehaviour
             float startY = transform.position.y;
             float targetY = startY + jumpHeight;
 
-            // DOTween으로 부드럽게 점프 (올라갔다가 내려오기)
+            // DOTween을 이용한 부드러운 점프 (올라갔다가 내려오기)
             transform.DOMoveY(targetY, jumpDuration / 2)
                 .SetEase(Ease.OutQuad)
                 .OnComplete(() => 
                 {
-                    // 점프 최고점에 도달한 순간 바로 Run 모션으로 변경
-                    _animator.SetBool("IsJump", false); 
-                    _animator.SetBool("IsRun", true); // Run 모션 강제 변경
+                    _animator.SetBool("IsJump", false); // 최고점 도달 시 점프 애니메이션 해제
+                    _animator.SetBool("IsRun", true);   // 다시 달리기 애니메이션 실행
 
                     transform.DOMoveY(startY, jumpDuration / 2)
                         .SetEase(Ease.InQuad)
@@ -158,6 +155,12 @@ public class PlayerController : MonoBehaviour
         isSliding = false; // 슬라이드 상태 해제
     }
     
+    // // 플레이어가 바닥에 있는지 확인하는 함수
+    // private bool isGrounded()
+    // {
+    //     return Physics.Raycast(transform.position, Vector3.down, 0.1f, groundLayerMask);
+    // }
+    
     // 플레이어가 바닥에 있는지 확인하는 함수
     bool isGrounded()
     {
@@ -180,7 +183,7 @@ public class PlayerController : MonoBehaviour
         return false;   // 모든 레이가 바닥에 닿지 않으면 false 반환
     }
     
-    // 아이템을 먹었을 때 효과를 적용하는 메서드
+    // 아이템 효과를 적용하는 메서드
     public void ApplyItemEffect(ItemType itemType, float duration, int value = 0)
     {
         switch (itemType)
@@ -190,12 +193,12 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case ItemType.JumpBoost:    // 일정 시간 동안 점프력 증가
-                jumpHeight *= 1.5f; // 점프 높이 1.5배 증가
+                jumpHeight *= 1.5f;     // 점프 높이 1.5배 증가
                 StartCoroutine(RemoveEffectAfterTime(ItemType.JumpBoost, duration));
                 break;
 
             case ItemType.SpeedBoost:   // 일정 시간 동안 이동 속도 증가 (플레이어는 제자리, 맵이 빨라짐)
-                moveSpeed *= 1.5f; // 이동 속도 1.5배 증가
+                moveSpeed *= 1.5f;      // 이동 속도 1.5배 증가
                 StartCoroutine(RemoveEffectAfterTime(ItemType.SpeedBoost, duration));
                 break;
 

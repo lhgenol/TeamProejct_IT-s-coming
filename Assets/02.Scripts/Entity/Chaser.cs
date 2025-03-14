@@ -59,15 +59,8 @@ public class Chaser : Entity
     // 플레이어가 2번째 충돌하면 잡기 애니메이션 실행
     public void CatchPlayer()
     {
-        PlayAnimation("Catch");
-        Debug.Log("Chaser caught the player! Game Over.");
-    }
-    
-    public void PlayAnimation(string animationName)
-    {
-        if (animator != null)
-        {
-            animator.SetTrigger(animationName);
-        }
+        isChasing = false;      // 추적 중지
+        PlayAnimation("Catch"); // 추적자 잡기 애니메이션 실행
+        Debug.Log("게임 오버! 추적자에게 잡혔습니다.");
     }
 }
