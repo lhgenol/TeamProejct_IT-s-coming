@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Obstacle1
-  - Obstacle2_Hit
-  - Obstacle2_Top
+  - ExcludeUI
+  - Chunk
   layers:
   - Default
   - TransparentFX
@@ -15,9 +14,9 @@ TagManager:
   - Water
   - UI
   - OverUI
-  - Player
-  - ObstacleLayer
-  - Character Preview
+  - 
+  - 
+  - 
   - 
   - 
   - 

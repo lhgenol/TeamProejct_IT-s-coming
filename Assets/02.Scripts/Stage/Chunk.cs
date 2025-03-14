@@ -35,53 +35,216 @@ public class Chunk : MonoBehaviour
     [Header("Theme")]
     public ThemeDataSO themeData;
 
-    [Header("ChunkInfo")]
-    public float chunkSpeed;
-
     [Header("PlacePosition")]
     [SerializeField] private ObstacleSpawnData[] obstaclePosition;
     [SerializeField] private StuctureSpawnData[] structurePosition;
     [SerializeField] private ItemSpawnData[] itemPosition;
     [SerializeField] private Transform[] coinPosition;
 
+    private void OnEnable()
+    {
+        StartCoroutine(DelayedPlace());
+    }
 
-    public void PlaceObject()
+    IEnumerator DelayedPlace()
+    {
+        yield return null;
+        PlaceObjects();
+    }
+
+    private void OnDisable()
+    {
+        if (MapManager.Instance == null || !Application.isPlaying)
+        {
+            Debug.LogWarning("[Chunk] OnDisable() - MapManager가 null이므로 CollectObjects()를 실행하지 않음");
+            return;
+        }
+
+        CollectObjects();
+    }
+
+    IEnumerator DelayedCollect()
+    {
+        yield return null;
+        CollectObjects();
+
+
+    }
+
+    public void PlaceObjects()
     {
         PlaceObstacle();
-        //PlaceStructure();
-        //PlaceItem();
+        PlaceStructure();
+        PlaceItem();
         PlaceCoin();
     }
 
     void PlaceObstacle()
     {
-        foreach (var obs in obstaclePosition)
+        foreach (var obj in obstaclePosition)
         {
-            MapManager.Instance.obstaclePool.GetFromPool(obs.Prefab, obs.spawnPosition, this.transform);
+            MapManager.Instance.obstaclePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
     }
 
-    /*void PlaceStructure()
+    void PlaceStructure()
     {
-        foreach (var obs in structurePosition)
+        foreach (var obj in structurePosition)
         {
-            MapManager.Instance.structurePool.GetFromPool(obs.Prefab, obs.spawnPosition, this.transform);
+            MapManager.Instance.structurePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
-    }*/
+    }
 
-    /*void PlaceItem()
+    void PlaceItem()
     {
-        foreach (var item in itemPosition)
+        foreach (var obj in itemPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(item.Prefab, item.spawnPosition, this.transform);
+            MapManager.Instance.itemPool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
-    }*/
+    }
 
     void PlaceCoin()
     {
-        foreach(var coin in coinPosition)
+        foreach (var obj in coinPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(itemPosition[0].Prefab, coin, this.transform);// coin<Itme> 넣어줘야함
+            MapManager.Instance.itemPool.GetFromPool(themeData.itemList[0], obj, obj);// coin<Itme> [0]에 넣어줘야한다.
+        }
+    }
+
+    public void CollectObjects()
+    {
+        if (MapManager.Instance == null)
+        {
+            Debug.LogWarning("[Chunk] CollectObjects() - MapManager가 null이므로 실행하지 않음");
+            return;
+        }
+
+        CollectObstacle();
+        CollectStructure();
+        CollectItem();
+        CollectCoin();
+    }
+
+    void CollectObstacle()
+    {
+        if (obstaclePosition == null) return;
+
+        foreach (var obj in obstaclePosition)
+        {
+            if (obj == null) // null 체크
+            {
+                Debug.LogWarning($"obstaclePosition is null");
+                continue;
+            }
+
+            if (obj.spawnPosition == null)
+            {
+                Debug.LogWarning($"{obj.Prefab.name} is null");
+                continue;
+            }
+
+            if (obj.spawnPosition.childCount > 1)
+            {
+                DestroyAllChildren(obj.spawnPosition);
+            }
+            else if (obj.spawnPosition.childCount > 0) //스폰된 오브젝트가 있는지 확인
+            {
+                GameObject spawnedObstacle = obj.spawnPosition.GetChild(0).gameObject;
+                MapManager.Instance.obstaclePool.ReturnToPool(spawnedObstacle.GetComponent<Obstacle>(), spawnedObstacle);
+            }
+        }
+    }
+
+
+    void CollectStructure()
+    {
+        if (structurePosition == null) return;
+
+        foreach (var obj in structurePosition)
+        {
+            if (obj == null) // null 체크
+            {
+                Debug.LogWarning($"obstaclePosition is null");
+                continue;
+            }
+
+            if (obj.spawnPosition == null)
+            {
+                Debug.LogWarning($"{obj.Prefab.name} is null");
+                continue;
+            }
+
+            if (obj.spawnPosition.childCount > 1)
+            {
+                DestroyAllChildren(obj.spawnPosition);
+            }
+            else if (obj.spawnPosition.childCount > 0) // 🚨 실제 스폰된 오브젝트가 있는지 확인
+            {
+                GameObject spawnedStructure = obj.spawnPosition.GetChild(0).gameObject;
+                MapManager.Instance.structurePool.ReturnToPool(spawnedStructure.GetComponent<Structure>(), spawnedStructure);
+            }
+        }
+    }
+
+    void CollectItem()
+    {
+        if (itemPosition == null) return;
+
+        foreach (var obj in itemPosition)
+        {
+            if (obj == null) // null 체크
+            {
+                Debug.LogWarning($"itemPosition is null");
+                continue;
+            }
+
+            if (obj.spawnPosition == null)
+            {
+                Debug.LogWarning($"{obj.Prefab.name} is null");
+                continue;
+            }
+
+            if (obj.spawnPosition.childCount > 1)
+            {
+                DestroyAllChildren(obj.spawnPosition);
+            }
+            else if (obj.spawnPosition.childCount > 0) //  실제 스폰된 오브젝트가 있는지 확인
+            {
+                GameObject spawnedItem = obj.spawnPosition.GetChild(0).gameObject;
+                MapManager.Instance.itemPool.ReturnToPool(spawnedItem.GetComponent<Item>(), spawnedItem);
+            }
+        }
+    }
+
+    void CollectCoin()
+    {
+        if (coinPosition == null) return;
+
+        foreach (Transform coinTransform in coinPosition)
+        {
+            if (coinTransform == null)
+            {
+                Debug.LogWarning("[CollectCoin] coinPosition has null");
+                continue;
+            }
+
+            if (coinTransform.childCount > 1)
+            {
+                DestroyAllChildren(coinTransform);
+            }
+            else if (coinTransform.childCount > 0)
+            {
+                GameObject coinObject = coinTransform.GetChild(0).gameObject;
+                MapManager.Instance.itemPool.ReturnToPool(coinObject.GetComponent<Item>(), coinObject);
+            }
+        }
+    }
+
+    void DestroyAllChildren(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
         }
     }
 
@@ -89,7 +252,7 @@ public class Chunk : MonoBehaviour
     {
         if (themeData == null) return null;
 
-        switch(index)
+        switch (index)
         {
             case 0:
                 return themeData.obstacleList != null ? themeData.obstacleList : new List<GameObject>();
@@ -102,7 +265,7 @@ public class Chunk : MonoBehaviour
         }
     }
 
-    public List<GameObject> GetObstaclePrefabList()
+    /*public List<GameObject> GetObstaclePrefabList()
     {
         return themeData != null ? themeData.obstacleList : null;
     }
@@ -110,5 +273,5 @@ public class Chunk : MonoBehaviour
     public List<GameObject> GetStructurePrefabList()
     {
         return themeData != null ? themeData.structureList : null; 
-    }
+    }*/
 }

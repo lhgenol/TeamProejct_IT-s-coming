@@ -1,18 +1,16 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChunkCollector : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(other.CompareTag("Chunk"))
+        {
+            Chunk chunk = other.GetComponent<Chunk>();
+            //chunk.CollectObjects();
+            MapManager.Instance.chunkPool.ReturnToPool(other.GetComponent<Chunk>() ,other.gameObject);
+        }
     }
 }

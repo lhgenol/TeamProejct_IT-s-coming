@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChunkPool : ObjectPool<Chunk>
+public class StructurePool : ObjectPool<Structure>
 {
     private void Awake()
     {
-        MapManager.Instance.chunkPool = this;
+        MapManager.Instance.structurePool = this;
 
 
         if (MapManager.Instance.themeData != null)
@@ -15,17 +15,20 @@ public class ChunkPool : ObjectPool<Chunk>
 
             foreach (var theme in MapManager.Instance.themeData)
             {
-                if (theme.chunkList != null) // null 체크
+                if (theme.structureList != null) // null 체크
                 {
-                    prefabsList.AddRange(theme.chunkList);
+                    prefabsList.AddRange(theme.structureList);
                 }
             }
 
             prefabs = prefabsList.ToArray();
         }
     }
+
     protected override void Start()
     {
+
+
         base.Start();
     }
 }

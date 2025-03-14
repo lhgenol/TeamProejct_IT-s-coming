@@ -4,31 +4,45 @@ using UnityEngine;
 
 public class MapManager : Singleton<MapManager>
 {
+    [Header("ThemeData")]
+    public ThemeDataSO[] themeData;
+
+    [Header("ObjectPool")]
     public ChunkPool chunkPool;
     public ObstaclePool obstaclePool;
-    public ItemPool itemPool;// itemPool;
+    public ItemPool itemPool;
+    public StructurePool structurePool;
+    //public StructurePool structurePool;
 
-    void Start()
+    public ChunkContainer chunkContainer;
+    public ChunkSpawner chunkSpawner;
+
+    public void ResumeMove()
     {
-        if (chunkPool == null)
-        {
-            chunkPool = FindObjectOfType<ChunkPool>();
-        }
-
-        if (obstaclePool == null)
-        {
-            obstaclePool = FindObjectOfType<ObstaclePool>();
-        }
-
-        if (itemPool == null)
-        {
-            itemPool = FindObjectOfType<ItemPool>();
-        }
+        if (chunkContainer != null) chunkContainer.ResumeMovement();
+        else Debug.Log($"{chunkContainer.name} is null");
+    }
+    public void PauseMove()
+    {
+        if (chunkContainer != null) chunkContainer.PauseMovement();
+        else Debug.Log($"{chunkContainer.name} is null");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void KnockBack(float knockBackSpeedMultiplier, float knockBackDuration)
     {
-        
+        if (chunkContainer != null) chunkContainer.KnockBack(knockBackSpeedMultiplier, knockBackDuration);
+        else Debug.Log($"{chunkContainer.name} is null");
+    }
+
+    public void SpeedUp(float multiplier, float duration)
+    {
+        if (chunkContainer != null) chunkContainer.ChangeSpeedMultiplier(multiplier, duration);
+        else Debug.Log($"{chunkContainer.name} is null");
+    }
+
+    public void ResetChunks()
+    {
+        if (chunkSpawner != null) chunkSpawner.Reset();
+        else Debug.Log($"{chunkSpawner.name} is null");
     }
 }

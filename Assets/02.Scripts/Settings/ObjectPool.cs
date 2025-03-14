@@ -1,66 +1,106 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public Dictionary<GameObject, Queue<T>> poolDictionary = new Dictionary<GameObject, Queue<T>>();
+    public Dictionary<string, Queue<T>> poolDictionary = new Dictionary<string, Queue<T>>();
     public GameObject[] prefabs;
     public int initialSize = 3;
 
-    private void Start()
+    protected virtual void Start()
     {
         InitObjectPool();
     }
 
-    public void InitObjectPool()
+    protected void InitObjectPool()
     {
 
         foreach (GameObject prefab in prefabs)
         {
-            if (!poolDictionary.ContainsKey(prefab))
+            if (!poolDictionary.ContainsKey(prefab.name))
             {
-                poolDictionary[prefab] = new Queue<T>();
+                poolDictionary[prefab.name] = new Queue<T>();
             }
 
             for (int i = 0; i < initialSize; i++)
             {
-                T obj = Instantiate(prefab).GetComponent<T>();
+                GameObject obj = Instantiate(prefab);
+                obj.name = prefab.name;
+                obj.transform.SetParent(this.transform);
                 obj.gameObject.SetActive(false);
-                obj.transform.SetParent(this.transform); // 처음에는 풀의 부모 아래에 배치
-                poolDictionary[prefab].Enqueue(obj);
+                poolDictionary[prefab.name].Enqueue(obj.GetComponent<T>());
             }
         }
     }
 
-    public T GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
+    public void GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
     {
-        T obj;
-        if (poolDictionary.ContainsKey(prefab) && poolDictionary[prefab].Count > 0)
+        GameObject obj;
+        if (poolDictionary.ContainsKey(prefab.name) && poolDictionary[prefab.name].Count > 0)
         {
-            obj = poolDictionary[prefab].Dequeue();
+            obj = poolDictionary[prefab.name].Dequeue().gameObject;
         }
         else
         {
             // 풀에 남은 오브젝트가 없으면 새로 생성
-            obj = Instantiate(prefab).GetComponent<T>();
+            obj = Instantiate(prefab);
+            obj.name = prefab.name;
         }
 
-        if(newParent != null) obj.transform.SetParent(newParent); // 원하는 부모로 변경
-        obj.transform.localPosition = spawnPosition.localPosition;
+        if(newParent != null) obj.transform.SetParent(newParent); 
+        obj.transform.position = spawnPosition.position;
         obj.gameObject.SetActive(true);
-        return obj;
     }
+
+    /*public GameObject GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError("[ObjectPool] GetFromPool() - prefab이 null입니다!");
+            return null;
+        }
+
+        GameObject obj;
+
+        if (poolDictionary.ContainsKey(prefab.name) && poolDictionary[prefab.name].Count > 0)
+        {
+            obj = poolDictionary[prefab.name].Dequeue().gameObject;
+
+            // 🚨 원본 프리팹을 참조하는 경우 방지
+            if (PrefabUtility.IsPartOfPrefabAsset(obj))
+            {
+                Debug.LogError($"[ObjectPool] {obj.name}은 원본 프리팹입니다! 새로 인스턴스화합니다.");
+                obj = Instantiate(prefab);
+            }
+        }
+        else
+        {
+            obj = Instantiate(prefab); // ✅ 새 인스턴스 생성
+            obj.name = prefab.name + " (clone)";
+        }
+
+        if (newParent != null)
+            obj.transform.SetParent(newParent, false); // ✅ 부모 설정 (로컬 좌표 유지)
+
+        obj.transform.position = spawnPosition.position;
+        obj.SetActive(true);
+
+        return obj;
+    }*/
 
     public void ReturnToPool(T obj, GameObject prefab)
     {
-        obj.gameObject.SetActive(false);
+        if (!poolDictionary.ContainsKey(prefab.name))
+        {
+            Debug.LogWarning($"ReturnToPool: {prefab.name} is not exist");
+            Destroy(obj.gameObject);
+            return;
+        }
+
         obj.transform.SetParent(this.transform); // 다시 풀의 부모로 설정
         obj.transform.localPosition = Vector3.zero;
-
-        if (!poolDictionary.ContainsKey(prefab))
-        {
-            poolDictionary[prefab] = new Queue<T>();
-        }
-        poolDictionary[prefab].Enqueue(obj);
+        obj.gameObject.SetActive(false);
+        poolDictionary[prefab.name].Enqueue(obj);
     }
 }
