@@ -7,24 +7,26 @@ public class ObstaclePool : ObjectPool<Obstacle>
     private void Awake()
     {
         MapManager.Instance.obstaclePool = this;
-    }
 
-    protected override void Start()
-    {
         if (MapManager.Instance.themeData != null)
         {
-            List<GameObject> prefabs = new List<GameObject>();
+            List<GameObject> prefabsList = new List<GameObject>();
 
             foreach (var theme in MapManager.Instance.themeData)
             {
                 if (theme.obstacleList != null) // null 체크
                 {
-                    prefabs.AddRange(theme.obstacleList);
+                    prefabsList.AddRange(theme.obstacleList);
                 }
             }
 
-            GameObject[] prefabArray = prefabs.ToArray();
+            prefabs = prefabsList.ToArray();
         }
+    }
+
+    protected override void Start()
+    {
+
 
         base.Start();
     }
