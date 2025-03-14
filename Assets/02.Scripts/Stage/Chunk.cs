@@ -93,7 +93,7 @@ public class Chunk : MonoBehaviour
     {
         foreach(var obj in coinPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(itemPosition[0].Prefab, obj, this.transform);// coin<Itme> [0]에 넣어줘야한다.
+            MapManager.Instance.itemPool.GetFromPool(themeData.itemList[0], obj, obj);// coin<Itme> [0]에 넣어줘야한다.
         }
     }
 

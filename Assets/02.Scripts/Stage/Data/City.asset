@@ -82,4 +82,4 @@ MonoBehaviour:
   - {fileID: 4544382250648707321, guid: 587f9111c831dbd4992757b16018f35c, type: 3}
   - {fileID: 4544382250648707321, guid: 587f9111c831dbd4992757b16018f35c, type: 3}
   Templates:
-  - chunkIndexCombine: 00000000
+  - chunkIndexCombine: 000000000000000000000000
