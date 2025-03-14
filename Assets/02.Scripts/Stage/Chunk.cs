@@ -54,7 +54,7 @@ public class Chunk : MonoBehaviour
     public void PlaceObjects()
     {
         PlaceObstacle();
-        //PlaceStructure();
+        PlaceStructure();
         PlaceItem();
         PlaceCoin();
     }
@@ -67,13 +67,13 @@ public class Chunk : MonoBehaviour
         }
     }
 
-    /*void PlaceStructure()
+    void PlaceStructure()
     {
         foreach (var obj in structurePosition)
         {
             MapManager.Instance.structurePool.GetFromPool(obj.Prefab, obj.spawnPosition, this.transform);
         }
-    }*/
+    }
 
     void PlaceItem()
     {
@@ -94,7 +94,7 @@ public class Chunk : MonoBehaviour
     public void CollectObjects()
     {
         CollectObstacle();
-        //CollectStructure();
+        CollectStructure();
         CollectItem();
         CollectCoin();
     }
@@ -107,13 +107,13 @@ public class Chunk : MonoBehaviour
         }
     }
 
-    /*void CollectStructure()
+    void CollectStructure()
     {
         foreach (var obj in structurePosition)
         {
             MapManager.Instance.structurePool.ReturnToPool(obj.Prefab.GetComponent<Structure>(), obj.Prefab);
         }
-    }*/
+    }
 
     void CollectItem()
     {
