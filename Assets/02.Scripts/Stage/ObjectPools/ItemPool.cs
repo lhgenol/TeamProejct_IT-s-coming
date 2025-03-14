@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ItemPool : ObjectPool<Item>
 {
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
+
         MapManager.Instance.itemPool = this;
     }
 }

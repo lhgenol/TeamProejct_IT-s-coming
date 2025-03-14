@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ChunkPool : ObjectPool<Chunk>
 {
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
         MapManager.Instance.chunkPool = this;
     }
+
 }

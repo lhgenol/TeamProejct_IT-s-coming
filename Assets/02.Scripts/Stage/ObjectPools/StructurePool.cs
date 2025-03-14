@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class StructurePool : ObjectPool<Structure>
 {
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
         MapManager.Instance.structurePool = this;
     }
-
 }

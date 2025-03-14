@@ -29,9 +29,12 @@ public class ChunkSpawner : MonoBehaviour
 
     private int leftTemplate;
 
-    private void Start()
+    private void Awake()
     {
         MapManager.Instance.chunkSpawner = this;
+    }
+    private void Start()
+    {
         Init();
     }
 
@@ -95,7 +98,9 @@ public class ChunkSpawner : MonoBehaviour
     {
         if (leftTemplate <= 0)//남은 템플릿 0이면 테마를 바꾼다.
         {
-            chunkQueue.Enqueue(curTheme.chunkList[1]);//바꾸기 전에 테마 종료 청크 인큐
+            if (curTheme.chunkList.Count > 2) chunkQueue.Enqueue(curTheme.chunkList[1]);//바꾸기 전에 테마 종료 청크 인큐
+            else chunkQueue.Enqueue(curTheme.chunkList[0]);
+
             curTheme = RandomTheme(curThemeIndex);//본인제외 랜덤 테마
             leftTemplate = RandomThemeChangeThreshold();
             chunkQueue.Enqueue(curTheme.chunkList[0]);//바꾼후 테마 시작 청크 인큐
