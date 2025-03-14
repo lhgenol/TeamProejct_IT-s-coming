@@ -755,6 +755,10 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 119
+  rayDistance: 3
+  ObstacleLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &674026429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,10 +774,6 @@ MonoBehaviour:
   controller: {fileID: 0}
   health: 2
   score: 0
-  rayDistance: 1.5
-  ObstacleLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &674026430
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -892,7 +892,7 @@ Transform:
   m_GameObject: {fileID: 761273588}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.56, y: 0.5, z: 3.55}
+  m_LocalPosition: {x: -3.14, y: 0.5, z: 3.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1123,7 +1123,7 @@ Transform:
   m_GameObject: {fileID: 903063122}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.64, y: 0.5, z: 4.26}
+  m_LocalPosition: {x: 0, y: 0.5, z: 4.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -28,6 +28,11 @@ public class PlayerController : MonoBehaviour
     
     private Animator _animator;         // 애니메이터 변수 추가
     
+    [SerializeField] private float rayDistance = 3f;  // 레이 길이
+    [SerializeField] private LayerMask ObstacleLayer;   // 장애물 레이어 설정
+
+    private bool canRide = false;
+    
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();   // 애니메이터 컴포넌트 가져오기
@@ -48,6 +53,10 @@ public class PlayerController : MonoBehaviour
             Vector3 pos = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             pos.y = transform.position.y; // y값 고정 (점프 시 위치 유지)
             transform.position = pos;
+        }
+        else
+        {
+            // CheckForObstacleTop();
         }
     }
     
@@ -106,17 +115,24 @@ public class PlayerController : MonoBehaviour
             _animator.SetBool("IsJump", true); // 점프 애니메이션 실행
 
             float startY = transform.position.y;
+            float landingY = startY;
             float targetY = startY + jumpHeight;
 
             // DOTween을 이용한 부드러운 점프 (올라갔다가 내려오기)
             transform.DOMoveY(targetY, jumpDuration / 2)
                 .SetEase(Ease.OutQuad)
+                .OnUpdate(() =>
+                {
+                    CheckForObstacleTop();
+                    Debug.Log(canRide);
+                    landingY = canRide ? 1.2f : startY;
+                })
                 .OnComplete(() => 
                 {
                     _animator.SetBool("IsJump", false); // 최고점 도달 시 점프 애니메이션 해제
                     _animator.SetBool("IsRun", true);   // 다시 달리기 애니메이션 실행
 
-                    transform.DOMoveY(startY, jumpDuration / 2)
+                    transform.DOMoveY(landingY, jumpDuration / 2)
                         .SetEase(Ease.InQuad)
                         .OnComplete(() => 
                         {
@@ -182,6 +198,49 @@ public class PlayerController : MonoBehaviour
         }
         return false;   // 모든 레이가 바닥에 닿지 않으면 false 반환
     }
+    
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Obstacle1") || other.CompareTag("Obstacle2_Hit"))
+        {
+            PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
+        }
+    }
+    
+    // 장애물2 위에 올라갈 조건 확인
+    private void CheckForObstacleTop()
+    {
+        RaycastHit hit;
+        Debug.DrawRay(transform.position + new Vector3(0, 0, 0.7f), Vector3.down * rayDistance, Color.red);
+    
+        // 플레이어 아래 방향으로 레이 발사
+        if (Physics.Raycast(transform.position + new Vector3(0, 0, 0.7f), Vector3.down, out hit, rayDistance, ObstacleLayer))
+        {
+            // 장애물2의 윗면(Top)에 닿았는지 확인
+            if (hit.collider.CompareTag("Obstacle2_Top") && IsJumping())
+            {
+                canRide = true;
+                // ClimbObstacle(hit.point.y);
+                Debug.Log("올라갑니다");
+            }
+        }
+    }
+    
+    
+    // 장애물2 위로 올라가는 로직
+    private void ClimbObstacle(float obstacleTopY)
+    {
+        float newY = 5.0f;   // 장애물 높이에 맞춰 플레이어 위치 조정
+        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+    }
+
+    // 플레이어가 점프 중인지 체크 (예제 코드)
+    private bool IsJumping()
+    {
+        return !Physics.Raycast(transform.position, Vector3.down, 0.1f); // 바닥에 닿지 않았으면 점프 중
+    }
+    
     
     // 아이템 효과를 적용하는 메서드
     public void ApplyItemEffect(ItemType itemType, float duration, int value = 0)
