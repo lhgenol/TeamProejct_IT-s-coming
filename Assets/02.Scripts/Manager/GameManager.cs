@@ -1,17 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    [HideInInspector]
     public int Score { get; private set; }
+    [HideInInspector]
     public int Coin{ get; private set; }
-    public bool Started {get; private set; }
+    [HideInInspector]
+    public int[] Rank { get; private set; }
 
-    public int[] Rank {  get; private set; }
-
+    [HideInInspector]
+    public bool Started { get; private set; }
+    [HideInInspector]
+    public bool NewRank { get; private set; }
+    [HideInInspector]
+    public int RankIndex { get; private set; }
     private bool nowPlaying;
-
+ 
     private float lastUpdateTime = 0;
     protected override void Awake()
     {
@@ -24,8 +32,8 @@ public class GameManager : Singleton<GameManager>
         {
             if (Time.time - lastUpdateTime >= 0.1f)
             {
-                lastUpdateTime = Time.time;  // 마지막 업데이트 시간 갱신
-                Score += 1;  // 점수 1 증가
+                lastUpdateTime = Time.time;
+                Score += 1;
             }
         }
     }
@@ -51,6 +59,19 @@ public class GameManager : Singleton<GameManager>
     public void EndGame()
     {
         StopGame();
+        if (Score > Rank[9])
+        {
+            NewRank = true;
+            Rank[9] = Score;
+            Array.Sort(Rank);
+            Array.Reverse(Rank);
+            RankIndex = 1;
+            foreach (var rank in Rank)
+            {
+                if (rank == Score) break;
+                RankIndex++;
+            }
+        }
         UIManager.Instance.ChangeState(UIState.GameEnd);
     }
 

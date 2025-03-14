@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 
 public class InGameUI : BaseUI
 {
-    [Header("Score")]
+    [Header("score")]
     public TextMeshProUGUI score;
     public TextMeshProUGUI coin;
 
