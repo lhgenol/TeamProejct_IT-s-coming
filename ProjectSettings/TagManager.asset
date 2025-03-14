@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ExcludeUI
   - Chunk
+  - Obstacle
+  - Item
   layers:
   - Default
   - TransparentFX
