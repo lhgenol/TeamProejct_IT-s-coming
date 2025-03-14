@@ -14,7 +14,7 @@ public class Player : Entity
     public void Awake()
     {
         // 싱글톤 PlayerManager의 Player 속성에 현재 인스턴스를 설정
-        PlayerManager.Instance.Player = this;
+        PlayerManager.Instance.SetPlayer(this);
         
         // PlayerController 컴포넌트를 가져옴
         controller = GetComponent<PlayerController>();
@@ -50,16 +50,6 @@ public class Player : Entity
     public bool CanJump()
     {
         return currentJumps < maxJumps;
-    }
-    
-    // 점프를 실행하는 함수
-    public void Jump()
-    {
-        if (CanJump())
-        {
-            currentJumps++; // 점프 횟수 증가
-            PlayAnimation("Jump"); // 점프 애니메이션 실행
-        }
     }
 
     // 땅에 닿았을 때 점프 횟수 초기화
