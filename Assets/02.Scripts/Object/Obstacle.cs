@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log(name);
+        if(other.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
