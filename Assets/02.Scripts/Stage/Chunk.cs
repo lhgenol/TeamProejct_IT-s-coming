@@ -48,6 +48,12 @@ public class Chunk : MonoBehaviour
 
     private void OnDisable()
     {
+        if (MapManager.Instance == null)
+        {
+            Debug.LogWarning("[Chunk] OnDisable() - MapManager가 null이므로 CollectObjects()를 실행하지 않음");
+            return;
+        }
+
         CollectObjects();
     }
 
@@ -63,7 +69,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obj in obstaclePosition)
         {
-            MapManager.Instance.obstaclePool.GetFromPool(obj.Prefab, obj.spawnPosition, this.transform);
+            MapManager.Instance.obstaclePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
     }
 
@@ -71,7 +77,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obj in structurePosition)
         {
-            MapManager.Instance.structurePool.GetFromPool(obj.Prefab, obj.spawnPosition, this.transform);
+            MapManager.Instance.structurePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
     }
 
@@ -79,7 +85,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obj in itemPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(obj.Prefab, obj.spawnPosition, this.transform);
+            MapManager.Instance.itemPool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
     }
 
@@ -93,6 +99,12 @@ public class Chunk : MonoBehaviour
 
     public void CollectObjects()
     {
+        if (MapManager.Instance == null)
+        {
+            Debug.LogWarning("[Chunk] CollectObjects() - MapManager가 null이므로 실행하지 않음");
+            return;
+        }
+
         CollectObstacle();
         CollectStructure();
         CollectItem();
@@ -101,44 +113,100 @@ public class Chunk : MonoBehaviour
 
     void CollectObstacle()
     {
+        if (obstaclePosition == null) return;
+
         foreach (var obj in obstaclePosition)
         {
-            MapManager.Instance.obstaclePool.ReturnToPool(obj.Prefab.GetComponent<Obstacle>(), obj.Prefab);
+            if (obj == null) // null 체크
+            {
+                Debug.LogWarning($"obstaclePosition is null");
+                continue;
+            }
+
+            if (obj.spawnPosition == null) 
+            {
+                Debug.LogWarning($"{obj.Prefab.name} is null");
+                continue;
+            }
+
+            if (obj.spawnPosition.childCount > 0) //스폰된 오브젝트가 있는지 확인
+            {
+                GameObject spawnedObstacle = obj.spawnPosition.GetChild(0).gameObject;
+                MapManager.Instance.obstaclePool.ReturnToPool(spawnedObstacle.GetComponent<Obstacle>(), spawnedObstacle);
+            }
         }
     }
 
+
     void CollectStructure()
     {
+        if (structurePosition == null) return;
+
         foreach (var obj in structurePosition)
         {
-            MapManager.Instance.structurePool.ReturnToPool(obj.Prefab.GetComponent<Structure>(), obj.Prefab);
+            if (obj == null) // null 체크
+            {
+                Debug.LogWarning($"obstaclePosition is null");
+                continue;
+            }
+
+            if (obj.spawnPosition == null)
+            {
+                Debug.LogWarning($"{obj.Prefab.name} is null");
+                continue;
+            }
+
+            if (obj.spawnPosition.childCount > 0) // 🚨 실제 스폰된 오브젝트가 있는지 확인
+            {
+                GameObject spawnedStructure = obj.spawnPosition.GetChild(0).gameObject;
+                MapManager.Instance.structurePool.ReturnToPool(spawnedStructure.GetComponent<Structure>(), spawnedStructure);
+            }
         }
     }
 
     void CollectItem()
     {
+        if (itemPosition == null) return;
+
         foreach (var obj in itemPosition)
         {
-            MapManager.Instance.itemPool.ReturnToPool(obj.Prefab.GetComponent<Item>(), obj.Prefab);
+            if (obj == null) // null 체크
+            {
+                Debug.LogWarning($"itemPosition is null");
+                continue;
+            }
+
+            if (obj.spawnPosition == null)
+            {
+                Debug.LogWarning($"{obj.Prefab.name} is null");
+                continue;
+            }
+
+            if (obj.spawnPosition.childCount > 0) // 🚨 실제 스폰된 오브젝트가 있는지 확인
+            {
+                GameObject spawnedItem = obj.spawnPosition.GetChild(0).gameObject;
+                MapManager.Instance.structurePool.ReturnToPool(spawnedItem.GetComponent<Structure>(), spawnedItem);
+            }
         }
     }
 
     void CollectCoin()
     {
-        List<GameObject> collectedCoins = new List<GameObject>();
+        if (coinPosition == null) return;
 
         foreach (Transform coinTransform in coinPosition)
         {
-            if (coinTransform.childCount > 0) 
+            if (coinTransform == null)
             {
-                GameObject coinObject = coinTransform.GetChild(0).gameObject; 
-                collectedCoins.Add(coinObject);
+                Debug.LogWarning("[CollectCoin] coinPosition has null");
+                continue;
             }
-        }
 
-        foreach (GameObject coin in collectedCoins)
-        {
-            MapManager.Instance.itemPool.ReturnToPool(coin.GetComponent<Item>(), coin);
+            if (coinTransform.childCount > 0)
+            {
+                GameObject coinObject = coinTransform.GetChild(0).gameObject;
+                MapManager.Instance.itemPool.ReturnToPool(coinObject.GetComponent<Item>(), coinObject);
+            }
         }
     }
 

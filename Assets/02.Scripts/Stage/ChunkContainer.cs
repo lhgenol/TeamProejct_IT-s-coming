@@ -6,14 +6,11 @@ public class ChunkContainer : MonoBehaviour
 {
     public float moveSpeed = 5f; 
     public float speedMultiplier = 1f;
-    public float knockBackMultiplier = 0.2f;
-    public float knockBackDuration = 0.3f;
     [SerializeField]private bool isMoving = false;
 
     private void Start()
     {
         MapManager.Instance.chunkContainer = this;
-        MapManager.Instance.chunkSpawner.chunkContainer = this.transform;
     }
 
     void Update()
@@ -29,19 +26,19 @@ public class ChunkContainer : MonoBehaviour
         transform.Translate(-transform.forward * moveSpeed * speedMultiplier * Time.deltaTime);
     }
 
-    public void KnockBack()
+    public void KnockBack(float knockBackSpeedMultiplier, float knockBackDuration)
     {
         PauseMovement();
-        StartCoroutine(CoroutineKnockBack());
+        StartCoroutine(CoroutineKnockBack(knockBackSpeedMultiplier, knockBackDuration));
     }
 
-    IEnumerator CoroutineKnockBack()
+    IEnumerator CoroutineKnockBack(float knockBackSpeedMultiplier, float knockBackDuration)
     {
         float time = 0f;
 
         while (time < knockBackDuration)
         {
-            transform.Translate(transform.forward * moveSpeed * knockBackMultiplier);
+            transform.Translate(transform.forward * moveSpeed * knockBackSpeedMultiplier);
             time += Time.deltaTime;
             yield return null;
         }
@@ -77,9 +74,9 @@ public class ChunkContainer : MonoBehaviour
         isMoving = true;
     }
 
-    public void StopMovement()
+    /*public void StopMovement()
     {
         isMoving = false;
         moveSpeed = 0f;
-    }
+    }*/
 }
