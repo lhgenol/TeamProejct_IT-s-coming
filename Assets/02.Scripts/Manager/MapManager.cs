@@ -7,6 +7,7 @@ public class MapManager : Singleton<MapManager>
     public ChunkPool chunkPool;
     public ObstaclePool obstaclePool;
     public ItemPool itemPool;
+    public StructurePool structurePool;
     //public StructurePool structurePool;
 
     public ChunkContainer chunkContainer;
