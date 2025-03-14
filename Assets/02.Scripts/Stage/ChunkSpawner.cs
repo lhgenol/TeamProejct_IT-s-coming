@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -75,15 +76,15 @@ public class ChunkSpawner : MonoBehaviour
 
     void PlaceStartingTemplate()
     {
-        if (startingTemaplates == null)
+        if (startingTemaplates != null)
         {
-            List<int> ints = startingTemaplates[Random.Range(0, startingTemaplates.Length)].chunkIndexCombine;
+            List<int> ints = startingTemaplates[Random.Range(0, startingTemaplates.Length-1)].chunkIndexCombine;
             Vector3 origin = startingPosition.position;
 
             for (int i = 0; i < ints.Count; i++)
             {
-                MapManager.Instance.chunkPool.GetFromPool(themeData[0].chunkList[i], startingPosition, chunkContainer);
-                startingPosition.position += Vector3.back * chunkLenghth;
+                MapManager.Instance.chunkPool.GetFromPool(themeData[0].chunkList[ints[i]], startingPosition, chunkContainer);
+                startingPosition.position += Vector3.forward * chunkLenghth;
             }
 
             startingPosition.position = origin;
@@ -117,24 +118,24 @@ public class ChunkSpawner : MonoBehaviour
         return Random.Range(themeChangeMinThreshold, themeChangeMaxThreshold);
     }
 
-    ChunkTemplate RandomTemplet(int curTempletIndex)
+    ChunkTemplate RandomTemplet(int curTempIndex)
     {
         int i = 0;
         do
         {
-            curTempletIndex = RandomTempletIndex();
+            curTempIndex = RandomTempletIndex();
             i++;
         }
-        while (curTempletIndex != this.curTemplateIndex || i > 30);//지금 템플릿과 같다면 다시돌림 최대 30번
+        while (curTempIndex != this.curTemplateIndex || i > 30);//지금 템플릿과 같다면 다시돌림 최대 30번
 
-        this.curTemplateIndex = curTempletIndex;
+        this.curTemplateIndex = curTempIndex;
 
-        return themeData[curThemeIndex].Templates[curTempletIndex];
+        return (themeData[curThemeIndex].Templates != null) ? themeData[curThemeIndex].Templates[curTempIndex] : null;
     }
 
     int RandomTempletIndex()
     {
-        return Random.Range(0, themeData[curThemeIndex].Templates.Count);
+        return (themeData[curThemeIndex].Templates != null) ? Random.Range(0, themeData[curThemeIndex].Templates.Count) : 0;
     }
 
     ThemeDataSO RandomTheme(int curThemeIndex)
@@ -149,12 +150,12 @@ public class ChunkSpawner : MonoBehaviour
 
         this.curThemeIndex = curThemeIndex;
 
-        return themeData[curThemeIndex];
+        return (curThemeIndex != -1) ? themeData[curThemeIndex] : null;
     }
 
     int RandomThemeIndex()
     {
-        return Random.Range(0, themeData.Length);
+        return (themeData != null) ? Random.Range(0, themeData.Length) : -1;
     }
 
     public void Reset()
