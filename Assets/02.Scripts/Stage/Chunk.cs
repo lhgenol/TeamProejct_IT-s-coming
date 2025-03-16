@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 
@@ -143,7 +144,7 @@ public class Chunk : MonoBehaviour
                 continue;
             }
 
-            if (obj.spawnPosition.childCount > 1)
+             if (obj.spawnPosition.childCount > 1)
             {
                 DestroyAllChildren(obj.spawnPosition);
             }
@@ -152,6 +153,7 @@ public class Chunk : MonoBehaviour
                 GameObject spawnedObstacle = obj.spawnPosition.GetChild(0).gameObject;
                 MapManager.Instance.obstaclePool.ReturnToPool(spawnedObstacle.GetComponent<Obstacle>(), spawnedObstacle);
             }
+            
         }
     }
 

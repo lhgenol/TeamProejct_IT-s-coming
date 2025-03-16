@@ -42,10 +42,10 @@ public class UIManager : Singleton<UIManager>
         homeUI.Init(this);
         inGameUI = GetComponentInChildren<InGameUI>(true);
         inGameUI.Init(this);
-        pauseUI = GetComponentInChildren<PauseUI>(true);
-        pauseUI.Init(this);
         gameEndUI = GetComponentInChildren<GameEndUI>(true);
         gameEndUI.Init(this);
+        pauseUI = GetComponentInChildren<PauseUI>(true);
+        pauseUI.Init(this);
         leaderBoardUI = GetComponentInChildren<LeaderBoardUI>(true);
         leaderBoardUI.Init(this);
         optionUI = GetComponentInChildren<OptionUI>(true);
