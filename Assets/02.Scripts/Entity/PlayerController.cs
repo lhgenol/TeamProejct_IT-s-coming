@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
     private void UpdatePosition()
     {
         targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
+        Debug.Log($"총이동{(currentLane - 1) * laneDistance},currentLane{currentLane - 1}laneDistance{laneDistance}");
     }
     
     // 점프 입력 처리 (스페이스바)
