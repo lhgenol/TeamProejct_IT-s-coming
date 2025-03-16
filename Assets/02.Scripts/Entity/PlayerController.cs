@@ -25,13 +25,13 @@ public class PlayerController : MonoBehaviour
     private bool isInvincible = false;  // 무적 상태 여부
     private bool isDoubleScore = false; // 2배 점수 상태 여부
     private float defaultMoveSpeed;     // 기본 이동 속도를 저장하여 원래 상태로 복구할 때 사용
+    private bool canRide = false;       // 장애물을 탈 수 있는지 여부
+    private bool isOnObstacle = false;  // 현재 장애물 위에 있는지 여부
     
     private Animator _animator;         // 애니메이터 변수 추가
     
     [SerializeField] private float rayDistance = 3f;  // 레이 길이
-    [SerializeField] private LayerMask ObstacleLayer;   // 장애물 레이어 설정
-
-    private bool canRide = false;
+    [SerializeField] private LayerMask ObstacleLayer; // 장애물 레이어 설정
     
     private void Awake()
     {
@@ -43,15 +43,17 @@ public class PlayerController : MonoBehaviour
         targetPosition = transform.position;    // 시작 시 플레이어 위치를 기준으로 설정
         defaultMoveSpeed = moveSpeed;           // 기본 이동 속도 저장
         
-        _animator.SetBool("IsRun", true); // 게임 시작 시 바로 Run 애니메이션 실행
+        _animator.SetBool("IsRun", true);  // 게임 시작 시 바로 Run 애니메이션 실행
     }
 
     private void Update()
     {
-        if (!isJumping) // 점프 중이 아닐 때만 좌/우 이동 가능
+        // 점프 중일 때는 좌우 이동이 불가능하게 설정
+        if (!isJumping) // 점프 중이 아니라면
         {
+            // 플레이어 위치를 목표 위치로 서서히 이동시킴
             Vector3 pos = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            pos.y = transform.position.y; // y값 고정 (점프 시 위치 유지)
+            pos.y = transform.position.y; // y값은 고정 (점프 시 위치 유지)
             transform.position = pos;
         }
         else
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-   // 왼쪽 이동 입력 처리 (A 키)
+    // 왼쪽 이동 입력 처리 (A 키)
     public void OnMoveLeft(InputAction.CallbackContext context) // context는 현재 상태를 받아올 수가 있음
     {
         // 키가 눌린 순간 실행
@@ -100,43 +102,51 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // 목표 위치 갱신하는 함수 (현재 레인을 기반으로 X 좌표 설정)
+    // 위치를 갱신하는 함수 (현재 레인을 기반으로 X 좌표 설정)
     private void UpdatePosition()
     {
+        // 현재 위치(레인)의 X 좌표를 계산
         targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
     }
     
     // 점프 입력 처리 (스페이스바)
     public void OnJump(InputAction.CallbackContext context)
     {
+        // 점프 입력이 들어오고, 현재 바닥에 닿아 있으며, 점프 중이 아닐 때 실행
         if (context.phase == InputActionPhase.Started && isGrounded() && !isJumping)
         {
-            isJumping = true;
+            isJumping = true;   // 점프 상태 활성화
             _animator.SetBool("IsJump", true); // 점프 애니메이션 실행
 
-            float startY = transform.position.y;
-            float landingY = startY;
-            float targetY = startY + jumpHeight;
+            float startY = transform.position.y;    // 점프 시작 y 좌표
+            float landingY = startY;                // 착지 시 y 좌표
+            float targetY = startY + jumpHeight;    // 목표 점프 높이
 
             // DOTween을 이용한 부드러운 점프 (올라갔다가 내려오기)
             transform.DOMoveY(targetY, jumpDuration / 2)
-                .SetEase(Ease.OutQuad)
+                .SetEase(Ease.OutQuad)  // 점프 시 자연스러운 가속 곡선 적용 (올라가는 동작)
                 .OnUpdate(() =>
                 {
-                    CheckForObstacleTop();
+                    CheckForObstacleTop();  // 장애물 위에 올라갈 수 있는지 체크
+                    landingY = canRide ? 1.2f : startY; // 장애물 위로 올라갈 경우 착지 y값 변경
                     Debug.Log(canRide);
-                    landingY = canRide ? 1.2f : startY;
                 })
-                .OnComplete(() => 
+                .OnComplete(() =>   // 최고점 도달 후 실행
                 {
                     _animator.SetBool("IsJump", false); // 최고점 도달 시 점프 애니메이션 해제
                     _animator.SetBool("IsRun", true);   // 다시 달리기 애니메이션 실행
-
+                    
+                    // 착지 동작 실행 (내려오는 동작)
                     transform.DOMoveY(landingY, jumpDuration / 2)
-                        .SetEase(Ease.InQuad)
+                        .SetEase(Ease.InQuad)   // 내려올 때 부드러운 감속 곡선 적용
                         .OnComplete(() => 
                         {
-                            isJumping = false;
+                            isJumping = false;  // 점프 상태 해제
+                            if (canRide)
+                            {
+                                isOnObstacle = true; // 장애물 위에 있는 상태로 설정
+                                Debug.Log(isOnObstacle);
+                            }
                         });
                 });
         }
@@ -171,15 +181,11 @@ public class PlayerController : MonoBehaviour
         isSliding = false; // 슬라이드 상태 해제
     }
     
-    // // 플레이어가 바닥에 있는지 확인하는 함수
-    // private bool isGrounded()
-    // {
-    //     return Physics.Raycast(transform.position, Vector3.down, 0.1f, groundLayerMask);
-    // }
-    
     // 플레이어가 바닥에 있는지 확인하는 함수
     bool isGrounded()
     {
+        if (isOnObstacle) return true; // 장애물 위에 있으면 무조건 바닥 판정
+        
         Ray[] rays = new Ray[4]     // 네 개의 Ray를 사용하여 플레이어가 바닥에 닿았는지 확인
         {
             new Ray(transform.position + (transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down),
@@ -191,7 +197,8 @@ public class PlayerController : MonoBehaviour
         // 각 Raycast가 바닥에 닿았는지 검사
         for (int i = 0; i < rays.Length; i++)
         {
-            if(Physics.Raycast(rays[i], 0.1f, groundLayerMask))
+            if(Physics.Raycast(rays[i], 0.1f, groundLayerMask)
+               || Physics.Raycast(rays[i], 0.1f, ObstacleLayer))
             {
                 return true;    // 하나라도 닿으면 바닥에 있는 것으로 판단하고 true 반환
             }
@@ -199,9 +206,9 @@ public class PlayerController : MonoBehaviour
         return false;   // 모든 레이가 바닥에 닿지 않으면 false 반환
     }
     
-    
     private void OnTriggerEnter(Collider other)
     {
+        // 장애물과 충돌했을 때
         if (other.CompareTag("Obstacle1") || other.CompareTag("Obstacle2_Hit"))
         {
             PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
@@ -221,18 +228,10 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.CompareTag("Obstacle2_Top") && IsJumping())
             {
                 canRide = true;
-                // ClimbObstacle(hit.point.y);
+                isOnObstacle = true;    // 장애물 위에 올라갔다고 설정
                 Debug.Log("올라갑니다");
             }
         }
-    }
-    
-    
-    // 장애물2 위로 올라가는 로직
-    private void ClimbObstacle(float obstacleTopY)
-    {
-        float newY = 5.0f;   // 장애물 높이에 맞춰 플레이어 위치 조정
-        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 
     // 플레이어가 점프 중인지 체크 (예제 코드)
