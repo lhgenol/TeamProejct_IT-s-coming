@@ -49,16 +49,18 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         // 점프 중일 때는 좌우 이동이 불가능하게 설정
-        if (!isJumping) // 점프 중이 아니라면
+        if (!isJumping) // 점프 중이 아니라면 좌우 이동 가능
         {
             // 플레이어 위치를 목표 위치로 서서히 이동시킴
             Vector3 pos = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             pos.y = transform.position.y; // y값은 고정 (점프 시 위치 유지)
             transform.position = pos;
         }
-        else
+        
+        // 장애물 위에 있는 동안 계속 바닥 감지
+        if (isOnObstacle)
         {
-            // CheckForObstacleTop();
+            CheckGroundBelow();
         }
     }
     
@@ -100,6 +102,25 @@ public class PlayerController : MonoBehaviour
             currentLane++;
             UpdatePosition();   // 목표 위치 갱신
         }
+    }
+    
+    // 슬라이드 입력 처리
+    public void OnSlide(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started && !isSliding && isGrounded())
+        {
+            isSliding = true; // 슬라이드 시작
+            _animator.SetBool("IsSlide", true); // 슬라이드 애니메이션 실행
+        
+            Invoke(nameof(EndSlide), slideDuration); // 일정 시간 후 슬라이드 종료
+        }
+    }
+    
+    // 슬라이드 종료
+    private void EndSlide()
+    {
+        _animator.SetBool("IsSlide", false); // 다시 Run 애니메이션 실행
+        isSliding = false; // 슬라이드 상태 해제
     }
 
     // 위치를 갱신하는 함수 (현재 레인을 기반으로 X 좌표 설정)
@@ -150,35 +171,6 @@ public class PlayerController : MonoBehaviour
                         });
                 });
         }
-    }
-    
-    // 일정 시간 후 점프 애니메이션을 해제하는 코루틴 추가
-    private IEnumerator ResetJumpAnimation()
-    {
-        yield return new WaitForSeconds(0.01f); // 착지 후 약간의 딜레이 후 실행
-        if (isGrounded()) // 확실히 바닥에 있을 때만 해제
-        {
-            _animator.SetBool("IsJump", false);
-        }
-    }
-    
-    // 슬라이드 입력 처리
-    public void OnSlide(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Started && !isSliding && isGrounded())
-        {
-            isSliding = true; // 슬라이드 시작
-            _animator.SetBool("IsSlide", true); // 슬라이드 애니메이션 실행
-        
-            Invoke(nameof(EndSlide), slideDuration); // 일정 시간 후 슬라이드 종료
-        }
-    }
-    
-    // 슬라이드 종료
-    private void EndSlide()
-    {
-        _animator.SetBool("IsSlide", false); // 다시 Run 애니메이션 실행
-        isSliding = false; // 슬라이드 상태 해제
     }
     
     // 플레이어가 바닥에 있는지 확인하는 함수
@@ -233,8 +225,37 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
+    void CheckGroundBelow()
+    {
+        Vector3 rayStart = transform.position;
+        Vector3 rayDirection = Vector3.down;
+        
+        Debug.DrawRay(rayStart, rayDirection * 1f, Color.red, 0.1f);    // 단거리 장애물 체크
+        
+        // 아래로 레이 쏘기 (장애물 레이어 우선 체크)
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1f, ObstacleLayer))
+        {
+            return; // 아직 장애물이 남아있으면 그대로 유지
+        }
 
-    // 플레이어가 점프 중인지 체크 (예제 코드)
+        Vector3 groundRayStart = transform.position + Vector3.up * 0.1f;
+        Debug.DrawRay(groundRayStart, rayDirection * 10f, Color.blue, 0.1f);
+        
+        // 장애물이 없으면 바닥 감지 시도
+        if (Physics.Raycast(groundRayStart, Vector3.down, out RaycastHit groundHit, 10f, groundLayerMask))
+        {
+            isOnObstacle = false; // 장애물 위에서 내려옴
+            FallDownSmoothly(groundHit.point.y); // 감지된 바닥 높이로 착지
+        }
+    }
+    
+    void FallDownSmoothly(float targetY)
+    {
+        transform.DOMoveY(targetY, 0.5f).SetEase(Ease.InQuad); // 부드럽게 내려감
+    }
+
+    // 플레이어가 점프 중인지 체크
     private bool IsJumping()
     {
         return !Physics.Raycast(transform.position, Vector3.down, 0.1f); // 바닥에 닿지 않았으면 점프 중
