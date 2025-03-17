@@ -128,6 +128,7 @@ public class PlayerController : MonoBehaviour
     {
         // 현재 위치(레인)의 X 좌표를 계산
         targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
+        // currentLane에 따른 X 좌표를 업데이트하여 플레이어의 위치를 레인에 맞게 조정
     }
     
     // 점프 입력 처리 (스페이스바)
@@ -211,7 +212,7 @@ public class PlayerController : MonoBehaviour
     private void CheckForObstacleTop()
     {
         RaycastHit hit;
-        Debug.DrawRay(transform.position + new Vector3(0, 0, 0.7f), Vector3.down * rayDistance, Color.red);
+        Debug.DrawRay(transform.position + new Vector3(0, 0, 1f), Vector3.down * rayDistance, Color.red);
     
         // 플레이어 아래 방향으로 레이 발사
         if (Physics.Raycast(transform.position + new Vector3(0, 0, 0.7f), Vector3.down, out hit, rayDistance, ObstacleLayer))
@@ -226,6 +227,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    // 플레이어의 바닥과 장애물 상태를 확인하는 함수
     void CheckGroundBelow()
     {
         Vector3 rayStart = transform.position;
@@ -250,6 +252,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    // 플레이어를 부드럽게 떨어트려 주는 함수
     void FallDownSmoothly(float targetY)
     {
         transform.DOMoveY(targetY, 0.5f).SetEase(Ease.InQuad); // 부드럽게 내려감
