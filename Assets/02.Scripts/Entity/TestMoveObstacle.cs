@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestMoveObstacle : MonoBehaviour
 {
-    public float moveDistance = 5f; // 이동할 거리
+    public float moveDistance = 10f; // 이동할 거리
     public float moveSpeed = 2f;    // 이동 속도
 
     private Vector3 startPosition;  // 초기 위치

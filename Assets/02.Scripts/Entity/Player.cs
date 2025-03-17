@@ -27,10 +27,12 @@ public class Player : Entity
         base.Start();
         //PlayAnimation(""); // 기본적으로 달리는 애니메이션 실행
     }
+    
     private void OnEnable()
     {
         PlayAnimation("Run");
     }
+    
     private void Update()
     {
         
@@ -55,50 +57,14 @@ public class Player : Entity
         Debug.Log("Game Over");
     }
     
-    // 장애물과 충돌했을 때 체력 감소 및 위치가 올라가는 메서드
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.CompareTag("Obstacle1") || other.CompareTag("Obstacle2_Hit"))
-    //     {
-    //         ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
-    //     }
-    // }
-    //
-    // // 장애물2 위에 올라갈 조건 확인
-    // private void CheckForObstacleTop()
-    // {
-    //     RaycastHit hit;
-    //     Debug.DrawRay(transform.position, Vector3.down * rayDistance, Color.red);
-    //
-    //     // 플레이어 아래 방향으로 레이 발사
-    //     if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDistance, ObstacleLayer))
-    //     {
-    //         Debug.Log("레이 발사");
-    //         // 장애물2의 윗면(Top)에 닿았는지 확인
-    //         if (hit.collider.CompareTag("Obstacle2_Top") && IsJumping())
-    //         {
-    //             ClimbObstacle(hit.point.y);
-    //         }
-    //     }
-    // }
-    //
-    // // 장애물2 위로 올라가는 로직
-    // private void ClimbObstacle(float obstacleTopY)
-    // {
-    //     float newY = 5.0f;   // 장애물 높이에 맞춰 플레이어 위치 조정
-    //     transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-    // }
-    //
-    // // 플레이어가 점프 중인지 체크 (예제 코드)
-    // private bool IsJumping()
-    // {
-    //     return !Physics.Raycast(transform.position, Vector3.down, 0.1f); // 바닥에 닿지 않았으면 점프 중
-    // }
-    
     // 장애물과 충돌했을 때 체력을 깎고 추적자를 등장시키는 메서드
     public void ReduceHealth()
     {
-        animator.SetTrigger("Hit"); // Hit 애니메이션 실행
+        if (health > 0)
+        {
+            animator.SetTrigger("Hit"); // Hit 애니메이션 실행
+        }
+    
         health--; // 체력 감소
         
         if (health == 1)
@@ -127,6 +93,8 @@ public class Player : Entity
     {
         isCaught = true;
         GameManager.Instance.EndGame();
+        
+        animator.SetBool("isDie", true); // 애니메이터에서 Die 상태로 전이할 수 있도록 설정
         PlayAnimation("Die"); // 사망 애니메이션 실행
         Debug.Log("죽었다");
     }
