@@ -9,11 +9,7 @@ public class Trophy : Item
 
     protected override void ApplyEffect(GameObject player)
     {
-        if (!isTrophyActive)
-        {
-            isTrophyActive = true;
-            StartCoroutine(TrophyEffect());
-        }
+        ItemManager.Instance.StartExternalCoroutine(TrophyEffect());
     }
 
     private IEnumerator TrophyEffect()
@@ -21,6 +17,5 @@ public class Trophy : Item
         ItemManager.Instance.coinMultiplier = 2; // 코인 획득량 2배 증가
         yield return new WaitForSeconds(trophyDuration);
         ItemManager.Instance.coinMultiplier = 1; // 원래 값으로 복구
-        isTrophyActive = false;
     }
 }

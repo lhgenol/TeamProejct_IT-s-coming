@@ -27713,32 +27713,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   themeData: {fileID: 11400000, guid: 20230a804ab808c4c8375ed2ddfd5040, type: 2}
-  obstaclePosition: []
+  obstaclePosition:
+  - spawnPosition: {fileID: 0}
+    prefab: {fileID: 8982170698605825144, guid: 186907dccf7c1f64c96ab08465223a4d, type: 3}
   structurePosition:
-  - spawnPosition: {fileID: 8790226685860487858}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
   - spawnPosition: {fileID: 8846506515553827376}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 8c3b216cc2b6dc04496d15009bc913cd, type: 3}
   - spawnPosition: {fileID: 208048865329695783}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 8c3b216cc2b6dc04496d15009bc913cd, type: 3}
   - spawnPosition: {fileID: 3361883155991330634}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 66131d8838f42f545a30ce8606ce5365, type: 3}
   - spawnPosition: {fileID: 5033350675851925434}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 8b3eca4c34b9e1148a3c4d42a48dd5b8, type: 3}
   - spawnPosition: {fileID: 6866940762777182829}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 6a690a756dbd65141a09a3ad7fafacc4, type: 3}
   - spawnPosition: {fileID: 7614544001898643227}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
-  - spawnPosition: {fileID: 6211605402594522088}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 0c7bcaa85c9494849bc7a0a18b7f3324, type: 3}
   - spawnPosition: {fileID: 5894327396841283853}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 931fa17f0ab17504bbfc8903e54e6a16, type: 3}
   - spawnPosition: {fileID: 7677964463536853772}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 11c264ca1bac5d74d883c776435fa684, type: 3}
   - spawnPosition: {fileID: 9065851640729832748}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 35807f23e7899e541b60b2fb2bbb51ef, type: 3}
   - spawnPosition: {fileID: 3642219630709473451}
-    prefab: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+    prefab: {fileID: 100000, guid: 10ba41f0223c3104bad126af2b380971, type: 3}
   itemPosition: []
   coinPosition: []
   chunkTail: {fileID: 874342697391568697}
@@ -31462,7 +31460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4563226588370537525
 Transform:
   m_ObjectHideFlags: 0
@@ -35007,7 +35005,9 @@ MonoBehaviour:
   themeChangeMinThreshold: 3
   themeChangeMaxThreshold: 5
   startingTemaplates:
-  - chunkIndexCombine: 000000000000000000000000
+  - chunkIndexCombine: 000000000100000002000000
+  - chunkIndexCombine: 010000000000000001000000
+  - chunkIndexCombine: 000000000100000000000000
 --- !u!33 &7356280889424041420
 MeshFilter:
   m_ObjectHideFlags: 0
