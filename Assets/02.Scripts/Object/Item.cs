@@ -11,12 +11,12 @@ public class Item : MonoBehaviour
     {
         item = GetComponent<Item>();
     }
-    void Update()
+    protected void Update()
     {
         transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime); // 아이템 회전
     }
 
-    void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
