@@ -18,6 +18,7 @@ public class GameManagerWindow : EditorWindow
         }
 
         GameManager gm = GameManager.Instance;
+        PlayerManager pm = PlayerManager.Instance;
 
         GUILayout.Label("GameManager Controller", EditorStyles.boldLabel);
         gm.Coin = EditorGUILayout.IntField("Coin", gm.Coin);
@@ -25,6 +26,11 @@ public class GameManagerWindow : EditorWindow
         if (GUILayout.Button("코인 증가 (+1)"))
         {
             gm.GetCoin();
+        }
+
+        if (GUILayout.Button("플레이어 체력증가"))
+        {
+            pm.Player.health = 100;
         }
     }
 }
