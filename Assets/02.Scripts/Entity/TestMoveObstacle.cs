@@ -9,6 +9,9 @@ public class TestMoveObstacle : MonoBehaviour
 
     private Vector3 startPosition;  // 초기 위치
 
+    public BoxCollider box1;
+    public BoxCollider box2;
+
     void Start()
     {
         // 초기 위치 저장

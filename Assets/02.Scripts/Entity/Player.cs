@@ -9,9 +9,6 @@ public class Player : Entity
     public int health;          // 플레이어 체력 (2번 부딪히면 게임 오버)
     public int score;           // 플레이어 점수
     private bool isCaught = false; // 플레이어가 잡혔는지 여부
-    
-    // [SerializeField] private float rayDistance = 3f;  // 레이 길이
-    // [SerializeField] private LayerMask ObstacleLayer;   // 장애물 레이어 설정
 
     public void Awake()
     {
@@ -24,16 +21,10 @@ public class Player : Entity
         // Animator 컴포넌트 가져오기
         animator = GetComponentInChildren<Animator>();
     }
-
-    protected override void Start()
-    {
-        base.Start();
-        //PlayAnimation(""); // 기본적으로 달리는 애니메이션 실행
-    }
     
     private void OnEnable()
     {
-        PlayAnimation("Run");
+        animator.SetBool("IsRun", true); 
         animator.SetBool("IsDie", false); // 죽은 상태 초기화
     }
     
@@ -46,7 +37,8 @@ public class Player : Entity
     private IEnumerator ResetToRunAnimation()
     {
         yield return new WaitForSeconds(0.5f); // Hit 애니메이션 지속 시간만큼 대기
-        PlayAnimation("Run");
+        //PlayAnimation("Run");
+        animator.SetBool("IsRun", true); 
     }
 
     // 점수를 추가하는 함수
@@ -59,6 +51,16 @@ public class Player : Entity
     private void Die()
     {
         Debug.Log("Game Over");
+        
+        animator.SetBool("IsDie", true); 
+        
+        // 플레이어 이동 & 점프 막기
+        if (controller != null)
+        {
+            controller.OnDie();
+        }
+        
+        GameManager.Instance.EndGame(); // 게임 종료
     }
     
     // 장애물과 충돌했을 때 체력을 깎고 추적자를 등장시키는 메서드
@@ -96,9 +98,6 @@ public class Player : Entity
     private void GetCaught()
     {
         isCaught = true;
-        GameManager.Instance.EndGame();
-        
-        animator.SetBool("IsDie", true); // 애니메이터에서 Die 상태로 바뀔 수 있도록 설정
-        Debug.Log("죽었다");
+        Die();
     }
 }

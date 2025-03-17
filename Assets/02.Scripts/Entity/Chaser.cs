@@ -34,7 +34,7 @@ public class Chaser : Entity
         isChasing = true;           // 추적 상태를 true로 설정
         gameObject.SetActive(true); // 추적자 활성화
         transform.position = new Vector3(player.position.x, transform.position.y, transform.position.z); // X축 위치를 플레이어와 맞추기
-        PlayAnimation("Run"); // 추적자가 뛰는 애니메이션 실행
+        animator.SetBool("IsRun", true);    // 추적자가 뛰는 애니메이션 실행
     }
     
     private void Update()
@@ -62,7 +62,7 @@ public class Chaser : Entity
     public void CatchPlayer()
     {
         isChasing = false;      // 추적 상태를 false로 설정해 추적 중지
-        PlayAnimation("Catch"); // 추작자가 플레이어를 잡는 애니메이션 실행
+        animator.SetBool("Catch", true);    // 추작자가 플레이어를 잡는 애니메이션 실행
         Debug.Log("게임 오버! 추적자에게 잡혔습니다.");
     }
 }
