@@ -7,7 +7,7 @@ public class Item : MonoBehaviour
     public float rotationSpeed = 100f; // 회전 속도 조절
     Item item;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         item = GetComponent<Item>();
     }
