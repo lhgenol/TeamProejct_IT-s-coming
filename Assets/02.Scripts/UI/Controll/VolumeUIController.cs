@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VolumeUIController : MonoBehaviour
+public class HUDUIController : MonoBehaviour
 {
     public GameObject volumeUI;
     public float duration = 0.5f;
