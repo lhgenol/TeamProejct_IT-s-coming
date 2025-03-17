@@ -62,6 +62,8 @@ public class GameManager : Singleton<GameManager>
     {
         StopGame();
         ManagementLeaderBorad();
+        MapManager.Instance.chunkContainer.PauseMovement();
+        MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkSpawner.Reset();
         UIManager.Instance.ChangeState(UIState.GameEnd);
     }
