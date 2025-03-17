@@ -12,7 +12,7 @@ public enum UIState
     GameEnd,
     Pause,
     LeaderBoard,
-    Option,
+    Achivement,
     Customizing,
 
 }
@@ -24,7 +24,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] InGameUI inGameUI;
     [SerializeField] GameEndUI gameEndUI;
     [SerializeField] LeaderBoardUI leaderBoardUI;
-    [SerializeField] OptionUI optionUI;
+    [SerializeField] AchievementUI AchievementUI;
     [SerializeField] CustomizingUI customizingUI;
     [SerializeField] PauseUI pauseUI;
 
@@ -48,8 +48,8 @@ public class UIManager : Singleton<UIManager>
         pauseUI.Init(this);
         leaderBoardUI = GetComponentInChildren<LeaderBoardUI>(true);
         leaderBoardUI.Init(this);
-        optionUI = GetComponentInChildren<OptionUI>(true);
-        optionUI.Init(this);
+        AchievementUI = GetComponentInChildren<AchievementUI>(true);
+        AchievementUI.Init(this);
         customizingUI = GetComponentInChildren<CustomizingUI>(true);
         customizingUI.Init(this);
 
@@ -74,7 +74,7 @@ public class UIManager : Singleton<UIManager>
         inGameUI.SetActive(currentState);
         gameEndUI.SetActive(currentState);
         leaderBoardUI.SetActive(currentState);
-        optionUI.SetActive(currentState);
+        AchievementUI.SetActive(currentState);
         customizingUI.SetActive(currentState);
         pauseUI.SetActive(currentState);
     }
