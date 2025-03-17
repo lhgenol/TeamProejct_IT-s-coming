@@ -2521,17 +2521,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  jumpHeight: 2.2
-  jumpDuration: 0.7
+  jumpForce: 0
   laneDistance: 3.5
   slideDuration: 0.1
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 503
-  rayDistance: 3
-  ObstacleLayer:
-    serializedVersion: 2
-    m_Bits: 256
+  nomalColliderSize: {x: 0, y: 0, z: 0}
+  slideColliderSize: {x: 0, y: 0, z: 0}
+  dieColliderSize: {x: 0, y: 0, z: 0}
 --- !u!114 &369101359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13514,7 +13512,7 @@ GameObject:
   - component: {fileID: 1827001018}
   - component: {fileID: 1827001017}
   - component: {fileID: 1827001021}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
