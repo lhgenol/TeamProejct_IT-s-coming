@@ -19,7 +19,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector]
     public int RankIndex { get; private set; }
     public BackgroundController backgroundController;
-    private bool nowPlaying;
+    public bool NowPlaying { get; private set; }
  
     private float lastUpdateTime = 0;
     protected override void Awake()
@@ -29,7 +29,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void Update()
     {
-        if (nowPlaying)
+        if (NowPlaying)
         {
             if (Time.time - lastUpdateTime >= 0.1f)
             {
@@ -41,9 +41,10 @@ public class GameManager : Singleton<GameManager>
     public void StartGame()
     {
         Started = true;
-        nowPlaying = true;
+        NowPlaying = true;
         Score = 0;
         Coin = 0;
+        PlayerManager.Instance.Player.health = 2;
         PlayerManager.Instance.controller.Init();
         MapManager.Instance.chunkContainer.ResumeMovement();
     }
@@ -56,7 +57,7 @@ public class GameManager : Singleton<GameManager>
     public void StopGame()
     {
         Started = false;
-        nowPlaying = false;
+        NowPlaying = false;
         MapManager.Instance.chunkContainer.PauseMovement();
     }
 
@@ -64,22 +65,19 @@ public class GameManager : Singleton<GameManager>
     {
         StopGame();
         ManagementLeaderBorad();
-        MapManager.Instance.chunkContainer.PauseMovement();
-        MapManager.Instance.ResetChunks();
-        MapManager.Instance.chunkSpawner.Reset();
         UIManager.Instance.ChangeState(UIState.GameEnd);
     }
 
     public void PauseGame()
     {
-        nowPlaying = false;
+        NowPlaying = false;
         MapManager.Instance.chunkContainer.PauseMovement();
         //일시정지
     }
 
     public void Resume()
     {
-        nowPlaying = true;
+        NowPlaying = true;
         MapManager.Instance.chunkContainer.ResumeMovement();
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
 
 // 플레이어의 좌우 이동, 점프, 슬라이드, 아이템 효과 등을 관리하는 클래스
 public class PlayerController : MonoBehaviour
@@ -32,7 +33,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 slideColliderSize;
     [SerializeField]
     private Vector3 dieColliderSize;
-    
+
+    public float moveDuration = 1f; 
+    private float timeElapsed = 0f;
+
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();   // 애니메이터 컴포넌트 가져오기
@@ -42,7 +46,13 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        Init();
+       Init();
+    }
+    private void FixedUpdate()
+    {
+        // 목표 위치로 Rigidbody를 움직이기
+        _rigidbody.MovePosition(Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
+        
     }
 
     private void Update()
@@ -56,14 +66,8 @@ public class PlayerController : MonoBehaviour
                 _animator.SetBool("IsJump", false);
             }
         }
-        
-        // 목표 위치로 부드럽게 이동 (x, z 좌표만 보간)
-        Vector3 pos = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        pos.y = transform.position.y;   // y 값은 유지하여 점프 시 덮어씌워지는 문제 방지
-        
-        transform.position = pos;   // 새로운 위치 적용
     }
-    
+
     // 왼쪽 이동 입력 처리 (A 키)
     public void OnMoveLeft(InputAction.CallbackContext context) // context는 현재 상태를 받아올 수가 있음
     {
@@ -125,7 +129,7 @@ public class PlayerController : MonoBehaviour
     private void UpdatePosition()
     {
         // 현재 위치(레인)의 X 좌표를 계산
-        targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
+        targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y,transform.position.z);
         // currentLane에 따른 X 좌표를 업데이트하여 플레이어의 위치를 레인에 맞게 조정
     }
     
@@ -146,9 +150,12 @@ public class PlayerController : MonoBehaviour
     public void Init()
     {
         enabled = true;
-        this.transform.position = Vector3.zero;
+        transform.position = Vector3.zero;
         currentLane = 1;
         targetPosition = transform.position;    // 시작 시 플레이어 위치를 기준으로 설정 
+        _collider.size = nomalColliderSize;
+        _collider.center= Vector3.zero + new Vector3(0f, 0.5f, 0f);
+        _animator.SetBool("IsDie", false);
         _animator.SetBool("IsRun", true);  // 게임 시작 시 바로 Run 애니메이션 실행
 
     }
@@ -177,18 +184,42 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 장애물과 충돌했을 때
-        if (other.gameObject.CompareTag("Obstacle1") || other.gameObject.CompareTag("Obstacle2_Hit"))
-        {
-            PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
+        if (!isInvincible)
+        {// 장애물과 충돌했을 때
+            if (other.gameObject.CompareTag("Obstacle1") || other.gameObject.CompareTag("Obstacle2_Hit"))
+            {
+                Debug.Log("넉백");
+                PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
+                MapManager.Instance.KnockBack(0.01f, 0.1f);
+
+                isInvincible = true;
+                Invoke("Invincivbleoff", 1f);
+
+            }
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-
+        if (!isInvincible)
+        {
+            if (collision.gameObject.CompareTag("Obstacle1") || collision.gameObject.CompareTag("Obstacle2_Hit"))
+            {
+                Debug.Log("넉백");
+                PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
+                MapManager.Instance.KnockBack(0.01f, 0.1f);
+                isInvincible = true;
+                Invoke("Invincivbleoff", 1f);
+                Debug.Log("나는 무적이다");
+            }
+        }
     }
-    
+    public void Invincivbleoff()
+    {
+        Debug.Log("무적풀림");
+        isInvincible = false;
+    }
+
     // 아이템 효과를 적용하는 메서드
     public void ApplyItemEffect(ItemType itemType, float duration, int value = 0)
     {

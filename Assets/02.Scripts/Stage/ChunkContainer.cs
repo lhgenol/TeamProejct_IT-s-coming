@@ -30,7 +30,10 @@ public class ChunkContainer : MonoBehaviour
     public void KnockBack(float knockBackSpeedMultiplier, float knockBackDuration)
     {
         PauseMovement();
-        StartCoroutine(CoroutineKnockBack(knockBackSpeedMultiplier, knockBackDuration));
+        if (GameManager.Instance.NowPlaying)
+        {
+            StartCoroutine(CoroutineKnockBack(knockBackSpeedMultiplier, knockBackDuration));
+        }
     }
 
     IEnumerator CoroutineKnockBack(float knockBackSpeedMultiplier, float knockBackDuration)
