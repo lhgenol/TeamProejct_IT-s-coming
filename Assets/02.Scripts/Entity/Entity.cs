@@ -12,13 +12,4 @@ public class Entity : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>(); // 애니메이터 가져오기
     }
-
-    // 애니메이션 재생 함수
-    protected void PlayAnimation(string animationName)
-    {
-        if (animator != null)
-        {
-            animator.Play(animationName);
-        }
-    }
 }
