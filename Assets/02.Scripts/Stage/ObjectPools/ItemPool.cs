@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ItemPool : ObjectPool<Item>
 {
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         MapManager.Instance.itemPool = this;
 
         if (MapManager.Instance.themeData != null)

@@ -41,6 +41,7 @@ public class Chunk : MonoBehaviour
     [SerializeField] private StuctureSpawnData[] structurePosition;
     [SerializeField] private ItemSpawnData[] itemPosition;
     [SerializeField] private Transform[] coinPosition;
+    public Transform chunkTail;
 
     private void OnEnable()
     {

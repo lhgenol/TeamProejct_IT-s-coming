@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ObstaclePool : ObjectPool<Obstacle>
 {
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         MapManager.Instance.obstaclePool = this;
 
         if (MapManager.Instance.themeData != null)

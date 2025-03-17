@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -8,6 +9,19 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
     public GameObject[] prefabs;
     public int initialSize = 3;
 
+    private static ObjectPool<T> instance;
+
+    protected virtual void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); // 중복된 오브젝트 제거
+        }
+    }
     protected virtual void Start()
     {
         InitObjectPool();
@@ -34,7 +48,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    public void GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
+    public GameObject GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
     {
         GameObject obj;
         if (poolDictionary.ContainsKey(prefab.name) && poolDictionary[prefab.name].Count > 0)
@@ -51,6 +65,8 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         if(newParent != null) obj.transform.SetParent(newParent); 
         obj.transform.position = spawnPosition.position;
         obj.gameObject.SetActive(true);
+
+        return obj;
     }
 
     /*public GameObject GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)

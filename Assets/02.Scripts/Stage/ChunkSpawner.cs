@@ -20,12 +20,13 @@ public class ChunkSpawner : MonoBehaviour
     [Header("StartingTemplates")]
     public ChunkTemplate[] startingTemaplates;
 
-    private ThemeDataSO curTheme;
+    ThemeDataSO curTheme;
     private int curThemeIndex = 0;
     ChunkTemplate curTemplate;
     private int curTemplateIndex;
-    Queue<GameObject> chunkQueue = new Queue<GameObject>();
 
+    Queue<GameObject> chunkQueue = new Queue<GameObject>();
+    GameObject lastChunk;
     private int leftTemplate;
 
     private void Awake()
@@ -54,12 +55,17 @@ public class ChunkSpawner : MonoBehaviour
 
     void SpawnChunk(GameObject chunk)
     {
-        MapManager.Instance.chunkPool.GetFromPool(chunk, spawnPosition, chunkContainer);
+        lastChunk = MapManager.Instance.chunkPool.GetFromPool(chunk, spawnPosition, chunkContainer);
+        spawnPosition = lastChunk.GetComponent<Chunk>().chunkTail;
     }
 
     void Init()
     {
-        if (spawnPosition == null) spawnPosition = this.transform;
+        if (spawnPosition == null)
+        {
+            spawnPosition = new GameObject("SpawnPosition").transform;
+            spawnPosition.SetParent(this.transform);
+        }
 
         leftTemplate = RandomThemeChangeThreshold();
         curThemeIndex = 0;
@@ -68,11 +74,12 @@ public class ChunkSpawner : MonoBehaviour
 
         if (startingPosition == null)
         {
-            GameObject tempObj = new GameObject("StartingPosition");
-            tempObj.transform.position = new Vector3(0, 0, -20);
-            startingPosition = tempObj.transform;
+            startingPosition = new GameObject("StartingPosition").transform;
+            startingPosition.SetParent(this.transform);
+            startingPosition.position = new Vector3(0, 0, -20);
         }
 
+        spawnPosition.position = startingPosition.position;
         PlaceStartingTemplate();
         SpawnTemplet();
     }
@@ -82,16 +89,13 @@ public class ChunkSpawner : MonoBehaviour
     {
         if (startingTemaplates != null)
         {
-            List<int> ints = startingTemaplates[Random.Range(0, startingTemaplates.Length-1)].chunkIndexCombine;
-            Vector3 origin = startingPosition.position;
+            List<int> ints = startingTemaplates[Random.Range(0, startingTemaplates.Length)].chunkIndexCombine;
 
-            for (int i = 0; i < ints.Count; i++)
+            foreach(int i in ints)
             {
-                MapManager.Instance.chunkPool.GetFromPool(themeData[0].chunkList[ints[i]], startingPosition, chunkContainer);
-                startingPosition.position += Vector3.forward * chunkLenghth;
+                GameObject spawningChunk = themeData[0].chunkList[i];
+                SpawnChunk(spawningChunk);
             }
-
-            startingPosition.position = origin;
         }
     }
 
