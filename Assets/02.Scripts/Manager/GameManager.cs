@@ -44,6 +44,7 @@ public class GameManager : Singleton<GameManager>
         nowPlaying = true;
         Score = 0;
         Coin = 0;
+        PlayerManager.Instance.controller.Init();
         MapManager.Instance.chunkContainer.ResumeMovement();
     }
     public void GetCoin()
