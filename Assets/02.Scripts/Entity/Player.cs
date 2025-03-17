@@ -20,6 +20,9 @@ public class Player : Entity
         
         // PlayerController 컴포넌트를 가져옴
         controller = GetComponent<PlayerController>();
+        
+        // Animator 컴포넌트 가져오기
+        animator = GetComponentInChildren<Animator>();
     }
 
     protected override void Start()
@@ -31,6 +34,7 @@ public class Player : Entity
     private void OnEnable()
     {
         PlayAnimation("Run");
+        animator.SetBool("IsDie", false); // 죽은 상태 초기화
     }
     
     private void Update()
@@ -94,8 +98,7 @@ public class Player : Entity
         isCaught = true;
         GameManager.Instance.EndGame();
         
-        animator.SetBool("isDie", true); // 애니메이터에서 Die 상태로 전이할 수 있도록 설정
-        PlayAnimation("Die"); // 사망 애니메이션 실행
+        animator.SetBool("IsDie", true); // 애니메이터에서 Die 상태로 바뀔 수 있도록 설정
         Debug.Log("죽었다");
     }
 }

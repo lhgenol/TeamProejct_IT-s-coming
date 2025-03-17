@@ -151,7 +151,6 @@ public class PlayerController : MonoBehaviour
                 {
                     CheckForObstacleTop();  // 장애물 위에 올라갈 수 있는지 체크
                     landingY = canRide ? 1.2f : startY; // 장애물 위로 올라갈 경우 착지 y값 변경
-                    Debug.Log(canRide);
                 })
                 .OnComplete(() =>   // 최고점 도달 후 실행
                 {
@@ -167,7 +166,6 @@ public class PlayerController : MonoBehaviour
                             if (canRide)
                             {
                                 isOnObstacle = true; // 장애물 위에 있는 상태로 설정
-                                Debug.Log(isOnObstacle);
                             }
                         });
                 });
@@ -222,7 +220,6 @@ public class PlayerController : MonoBehaviour
             {
                 canRide = true;
                 isOnObstacle = true;    // 장애물 위에 올라갔다고 설정
-                Debug.Log("올라갑니다");
             }
         }
     }
@@ -255,7 +252,9 @@ public class PlayerController : MonoBehaviour
     // 플레이어를 부드럽게 떨어트려 주는 함수
     void FallDownSmoothly(float targetY)
     {
+        DOTween.Kill(gameObject);
         transform.DOMoveY(targetY, 0.5f).SetEase(Ease.InQuad); // 부드럽게 내려감
+        Debug.Log("FallDown");
     }
 
     // 플레이어가 점프 중인지 체크
