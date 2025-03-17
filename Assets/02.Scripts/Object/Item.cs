@@ -1,14 +1,19 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Item : MonoBehaviour
 {
     public enum ItemType { Coin, Magnet, JumpBoost, Star , Trophy }
     public ItemType itemType;
-    public float rotationSpeed = 100f; // È¸Àü ¼Óµµ Á¶Àı
+    public float rotationSpeed = 100f; // íšŒì „ ì†ë„ ì¡°ì ˆ
+    Item item;
 
+    protected void Awake()
+    {
+        item = GetComponent<Item>();
+    }
     void Update()
     {
-        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime); // ¾ÆÀÌÅÛ È¸Àü
+        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime); // ì•„ì´í…œ íšŒì „
     }
 
     void OnTriggerEnter(Collider other)
@@ -16,29 +21,28 @@ public class Item : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             ApplyEffect(other.gameObject);
-            Destroy(gameObject); // ¾ÆÀÌÅÛÀ» ¸ÔÀ¸¸é Á¦°Å
+            MapManager.Instance.itemPool.ReturnToPool(item, gameObject); // ì•„ì´í…œì„ ë¨¹ìœ¼ë©´ ì œê±°
         }
     }
 
-    void ApplyEffect(GameObject player)
-    {
-        switch (itemType)
+    protected virtual void ApplyEffect(GameObject player) { }
+        /*switch (itemType)
         {
             case ItemType.Coin:
-                // GameManager.Instance.AddScore(10); // Á¡¼ö Áõ°¡
+                // GameManager.Instance.AddScore(10); // ì ìˆ˜ ì¦ê°€
                 break;
             case ItemType.Magnet:
-                // player.GetComponent<PlayerController>().ActivateMagnet(); // ÀÚ¼® È¿°ú
+                // player.GetComponent<PlayerController>().ActivateMagnet(); // ìì„ íš¨ê³¼
                 break;
             case ItemType.JumpBoost:
-                // player.GetComponent<PlayerController>().ActivateJumpBoost(); // Á¡ÇÁ ºÎ½ºÅÍ
+                // player.GetComponent<PlayerController>().ActivateJumpBoost(); // ì í”„ ë¶€ìŠ¤í„°
                 break;
             case ItemType.Star:
-                // player.GetComponent<PlayerController>().ActivateStar(); //¹«Àû
+                // player.GetComponent<PlayerController>().ActivateStar(); //ë¬´ì 
                 break;
             case ItemType.Trophy:
-                // GameManager.Instance.ActivateScore(); // Á¡¼ö µÎ ¹è
+                // GameManager.Instance.ActivateScore(); // ì ìˆ˜ ë‘ ë°°
                 break;
-        }
-    }
+        }*/
+    
 }
