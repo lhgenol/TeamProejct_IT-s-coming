@@ -85,7 +85,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obj in obstaclePosition)
         {
-            MapManager.Instance.obstaclePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
+            if(obj != null && obj.spawnPosition != null) MapManager.Instance.obstaclePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
     }
 
@@ -93,7 +93,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obj in structurePosition)
         {
-            MapManager.Instance.structurePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
+            if (obj != null && obj.spawnPosition != null) MapManager.Instance.structurePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
     }
 
@@ -101,7 +101,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obj in itemPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
+            if (obj != null && obj.spawnPosition != null) MapManager.Instance.itemPool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
     }
 
@@ -109,7 +109,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obj in coinPosition)
         {
-            MapManager.Instance.itemPool.GetFromPool(themeData.itemList[0], obj, obj);// coin<Itme> [0]에 넣어줘야한다.
+            if (obj != null) MapManager.Instance.itemPool.GetFromPool(themeData.itemList[0], obj, obj);// coin<Itme> [0]에 넣어줘야한다.
         }
     }
 
