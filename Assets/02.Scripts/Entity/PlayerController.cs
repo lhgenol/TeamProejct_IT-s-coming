@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
 
 // 플레이어의 좌우 이동, 점프, 슬라이드, 아이템 효과 등을 관리하는 클래스
 public class PlayerController : MonoBehaviour
@@ -20,7 +21,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 targetPosition;     // 목표 위치 저장 (좌/중/우 이동 시 활용)
     
     private bool isInvincible = false;  // 무적 상태 여부
-    private bool isDoubleScore = false; // 2배 점수 상태 여부
     private float defaultMoveSpeed;     // 기본 이동 속도를 저장하여 원래 상태로 복구할 때 사용
     
     private Animator _animator;         // 애니메이터 변수 추가
@@ -33,7 +33,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 slideColliderSize;
     [SerializeField]
     private Vector3 dieColliderSize;
-    
+
+    public float moveDuration = 1f; 
+    private float timeElapsed = 0f;
+
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();   // 애니메이터 컴포넌트 가져오기
@@ -43,10 +46,13 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        targetPosition = transform.position;    // 시작 시 플레이어 위치를 기준으로 설정
-        defaultMoveSpeed = moveSpeed;           // 기본 이동 속도 저장
+       Init();
+    }
+    private void FixedUpdate()
+    {
+        // 목표 위치로 Rigidbody를 움직이기
+        _rigidbody.MovePosition(Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
         
-        _animator.SetBool("IsRun", true);  // 게임 시작 시 바로 Run 애니메이션 실행
     }
 
     private void Update()
@@ -60,21 +66,19 @@ public class PlayerController : MonoBehaviour
                 _animator.SetBool("IsJump", false);
             }
         }
-        
-        // 목표 위치로 부드럽게 이동 (x, z 좌표만 보간)
-        Vector3 pos = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        pos.y = transform.position.y;   // y 값은 유지하여 점프 시 덮어씌워지는 문제 방지
-        
-        transform.position = pos;   // 새로운 위치 적용
     }
-    
+
     // 왼쪽 이동 입력 처리 (A 키)
     public void OnMoveLeft(InputAction.CallbackContext context) // context는 현재 상태를 받아올 수가 있음
     {
         // 키가 눌린 순간 실행
         if (context.phase == InputActionPhase.Started)
         {
-            MoveLeft();
+            if (currentLane > 0)    // 왼쪽 이동 가능 여부 체크
+            {
+                currentLane--;
+                UpdatePosition();   // 목표 위치 갱신
+            }
         }
     }
     
@@ -84,27 +88,11 @@ public class PlayerController : MonoBehaviour
         // 키가 눌린 순간 실행
         if (context.phase == InputActionPhase.Started)
         {
-            MoveRight();
-        }
-    }
-    
-    // 왼쪽으로 이동하는 함수
-    private void MoveLeft()
-    {
-        if (currentLane > 0)    // 왼쪽 이동 가능 여부 체크
-        {
-            currentLane--;
-            UpdatePosition();   // 목표 위치 갱신
-        }
-    }
-
-    // 오른쪽으로 이동하는 함수
-    private void MoveRight()
-    {
-        if (currentLane < 2)    // 오른쪽 이동 가능 여부 체크
-        {
-            currentLane++;
-            UpdatePosition();   // 목표 위치 갱신
+            if (currentLane < 2)    // 오른쪽 이동 가능 여부 체크
+            {
+                currentLane++;
+                UpdatePosition();   // 목표 위치 갱신
+            }
         }
     }
     
@@ -141,7 +129,7 @@ public class PlayerController : MonoBehaviour
     private void UpdatePosition()
     {
         // 현재 위치(레인)의 X 좌표를 계산
-        targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
+        targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y,transform.position.z);
         // currentLane에 따른 X 좌표를 업데이트하여 플레이어의 위치를 레인에 맞게 조정
     }
     
@@ -158,7 +146,20 @@ public class PlayerController : MonoBehaviour
             jumpTime = Time.time;   // 점프 시간 기록
         }
     }
-    
+
+    public void Init()
+    {
+        enabled = true;
+        transform.position = Vector3.zero;
+        currentLane = 1;
+        targetPosition = transform.position;    // 시작 시 플레이어 위치를 기준으로 설정 
+        _collider.size = nomalColliderSize;
+        _collider.center= Vector3.zero + new Vector3(0f, 0.5f, 0f);
+        _animator.SetBool("IsDie", false);
+        _animator.SetBool("IsRun", true);  // 게임 시작 시 바로 Run 애니메이션 실행
+
+    }
+
     // 플레이어가 바닥에 있는지 확인하는 함수
     bool isGrounded()
     {
@@ -183,45 +184,55 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 장애물과 충돌했을 때
-        if (other.gameObject.CompareTag("Obstacle1") || other.gameObject.CompareTag("Obstacle2_Hit"))
-        {
-            PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
+        if (!isInvincible)
+        {// 장애물과 충돌했을 때
+            if (other.gameObject.CompareTag("Obstacle1") || other.gameObject.CompareTag("Obstacle2_Hit"))
+            {
+                Debug.Log("넉백");
+                PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
+                MapManager.Instance.KnockBack(0.01f, 0.1f);
+
+                isInvincible = true;
+                Invoke("Invincivbleoff", 1f);
+
+            }
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-
+        if (!isInvincible)
+        {
+            if (collision.gameObject.CompareTag("Obstacle1") || collision.gameObject.CompareTag("Obstacle2_Hit"))
+            {
+                Debug.Log("넉백");
+                PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
+                MapManager.Instance.KnockBack(0.01f, 0.1f);
+                isInvincible = true;
+                Invoke("Invincivbleoff", 1f);
+                Debug.Log("나는 무적이다");
+            }
+        }
     }
-    
+    public void Invincivbleoff()
+    {
+        Debug.Log("무적풀림");
+        isInvincible = false;
+    }
+
     // 아이템 효과를 적용하는 메서드
     public void ApplyItemEffect(ItemType itemType, float duration, int value = 0)
     {
         switch (itemType)
         {
-            case ItemType.Coin:         // 코인을 먹으면 점수 증가
-                PlayerManager.Instance.Player.AddScore(value);
-                break;
-
             case ItemType.JumpBoost:    // 일정 시간 동안 점프력 증가
                 jumpForce *= 1.5f;     // 점프 높이 1.5배 증가
                 StartCoroutine(RemoveEffectAfterTime(ItemType.JumpBoost, duration));
                 break;
 
-            case ItemType.SpeedBoost:   // 일정 시간 동안 이동 속도 증가 (플레이어는 제자리, 맵이 빨라짐)
-                moveSpeed *= 1.5f;      // 이동 속도 1.5배 증가
-                StartCoroutine(RemoveEffectAfterTime(ItemType.SpeedBoost, duration));
-                break;
-
             case ItemType.Invincibility: // 일정 시간 동안 무적 상태
                 isInvincible = true;
                 StartCoroutine(RemoveEffectAfterTime(ItemType.Invincibility, duration));
-                break;
-
-            case ItemType.DoubleScore:  // 일정 시간 동안 점수 2배 증가
-                isDoubleScore = true;
-                StartCoroutine(RemoveEffectAfterTime(ItemType.DoubleScore, duration));
                 break;
         }
     }
@@ -236,17 +247,8 @@ public class PlayerController : MonoBehaviour
             case ItemType.JumpBoost:
                 jumpForce /= 1.5f; // 원래 점프 높이로 복구
                 break;
-
-            case ItemType.SpeedBoost:
-                moveSpeed = defaultMoveSpeed; // 원래 이동 속도로 복구
-                break;
-
             case ItemType.Invincibility:
                 isInvincible = false; // 무적 상태 해제
-                break;
-
-            case ItemType.DoubleScore:
-                isDoubleScore = false; // 2배 점수 해제
                 break;
         }
     }
@@ -255,9 +257,6 @@ public class PlayerController : MonoBehaviour
 // 아이템 타입을 정의하는 열거형
 public enum ItemType
 {
-    Coin,          // 점수 증가 아이템
     JumpBoost,     // 점프력 증가 아이템
-    SpeedBoost,    // 이동 속도 증가 아이템
     Invincibility, // 무적 아이템
-    DoubleScore    // 점수 2배 증가 아이템
 }
