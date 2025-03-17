@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager>
     public bool NewRank { get; private set; }
     [HideInInspector]
     public int RankIndex { get; private set; }
+    public BackgroundController backgroundController;
     private bool nowPlaying;
  
     private float lastUpdateTime = 0;
