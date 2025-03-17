@@ -43,6 +43,7 @@ public class GameManager : Singleton<GameManager>
         nowPlaying = true;
         Score = 0;
         Coin = 0;
+        MapManager.Instance.chunkContainer.ResumeMovement();
     }
     public void GetCoin()
     {
@@ -54,11 +55,34 @@ public class GameManager : Singleton<GameManager>
     {
         Started = false;
         nowPlaying = false;
+        MapManager.Instance.chunkContainer.PauseMovement();
     }
 
     public void EndGame()
     {
         StopGame();
+        ManagementLeaderBorad();
+        MapManager.Instance.chunkContainer.PauseMovement();
+        MapManager.Instance.ResetChunks();
+        MapManager.Instance.chunkSpawner.Reset();
+        UIManager.Instance.ChangeState(UIState.GameEnd);
+    }
+
+    public void PauseGame()
+    {
+        nowPlaying = false;
+        MapManager.Instance.chunkContainer.PauseMovement();
+        //일시정지
+    }
+
+    public void Resume()
+    {
+        nowPlaying = true;
+        MapManager.Instance.chunkContainer.ResumeMovement();
+    }
+
+    public void ManagementLeaderBorad()
+    {
         if (Score > Rank[9])
         {
             NewRank = true;
@@ -72,24 +96,6 @@ public class GameManager : Singleton<GameManager>
                 RankIndex++;
             }
         }
-        UIManager.Instance.ChangeState(UIState.GameEnd);
-    }
-
-    public void PauseGame()
-    {
-        nowPlaying = false;
-        //일시정지
-    }
-
-    public void Resume()
-    {
-        nowPlaying = true;
-    }
-
-    public void ManagementLeaderBorad()
-    {
-        //리더보드 등록
-        //게임 끝나면 점수계산해서 실행
     }
 
     /// ui매니저에서 관리중 끝까지 필요없으면 삭제

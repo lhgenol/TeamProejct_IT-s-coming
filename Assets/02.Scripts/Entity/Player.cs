@@ -25,9 +25,12 @@ public class Player : Entity
     protected override void Start()
     {
         base.Start();
-        PlayAnimation("Run"); // 기본적으로 달리는 애니메이션 실행
+        //PlayAnimation(""); // 기본적으로 달리는 애니메이션 실행
     }
-    
+    private void OnEnable()
+    {
+        PlayAnimation("Run");
+    }
     private void Update()
     {
         
@@ -123,6 +126,7 @@ public class Player : Entity
     private void GetCaught()
     {
         isCaught = true;
+        GameManager.Instance.EndGame();
         PlayAnimation("Die"); // 사망 애니메이션 실행
         Debug.Log("죽었다");
     }

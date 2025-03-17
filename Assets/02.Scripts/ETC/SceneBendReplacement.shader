@@ -37,7 +37,7 @@ Shader "Custom/SceneBendReplacementWithColor"
             // f(z) = 0.2 * z - 0.0175 * z^2
             float2 BendFunction(float z)
             {
-                float shiftX = 0.2 * z - 0.0175 * (z * z);
+                float shiftX = 0.2 * z - 0.005 * (z * z);// float shiftX = 0.2 * z - 0.0175 * (z * z);
                 return float2(shiftX, 0);
             }
 
@@ -69,67 +69,3 @@ Shader "Custom/SceneBendReplacementWithColor"
     }
 }
 
-
-// // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
-// Shader "Custom/SceneBendReplacement"
-// {
-//     // 필요하다면 Properties를 더 넣어도 됨
-//     Properties
-//     {
-//         _Color("Color Tint", Color) = (1,1,1,1)
-//     }
-
-//     SubShader
-//     {
-//         Tags{"RenderType"="Opaque"}  // 불투명용
-//         Pass
-//         {
-//             CGPROGRAM
-//             #pragma vertex vert
-//             #pragma fragment frag
-//             #include "UnityCG.cginc"
-
-//             struct appdata
-//             {
-//                 float4 vertex : POSITION;
-//             };
-
-//             struct v2f
-//             {
-//                 float4 vertex : SV_POSITION;
-//             };
-
-//             // 2차 함수로 계산
-//             // f(z) = 0.2z - 0.0175z^2
-//             float2 BendFunction(float z)
-//             {
-//                 float shiftX = 0.2 * z - 0.0175 * (z * z);
-//                 return float2(shiftX, 0); // x만 이동
-//             }
-
-//             v2f vert(appdata v)
-//             {
-//                 v2f o;
-//                 // (1) 로컬 -> 월드
-//                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-
-//                 // (2) z값에 따라 x축 이동량 계산
-//                 float2 shift = BendFunction(worldPos.z);
-//                 worldPos.x += shift.x;
-
-//                 // (3) 월드 -> 클립
-//                 o.vertex = mul(UNITY_MATRIX_VP, float4(worldPos, 1.0));
-//                 return o;
-//             }
-
-//             fixed4 frag(v2f i) : SV_Target
-//             {
-//                 // 여기서는 단색으로만 표시.
-//                 // 원래 텍스처를 살리고 싶다면 _MainTex 등을 샘플링해야 함.
-//                 return fixed4(1,1,1,1);
-//             }
-//             ENDCG
-//         }
-//     }
-// }
