@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class RedPill : Item
 {
-    public float jumpPower = 10f;  // 점프 힘
-    public float moveSpeed = 5f;   // Z축 이동 속도
-    public float duration = 1.5f;  // 점프 지속 시간
+    public float jumpPower = 10f;  
+    public float moveSpeed = 5f;   
+    public float speedMultiplier = 1.5f;
+    public float duration = 4f;  
     public float timeStep = 0.1f;
     public GameObject coin;
     private Transform chunkContainer;
@@ -19,6 +20,8 @@ public class RedPill : Item
 
     protected override void ApplyEffect(GameObject player)
     {
+        //PlayerManager.Instance.Player.health = 2;
+        MapManager.Instance.SpeedUp(speedMultiplier, duration);
         moveSpeed = MapManager.Instance.chunkContainer.moveSpeed * MapManager.Instance.chunkContainer.speedMultiplier;
         Rigidbody rb = player.GetComponent<Rigidbody>();
 
@@ -48,7 +51,7 @@ public class RedPill : Item
             marker.transform.position = newPosition;
             MapManager.Instance.itemPool.GetFromPool(coin, marker.transform, chunkContainer);
 
-            Destroy(marker.gameObject,2f);
+            Destroy(marker.gameObject,duration);
 
             if (y < startPosition.y) break; // 땅에 닿으면 종료
         }
