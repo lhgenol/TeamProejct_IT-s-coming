@@ -29,7 +29,9 @@ public class CameraController : MonoBehaviour
     {
         float elapsedTime = 0f;
         Vector3 InitPosition = camera.transform.position;
-        Vector3 targetPosition = camera.transform.position + new Vector3(x, 0, 0);
+        Vector3 targetPosition = InitPosition;
+        if (InitPosition.x >= -3.5 && InitPosition.x <= 3.5)
+        { targetPosition = camera.transform.position + new Vector3(x, 0, 0); }
         while (elapsedTime < duration)
         {
             camera.transform.position = Vector3.Lerp(InitPosition, targetPosition, elapsedTime / duration);

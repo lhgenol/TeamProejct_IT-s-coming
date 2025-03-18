@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
                 previousLane = currentLane; // 이동 전 위치 저장
                 currentLane--;
                 StartCoroutine(MoveToLane());
+                CameraController.Moveleft();
             }
         }
     }
@@ -96,6 +97,7 @@ public class PlayerController : MonoBehaviour
                 previousLane = currentLane; // 이동 전 위치 저장
                 currentLane++;
                 StartCoroutine(MoveToLane());
+                CameraController.MoveRight();
             }
         }
     }
