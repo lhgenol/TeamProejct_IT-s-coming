@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,12 +53,10 @@ public class PlayerController : MonoBehaviour
        Init();
     }
     
-    // private void FixedUpdate()
-    // {
-    //     // 목표 위치로 Rigidbody를 움직이기
-    //     _rigidbody.MovePosition(Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
-    //     
-    // }
+    void FixedUpdate()
+    {
+        Physics.gravity = new Vector3(0, -50f, 0);
+    }
 
     private void Update()
     {
@@ -251,6 +249,14 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(MoveToLane());
                 
                 Debug.Log("나는 무적이다");
+            }
+        }
+        else
+        {
+            if (collision.gameObject.CompareTag("Obstacle1") || collision.gameObject.CompareTag("Obstacle2_Hit"))
+            {
+                Obstacle obj = collision.gameObject.GetComponent<Obstacle>();
+                if (obj != null) MapManager.Instance.obstaclePool.ReturnToPool(obj, collision.gameObject);
             }
         }
     }
