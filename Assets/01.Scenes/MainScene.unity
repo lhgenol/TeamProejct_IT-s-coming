@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2534,12 +2534,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  jumpForce: 250
+  jumpForce: 190
   laneDistance: 3.5
   slideDuration: 0.1
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 503
+  isInvincible: 0
   nomalColliderSize: {x: 1, y: 1, z: 1}
   slideColliderSize: {x: 0, y: 0, z: 0}
   dieColliderSize: {x: 0, y: 0, z: 0}
@@ -2587,7 +2588,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369101356}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 25
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
