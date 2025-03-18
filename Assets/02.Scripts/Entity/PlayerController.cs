@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private int currentLane = 1;        // 현재 플레이어 위치 (0=왼쪽, 1=중앙, 2=오른쪽)
     private Vector3 targetPosition;     // 목표 위치 저장 (좌/중/우 이동 시 활용)
     
-    private bool isInvincible = false;  // 무적 상태 여부
+    public bool isInvincible = false;   // 무적 상태 여부
     private float defaultMoveSpeed;     // 기본 이동 속도를 저장하여 원래 상태로 복구할 때 사용
     
     private Animator _animator;         // 애니메이터 변수 추가
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     public float moveDuration = 1f; 
     private float timeElapsed = 0f;
+    private int previousLane;   // 충돌 후 원래 위치로 돌아가기 위한 변수
 
     private void Awake()
     {
@@ -76,6 +77,7 @@ public class PlayerController : MonoBehaviour
         {
             if (currentLane > 0)    // 왼쪽 이동 가능 여부 체크
             {
+                previousLane = currentLane; // 이동 전 위치 저장
                 currentLane--;
                 UpdatePosition();   // 목표 위치 갱신
             }
@@ -90,6 +92,7 @@ public class PlayerController : MonoBehaviour
         {
             if (currentLane < 2)    // 오른쪽 이동 가능 여부 체크
             {
+                previousLane = currentLane; // 이동 전 위치 저장
                 currentLane++;
                 UpdatePosition();   // 목표 위치 갱신
             }
@@ -194,7 +197,10 @@ public class PlayerController : MonoBehaviour
 
                 isInvincible = true;
                 Invoke("Invincivbleoff", 1f);
-
+                
+                // // 충돌 후 원래 레인으로 복귀
+                // currentLane = previousLane;
+                // UpdatePosition();
             }
         }
     }
@@ -210,6 +216,11 @@ public class PlayerController : MonoBehaviour
                 MapManager.Instance.KnockBack(0.01f, 0.1f);
                 isInvincible = true;
                 Invoke("Invincivbleoff", 1f);
+                
+                // 충돌 후 원래 레인으로 복귀
+                currentLane = previousLane;
+                UpdatePosition();
+                
                 Debug.Log("나는 무적이다");
             }
         }
