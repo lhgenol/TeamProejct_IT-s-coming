@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2395,6 +2395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 046a5553b73de1f4d814ab226fb0d948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rankscore: []
 --- !u!1 &369101356
 GameObject:
   m_ObjectHideFlags: 0
@@ -10145,14 +10146,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: {fileID: 2065706505}
   coin: {fileID: 1317356077}
-  items:
-  - {fileID: 1006535599}
-  - {fileID: 438025725}
-  - {fileID: 1614677185}
-  gauge:
-  - {fileID: 1804261543}
-  - {fileID: 1064618586}
-  - {fileID: 401501452}
+  itemSlot:
+  - used: 0
+    item: {fileID: 1006535599}
+    icon: {fileID: 1916136115}
+    gauge: {fileID: 1804261543}
+    type: 0
+    slotNum: 0
+  - used: 0
+    item: {fileID: 1006535599}
+    icon: {fileID: 1528195599}
+    gauge: {fileID: 1064618586}
+    type: 0
+    slotNum: 0
+  - used: 0
+    item: {fileID: 1006535599}
+    icon: {fileID: 1251881388}
+    gauge: {fileID: 401501452}
+    type: 0
+    slotNum: 0
+  iconlist:
+  - {fileID: 21300000, guid: ddf7688482ff7274780d1d808b676715, type: 3}
+  - {fileID: 21300000, guid: 8f751ac40a9b77c448b77f61b81a7a87, type: 3}
+  - {fileID: -2138534889620764463, guid: 3522f1dff3fd3564c98cbbb56b303b6b, type: 3}
 --- !u!1 &1317356075
 GameObject:
   m_ObjectHideFlags: 0
@@ -15287,6 +15303,7 @@ MonoBehaviour:
   structurePool: {fileID: 0}
   chunkContainer: {fileID: 0}
   chunkSpawner: {fileID: 0}
+  CurChunkCheck: {fileID: 0}
 --- !u!4 &2093707358
 Transform:
   m_ObjectHideFlags: 0
