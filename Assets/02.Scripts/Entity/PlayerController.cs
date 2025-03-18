@@ -81,7 +81,6 @@ public class PlayerController : MonoBehaviour
                 previousLane = currentLane; // 이동 전 위치 저장
                 currentLane--;
                 StartCoroutine(MoveToLane());
-                CameraController.Moveleft();
             }
         }
     }
@@ -97,7 +96,6 @@ public class PlayerController : MonoBehaviour
                 previousLane = currentLane; // 이동 전 위치 저장
                 currentLane++;
                 StartCoroutine(MoveToLane());
-                CameraController.MoveRight();
             }
         }
     }
@@ -148,6 +146,7 @@ public class PlayerController : MonoBehaviour
         float elapsedTime = 0f;
         float duration = 0.2f; // 이동 시간
 
+        CameraController.CameraMove(endPosition);
         while (elapsedTime < duration)
         {
             transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
