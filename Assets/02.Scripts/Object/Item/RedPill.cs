@@ -44,6 +44,7 @@ public class RedPill : Item
             Transform marker = new GameObject("Coin").transform;
             marker.position = newPosition;
             MapManager.Instance.itemPool.GetFromPool(coin, marker, MapManager.Instance.CurChunkCheck.curChunk.transform);
+            Destroy(marker.gameObject);
 
             Debug.Log("코인생성");
             if (y < startPosition.y) break; // 땅에 닿으면 종료

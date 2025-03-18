@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -249,6 +249,14 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(MoveToLane());
                 
                 Debug.Log("나는 무적이다");
+            }
+        }
+        else
+        {
+            if (collision.gameObject.CompareTag("Obstacle1") || collision.gameObject.CompareTag("Obstacle2_Hit"))
+            {
+                Obstacle obj = collision.gameObject.GetComponent<Obstacle>();
+                if (obj != null) MapManager.Instance.obstaclePool.ReturnToPool(obj, collision.gameObject);
             }
         }
     }
