@@ -5,7 +5,7 @@ using UnityEngine;
 public class Star : Item
 {
     public float speedMultiPlier = 2f;
-    public float duration = 10f; 
+    public float duration = 5f; 
     public Renderer playerRenderer;
     public Color emissionColor = Color.white; 
     public float blinkDuration = 0.1f; 

@@ -43,6 +43,7 @@ public class CustomizingUI : BaseUI
     }
     void OnButtonClick(Parts part, int index)
     {
+        Achievements.TriggerFirstCostomizing();
         PlayerManager.Instance.customizing.ChangeMesh(part, index);
         manikin.ChangeMesh(part, index);
     }

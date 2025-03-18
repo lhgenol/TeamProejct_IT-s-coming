@@ -27,6 +27,11 @@ public class Chaser : Entity
     protected override void Start()
     {
         base.Start();
+        Init();
+    }
+    
+    public void Init()
+    {
         gameObject.SetActive(false); // 시작할 때 비활성화
 
         // 플레이어 찾기 (PlayerManager에서 플레이어 객체가 존재한다면)
@@ -39,14 +44,10 @@ public class Chaser : Entity
         {
             Debug.LogError("PlayerManager에서 플레이어를 찾을 수 없습니다.");
         }
-    }
-    
-    public void Init()
-    {
+        
         state = ChaserState.Inactive; // 기본 상태로 초기화
         animator.SetBool("Catch", false); // 잡기 애니메이션 해제
         animator.SetBool("IsRun", true); // 다시 달리는 상태로 변경
-        gameObject.SetActive(false); // 처음에는 비활성화
     }
     
     // 추적 시작 함수 (장애물과 충돌 시 실행됨)

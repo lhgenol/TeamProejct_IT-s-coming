@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
     }
     public static void Init()
     {
-        camera.transform.position = new Vector3(0, 6.5f, -10f);
+        camera.transform.position = new Vector3(0, 6.5f, -13f);
     }
 
     public static void CameraMove(Vector3 targetPos)

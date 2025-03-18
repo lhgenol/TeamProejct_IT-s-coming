@@ -22,6 +22,9 @@ public class GameManager : Singleton<GameManager>
     public bool NowPlaying { get; private set; }
  
     private float lastUpdateTime = 0;
+    
+    public Chaser chaser;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -46,12 +49,19 @@ public class GameManager : Singleton<GameManager>
         Coin = 0;
         PlayerManager.Instance.Player.health = 2;
         PlayerManager.Instance.controller.Init();
+        SoundManager.Instance.PlayBGM();
+        MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkContainer.ResumeMovement();
+        chaser.Init();
     }
     public void GetCoin()
     {
         Score += 10;
         Coin += 1;
+        if(Coin>10)
+        {
+            Achievements.TriggerFirstTenCoin();
+        }
     }
 
     public void StopGame()
@@ -59,7 +69,6 @@ public class GameManager : Singleton<GameManager>
         Started = false;
         NowPlaying = false;
         CameraController.Init();
-        MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkContainer.PauseMovement();
     }
 
@@ -87,6 +96,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (Score > Rank[9])
         {
+            Achievements.TriggerFirstRank();
             NewRank = true;
             Rank[9] = Score;
             Array.Sort(Rank);

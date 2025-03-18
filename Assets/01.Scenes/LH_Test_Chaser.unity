@@ -315,6 +315,7 @@ MonoBehaviour:
   - {fileID: 469953529}
   - {fileID: 783951432}
   - {fileID: 2085266000}
+  manikin: {fileID: 0}
 --- !u!1 &23896949
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,6 +887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 369101358}
+  customizing: {fileID: 0}
 --- !u!1 &111762505
 GameObject:
   m_ObjectHideFlags: 0
@@ -2524,7 +2526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  jumpForce: 15
+  jumpForce: 18
   laneDistance: 3.5
   slideDuration: 0.1
   groundLayerMask:
@@ -10146,14 +10148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: {fileID: 2065706505}
   coin: {fileID: 1317356077}
-  items:
-  - {fileID: 1006535599}
-  - {fileID: 438025725}
-  - {fileID: 1614677185}
-  gauge:
-  - {fileID: 1804261543}
-  - {fileID: 1064618586}
-  - {fileID: 401501452}
+  itemSlot: []
+  iconlist: []
 --- !u!1 &1317356075
 GameObject:
   m_ObjectHideFlags: 0
@@ -13622,10 +13618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e4684ec711cd148b36ceaa3f46e059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentBackgroundType: 0
-  cityMaterial: {fileID: 2100000, guid: 1461941352a06ee4585b036d714e811e, type: 2}
-  westernMaterial: {fileID: 2100000, guid: 3e9beeef4ab89e647bc0bcb34bcda770, type: 2}
-  toyMaterial: {fileID: 2100000, guid: e43707969dd593b40926c1a363e8b1e0, type: 2}
+  curThemeMaterial: {fileID: 0}
 --- !u!1 &1843275875
 GameObject:
   m_ObjectHideFlags: 0
