@@ -71,9 +71,13 @@ public class SoundManager : Singleton<SoundManager>
         bgmSource.Play();
     }
 
-    public void ChangeBgm(AudioClip clip)
+    public void SetBGM(AudioClip clip)
     {
         bgmSource.clip = clip;
+    }
+
+    public void PlayBGM()
+    {
         bgmSource.loop = true;
         bgmSource.Play();
     }

@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class RedPill : Item
 {
-    public float jumpPower = 10f;  
-    public float moveSpeed = 5f;   
+    public float jumpPower = 15f;
+    public float moveSpeed = 5f;
     public float speedMultiplier = 1.5f;
-    public float duration = 4f;  
-    public float timeStep = 0.1f;
+    public float duration = 4f;
+    public float timeStep = 0.15f;
     public GameObject coin;
     private Transform chunkContainer;
 
     protected void Start()
     {
         chunkContainer = MapManager.Instance.chunkContainer.transform;
-        if(coin == null ) coin = MapManager.Instance.themeData[0].itemList[0];
+        if (coin == null) coin = MapManager.Instance.themeData[0].itemList[0];
     }
 
     protected override void ApplyEffect(GameObject player)
@@ -24,16 +24,8 @@ public class RedPill : Item
         //PlayerManager.Instance.Player.health = 2;
         MapManager.Instance.SpeedUp(speedMultiplier, duration);
         moveSpeed = MapManager.Instance.chunkContainer.moveSpeed * MapManager.Instance.chunkContainer.speedMultiplier;
-        Rigidbody rb = player.GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            Vector3 jumpVelocity = new Vector3(0f, jumpPower, 0);
-            //rb.AddForce(jumpVelocity,ForceMode.Impulse); 
-            rb.velocity = jumpVelocity;
-
-            ShowParabolaPath(player.transform.position);
-        }
+        PlayerManager.Instance.Player.controller.HighJump(jumpPower);
+        ShowParabolaPath(player.transform.position);
     }
 
     private void ShowParabolaPath(Vector3 startPosition)
