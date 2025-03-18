@@ -146,6 +146,7 @@ public class PlayerController : MonoBehaviour
         float elapsedTime = 0f;
         float duration = 0.2f; // 이동 시간
 
+        CameraController.CameraMove(endPosition);
         while (elapsedTime < duration)
         {
             transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
