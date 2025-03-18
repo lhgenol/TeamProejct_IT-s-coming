@@ -90,3 +90,4 @@ MonoBehaviour:
   - chunkIndexCombine: 020000000300000004000000
   - chunkIndexCombine: 030000000200000004000000
   - chunkIndexCombine: 000000000100000003000000
+  BGM: {fileID: 8300000, guid: 447a9dafd9ec93e448c9ea6bfbdfb533, type: 3}

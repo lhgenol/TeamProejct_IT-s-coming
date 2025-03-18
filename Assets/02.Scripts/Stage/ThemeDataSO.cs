@@ -17,4 +17,5 @@ public class ThemeDataSO : ScriptableObject
     public List<GameObject> structureList;
     public List<GameObject> chunkList;
     public List<ChunkTemplate> Templates;
+    public AudioClip BGM;
 }
