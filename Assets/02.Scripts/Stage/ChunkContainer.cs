@@ -52,7 +52,8 @@ public class ChunkContainer : MonoBehaviour
 
     public void ChangeSpeedMultiplier(float multiplier,float duration)
     {
-        speedMultiplier = multiplier;
+        if (multiplier > speedMultiplier) speedMultiplier = multiplier;
+
         StartCoroutine(CoroutineChangeSpeedMultiplier(duration));
     }
 
