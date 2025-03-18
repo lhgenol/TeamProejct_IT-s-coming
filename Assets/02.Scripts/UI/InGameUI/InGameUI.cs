@@ -66,20 +66,25 @@ public class InGameUI : BaseUI
 
     public void GetItem(UsedItemType itemType)
     {
-        int slotNum = GetUsedSlot(itemType);
+        int slotNum = GetUsedSlot(itemType); 
 
-        if (slotNum != -1)
+        if (slotNum != -1) 
         {
             ShowGauge(itemType, slotNum);
         }
         else
         {
-            slotNum = CanUse();
+            slotNum = CanUse(); 
+
             if (slotNum != -1)
             {
-                itemSlot[slotNum].item.gameObject.SetActive(true);
+                itemSlot[slotNum].item.gameObject.SetActive(true); 
                 itemSlot[slotNum].type = itemType;
-                ShowGauge(itemType, slotNum);
+                ShowGauge(itemType, slotNum); 
+            }
+            else
+            {
+                Debug.Log("아이템 슬롯이 모두 사용 중입니다.");
             }
         }
     }
