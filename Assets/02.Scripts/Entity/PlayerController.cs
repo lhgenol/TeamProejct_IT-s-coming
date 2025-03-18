@@ -271,9 +271,9 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(RemoveEffectAfterTime(ItemType.JumpBoost, duration));
                 break;
 
-            case ItemType.Invincibility: // 일정 시간 동안 무적 상태
+            case ItemType.Star: // 일정 시간 동안 무적 상태
                 isInvincible = true;
-                StartCoroutine(RemoveEffectAfterTime(ItemType.Invincibility, duration));
+                StartCoroutine(RemoveEffectAfterTime(ItemType.Star, duration));
                 break;
         }
     }
@@ -288,16 +288,10 @@ public class PlayerController : MonoBehaviour
             case ItemType.JumpBoost:
                 jumpForce /= 1.5f; // 원래 점프 높이로 복구
                 break;
-            case ItemType.Invincibility:
+            case ItemType.Star:
                 isInvincible = false; // 무적 상태 해제
                 break;
         }
     }
 }
 
-// 아이템 타입을 정의하는 열거형
-public enum ItemType
-{
-    JumpBoost,     // 점프력 증가 아이템
-    Invincibility, // 무적 아이템
-}

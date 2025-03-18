@@ -66,7 +66,10 @@ public class UIManager : Singleton<UIManager>
             }
         }
     }
-
+    public void GetItem(UsedItemType itemType)
+    {
+        inGameUI.GetItem(itemType);
+    }
     public void ChangeState(UIState state)
     {
         currentState = state;

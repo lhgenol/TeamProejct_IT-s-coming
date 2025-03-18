@@ -15,7 +15,7 @@ public class Star : Item
     {
         playerRenderer = player.GetComponentInChildren<Renderer>();
         MapManager.Instance.SpeedUp(speedMultiPlier, duration);
-        //PlayerManager.Instance.Player.health = 2;
+        PlayerManager.Instance.Player.AddHealth();
         ItemManager.Instance.StartExternalCoroutine(Invincible());
         ItemManager.Instance.StartExternalCoroutine(BlinkEmissionEffect());
     }
@@ -23,13 +23,13 @@ public class Star : Item
     public IEnumerator Invincible()
     {
         float time = 0f;
-        //PlayerManager.Instance.Player.controller.isInvincible = true;
+        PlayerManager.Instance.Player.controller.isInvincible = true;
         while (time < duration)
         {
             time += Time.deltaTime;
             yield return null;
         }
-        //PlayerManager.Instance.Player.controller.isInvincible = false;
+        PlayerManager.Instance.Player.controller.isInvincible = false;
     }
 
     private IEnumerator BlinkEmissionEffect()

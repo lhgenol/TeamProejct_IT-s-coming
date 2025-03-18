@@ -57,11 +57,15 @@ public class Player : Entity
         if (health > 0)
         {
             animator.SetTrigger("Hit"); // Hit 애니메이션 실행
+            health--; // 체력 감소
+            chaserState(health);
         }
-    
-        health--; // 체력 감소
-        
-        if (health == 1)
+    }
+
+    //체이서로 옮기기
+    public void chaserState(int _health)
+    {
+        if (health == 1) 
         {
             // 첫 번째 충돌 시 추적자 등장
             Chaser chaser = FindObjectOfType<Chaser>(); // Chaser 찾기
@@ -81,6 +85,15 @@ public class Player : Entity
             GetCaught(); // 플레이어 사망 연출
         }
     }
+    public void AddHealth()
+    {
+        if (health < 2)
+        {
+            health++;
+            chaserState(health);
+        }
+    }
+
     public void Init()
     {
         health = 2;
