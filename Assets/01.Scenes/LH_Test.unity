@@ -430,15 +430,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  jumpForce: 115
+  jumpForce: 250
   laneDistance: 1.2
   slideDuration: 0.5
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 503
+  isInvincible: 0
   nomalColliderSize: {x: 1, y: 1, z: 1}
   slideColliderSize: {x: 0.5, y: 0.5, z: 0.5}
   dieColliderSize: {x: 0.5, y: 0.5, z: 0.5}
+  moveDuration: 1
 --- !u!114 &674026429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,7 +455,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   health: 2
-  score: 0
 --- !u!65 &674026430
 BoxCollider:
   m_ObjectHideFlags: 0

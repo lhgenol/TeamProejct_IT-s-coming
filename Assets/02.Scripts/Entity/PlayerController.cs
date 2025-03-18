@@ -49,12 +49,13 @@ public class PlayerController : MonoBehaviour
     {
        Init();
     }
-    private void FixedUpdate()
-    {
-        // 목표 위치로 Rigidbody를 움직이기
-        _rigidbody.MovePosition(Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
-        
-    }
+    
+    // private void FixedUpdate()
+    // {
+    //     // 목표 위치로 Rigidbody를 움직이기
+    //     _rigidbody.MovePosition(Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
+    //     
+    // }
 
     private void Update()
     {
@@ -79,7 +80,7 @@ public class PlayerController : MonoBehaviour
             {
                 previousLane = currentLane; // 이동 전 위치 저장
                 currentLane--;
-                UpdatePosition();   // 목표 위치 갱신
+                StartCoroutine(MoveToLane());
             }
         }
     }
@@ -94,7 +95,7 @@ public class PlayerController : MonoBehaviour
             {
                 previousLane = currentLane; // 이동 전 위치 저장
                 currentLane++;
-                UpdatePosition();   // 목표 위치 갱신
+                StartCoroutine(MoveToLane());
             }
         }
     }
@@ -131,9 +132,27 @@ public class PlayerController : MonoBehaviour
     // 위치를 갱신하는 함수 (현재 레인을 기반으로 X 좌표 설정)
     private void UpdatePosition()
     {
-        // 현재 위치(레인)의 X 좌표를 계산
-        targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y,transform.position.z);
-        // currentLane에 따른 X 좌표를 업데이트하여 플레이어의 위치를 레인에 맞게 조정
+        // X 값만 변경, 현재 높이 유지
+        targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
+
+        // 바로 위치 이동
+        transform.position = targetPosition;
+    }
+    
+    private IEnumerator MoveToLane()
+    {
+        Vector3 startPosition = transform.position; // 시작 위치 저장
+        Vector3 endPosition = new Vector3((currentLane - 1) * laneDistance, startPosition.y, startPosition.z);
+        float elapsedTime = 0f;
+        float duration = 0.2f; // 이동 시간
+
+        while (elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = endPosition; // 최종 위치 보정
     }
     
     // 점프 입력 처리 (스페이스바)
@@ -198,9 +217,9 @@ public class PlayerController : MonoBehaviour
                 isInvincible = true;
                 Invoke("Invincivbleoff", 1f);
                 
-                // // 충돌 후 원래 레인으로 복귀
-                // currentLane = previousLane;
-                // UpdatePosition();
+                // 충돌 후 원래 레인으로 복귀
+                currentLane = previousLane;
+                StartCoroutine(MoveToLane());
             }
         }
     }
@@ -219,12 +238,13 @@ public class PlayerController : MonoBehaviour
                 
                 // 충돌 후 원래 레인으로 복귀
                 currentLane = previousLane;
-                UpdatePosition();
+                StartCoroutine(MoveToLane());
                 
                 Debug.Log("나는 무적이다");
             }
         }
     }
+    
     public void Invincivbleoff()
     {
         Debug.Log("무적풀림");
