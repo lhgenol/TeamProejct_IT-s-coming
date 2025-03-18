@@ -22,6 +22,9 @@ public class GameManager : Singleton<GameManager>
     public bool NowPlaying { get; private set; }
  
     private float lastUpdateTime = 0;
+    
+    public Chaser chaser;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -49,6 +52,7 @@ public class GameManager : Singleton<GameManager>
         SoundManager.Instance.PlayBGM();
         MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkContainer.ResumeMovement();
+        chaser.Init();
     }
     public void GetCoin()
     {
