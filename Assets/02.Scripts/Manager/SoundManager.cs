@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : Singleton<SoundManager>
 {
     [Header("Audio Sources")]
     public AudioSource bgmSource;
@@ -17,8 +17,9 @@ public class SoundManager : MonoBehaviour
     private float sfxVolume;
     private float bgmVolume;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         bgmSource = gameObject.AddComponent<AudioSource>();
         bgmSource.clip = bgmClip;
         bgmSource.loop = true;
@@ -61,5 +62,19 @@ public class SoundManager : MonoBehaviour
                 sfxSource.PlayOneShot(sfxClips[clipIndex]);
             }
         }
+    }
+
+    public void Init()
+    {
+        bgmSource.clip = bgmClip;
+        bgmSource.loop = true;
+        bgmSource.Play();
+    }
+
+    public void ChangeBgm(AudioClip clip)
+    {
+        bgmSource.clip = clip;
+        bgmSource.loop = true;
+        bgmSource.Play();
     }
 }

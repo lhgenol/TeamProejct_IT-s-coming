@@ -48,11 +48,10 @@ public class RedPill : Item
             float z = startPosition.z + (moveSpeed * t);
 
             Vector3 newPosition = new Vector3(x, y, z);
-            GameObject marker = new GameObject("Coin");
-            marker.transform.position = newPosition;
-            MapManager.Instance.itemPool.GetFromPool(coin, marker.transform, chunkContainer);
+            Transform marker = new GameObject("Coin").transform;
+            marker.position = newPosition;
+            MapManager.Instance.itemPool.GetFromPool(coin, marker, MapManager.Instance.CurChunkCheck.curChunk.transform);
 
-            Destroy(marker.gameObject,duration);
             Debug.Log("코인생성");
             if (y < startPosition.y) break; // 땅에 닿으면 종료
         }

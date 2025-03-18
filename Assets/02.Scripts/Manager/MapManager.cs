@@ -16,6 +16,7 @@ public class MapManager : Singleton<MapManager>
 
     public ChunkContainer chunkContainer;
     public ChunkSpawner chunkSpawner;
+    public CurChunkCheck CurChunkCheck;
 
     public void ResumeMove()
     {
