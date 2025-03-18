@@ -29,7 +29,8 @@ public class RedPill : Item
         if (rb != null)
         {
             Vector3 jumpVelocity = new Vector3(0f, jumpPower, 0);
-            rb.AddForce(jumpVelocity,ForceMode.Impulse); 
+            //rb.AddForce(jumpVelocity,ForceMode.Impulse); 
+            rb.velocity = jumpVelocity;
 
             ShowParabolaPath(player.transform.position);
         }
