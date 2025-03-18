@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         transform.position = endPosition; // 최종 위치 보정
+        previousLane = currentLane;
     }
     
     // 점프 입력 처리 (스페이스바)
