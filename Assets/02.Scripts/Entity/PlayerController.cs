@@ -230,6 +230,12 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(MoveToLane());
             }
         }
+        else
+        {
+            Debug.Log("무적상태에서 부딪");
+            Obstacle obstacle=other.GetComponent<Obstacle>();
+            MapManager.Instance.obstaclePool.ReturnToPool(obstacle, other.gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -253,11 +259,9 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (collision.gameObject.CompareTag("Obstacle1") || collision.gameObject.CompareTag("Obstacle2_Hit"))
-            {
-                Obstacle obj = collision.gameObject.GetComponent<Obstacle>();
-                if (obj != null) MapManager.Instance.obstaclePool.ReturnToPool(obj, collision.gameObject);
-            }
+            Obstacle obj = collision.gameObject.GetComponent<Obstacle>();
+            if (obj != null) MapManager.Instance.obstaclePool.ReturnToPool(obj, collision.gameObject);
+
         }
     }
     
