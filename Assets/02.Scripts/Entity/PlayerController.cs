@@ -38,6 +38,9 @@ public class PlayerController : MonoBehaviour
     private float timeElapsed = 0f;
     private int previousLane;   // 충돌 후 원래 위치로 돌아가기 위한 변수
 
+    
+    private bool isHighJumpActive = false; // 높은 점프 모드 활성화 여부
+    
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();   // 애니메이터 컴포넌트 가져오기
@@ -146,6 +149,7 @@ public class PlayerController : MonoBehaviour
         float elapsedTime = 0f;
         float duration = 0.2f; // 이동 시간
 
+        CameraController.CameraMove(endPosition);
         while (elapsedTime < duration)
         {
             transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
@@ -162,11 +166,17 @@ public class PlayerController : MonoBehaviour
         {
             // 위 방향으로 순간적인 힘을 가함. 순간적으로 힘을 줄 수 있게 Impulse로 설정
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
-            
             _animator.SetBool("IsJump", true); // 점프 애니메이션 실행
-
             jumpTime = Time.time;   // 점프 시간 기록
         }
+    }
+    
+    // 아이템 수집 시 높은 점프
+    public void HighJump(float jumpPower)
+    {
+        // 위 방향으로 순간적인 힘을 가함. 순간적으로 힘을 줄 수 있게 Impulse로 설정
+        _rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+        _animator.SetBool("IsJump", true); // 점프 애니메이션 실행
     }
 
     public void Init()
@@ -179,7 +189,7 @@ public class PlayerController : MonoBehaviour
         _collider.center= Vector3.zero + new Vector3(0f, 0.5f, 0f);
         _animator.SetBool("IsDie", false);
         _animator.SetBool("IsRun", true);  // 게임 시작 시 바로 Run 애니메이션 실행
-
+        previousLane = currentLane;
     }
 
     // 플레이어가 바닥에 있는지 확인하는 함수

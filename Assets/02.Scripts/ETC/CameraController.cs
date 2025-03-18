@@ -16,26 +16,23 @@ public class CameraController : MonoBehaviour
         camera.transform.position = new Vector3(0, 6.5f, -10f);
     }
 
-    public static void Moveleft()
+    public static void CameraMove(Vector3 targetPos)
     {
-        camera.GetComponent<CameraController>().StartCoroutine(camera.GetComponent<CameraController>().Move(-3.5f));
-    }
-    public static void MoveRight()
-    {
-        camera.GetComponent<CameraController>().StartCoroutine(camera.GetComponent<CameraController>().Move(3.5f));
+        camera.GetComponent<CameraController>().StartCoroutine(camera.GetComponent<CameraController>().Move(targetPos));
     }
 
-    private IEnumerator Move(float x)
+
+    private IEnumerator Move(Vector3 targetPos)
     {
         float elapsedTime = 0f;
-        Vector3 InitPosition = camera.transform.position;
-        Vector3 targetPosition = camera.transform.position + new Vector3(x, 0, 0);
+        Vector3 initPosition = camera.transform.position;
+        Vector3 targetPositon = new Vector3(targetPos.x, initPosition.y, initPosition.z);
         while (elapsedTime < duration)
         {
-            camera.transform.position = Vector3.Lerp(InitPosition, targetPosition, elapsedTime / duration);
+            camera.transform.position = Vector3.Lerp(initPosition, targetPositon, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        camera.transform.position = targetPosition;
+        camera.transform.position = targetPositon;
     }
 }
