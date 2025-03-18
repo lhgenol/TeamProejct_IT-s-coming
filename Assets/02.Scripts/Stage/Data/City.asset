@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: City
   m_EditorClassIdentifier: 
   index: 0
-  ThemeName: City
+  themeName: 
   itemList:
   - {fileID: 6867175340535876064, guid: 27eb5f90fec113c44a9f111dc7e6e940, type: 3}
   - {fileID: 5856638529640352021, guid: 50e260f821baa56419af96b848301e5d, type: 3}
@@ -85,9 +85,10 @@ MonoBehaviour:
   - {fileID: 620147888823079649, guid: a4b60b0b94bbe0443b50941517184b7f, type: 3}
   - {fileID: 5319493254607257669, guid: 2f4ffef5cfa1ffa41b410577c4cc06ee, type: 3}
   - {fileID: 7359544219451189022, guid: caed6d4de367b1d47b2b23f99cf586bf, type: 3}
-  Templates:
-  - chunkIndexCombine: 000000000000000000000000
+  templates:
   - chunkIndexCombine: 020000000300000004000000
-  - chunkIndexCombine: 030000000200000004000000
-  - chunkIndexCombine: 000000000100000003000000
+  - chunkIndexCombine: 000000000100000004000000
+  - chunkIndexCombine: 020000000300000001000000
+  - chunkIndexCombine: 010000000300000000000000
   BGM: {fileID: 8300000, guid: 447a9dafd9ec93e448c9ea6bfbdfb533, type: 3}
+  background: {fileID: 2100000, guid: 1461941352a06ee4585b036d714e811e, type: 2}

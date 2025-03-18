@@ -1287,6 +1287,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4311729997723370743, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
+      propertyPath: moveSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6944776516122325564, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
       propertyPath: m_Name
       value: ChunkBase (1)
@@ -2580,7 +2584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  jumpForce: 250
+  jumpForce: 20
   laneDistance: 3.5
   slideDuration: 0.1
   groundLayerMask:
