@@ -53,12 +53,10 @@ public class PlayerController : MonoBehaviour
        Init();
     }
     
-    // private void FixedUpdate()
-    // {
-    //     // 목표 위치로 Rigidbody를 움직이기
-    //     _rigidbody.MovePosition(Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
-    //     
-    // }
+    void FixedUpdate()
+    {
+        Physics.gravity = new Vector3(0, -50f, 0);
+    }
 
     private void Update()
     {
