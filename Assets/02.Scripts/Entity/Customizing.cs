@@ -23,6 +23,7 @@ public class Customizing : MonoBehaviour
 
     public void ChangeMesh(Parts part,int index)
     {
+        Debug.Log(part);Debug.Log(index);
         switch (part)
         {
             case Parts.Hat:
