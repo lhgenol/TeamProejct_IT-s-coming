@@ -58,6 +58,8 @@ public class GameManager : Singleton<GameManager>
     {
         Started = false;
         NowPlaying = false;
+        CameraController.Init();
+        MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkContainer.PauseMovement();
     }
 
