@@ -5,9 +5,11 @@ using UnityEngine;
 // 추적자 NPC를 관리하는 클래스. 플레이어를 따라 이동하고, 플레이어가 장애물에 부딪히면 등장하고 추격하는 역할
 public class Chaser : Entity
 {
-    public Transform player;    // 플레이어 위치 정보
-    public float speed;         // 추격 속도
+    public Transform player;        // 플레이어 위치 정보
+    public float speed = 5f;        // 추격 속도
+    public float jumpDelay = 0.2f;  // 점프 딜레이
     private bool isChasing = false; // 추격 상태 확인
+    private bool isJumping = false; // 점프 중인지 확인
 
     protected override void Start()
     {
@@ -33,7 +35,10 @@ public class Chaser : Entity
 
         isChasing = true;           // 추적 상태를 true로 설정
         gameObject.SetActive(true); // 추적자 활성화
-        transform.position = new Vector3(player.position.x, transform.position.y, transform.position.z); // X축 위치를 플레이어와 맞추기
+        
+        // 플레이어보다 뒤쪽(Z -2) & 살짝 아래쪽(Y -0.5)에서 등장
+        transform.position = new Vector3(player.position.x, player.position.y - 0.5f, player.position.z - 2f);
+        
         animator.SetBool("IsRun", true);    // 추적자가 뛰는 애니메이션 실행
     }
     
@@ -50,14 +55,29 @@ public class Chaser : Entity
     {
         if (player == null) return; // 플레이어가 없으면 추격하지 않도록 처리
 
-        // 플레이어 위치를 따라 좌우(X축) 이동만 수행
-        Vector3 targetPosition = transform.position; // 현재 추적자의 위치
-        targetPosition.x = player.position.x; // 추적자가 플레이어와 X축 위치를 동일하게 맞춤
-
-        // 추격자 Y축 이동 제한 (필요 시 y 보정 가능)
+        // 플레이어의 X축을 따라감 (부드럽게)
+        Vector3 targetPosition = transform.position;
+        targetPosition.x = player.position.x;   // 추적자가 플레이어와 X축 위치를 동일하게 맞춤
         transform.position = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
     }
     
+    // 플레이어가 점프할 때 호출할 메서드
+    public void Jump()
+    {
+        if (!isJumping) // 점프 중이 아닐 때만 실행
+        {
+            StartCoroutine(DelayedJump());
+        }
+    }
+    
+    private IEnumerator DelayedJump()
+    {
+        isJumping = true;
+        yield return new WaitForSeconds(jumpDelay); // 플레이어보다 약간 늦게 점프
+        animator.SetBool("IsJump", true);
+        isJumping = false;
+    }
+
     // 플레이어가 2번째 충돌하면 잡기 애니메이션 실행
     public void CatchPlayer()
     {

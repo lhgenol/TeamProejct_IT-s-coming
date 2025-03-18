@@ -16,6 +16,7 @@ public class RedPill : Item
     protected void Start()
     {
         chunkContainer = MapManager.Instance.chunkContainer.transform;
+        if(coin == null ) coin = MapManager.Instance.themeData[0].itemList[0];
     }
 
     protected override void ApplyEffect(GameObject player)
@@ -28,7 +29,8 @@ public class RedPill : Item
         if (rb != null)
         {
             Vector3 jumpVelocity = new Vector3(0f, jumpPower, 0);
-            rb.velocity = jumpVelocity;  
+            //rb.AddForce(jumpVelocity,ForceMode.Impulse); 
+            rb.velocity = jumpVelocity;
 
             ShowParabolaPath(player.transform.position);
         }
@@ -52,7 +54,7 @@ public class RedPill : Item
             MapManager.Instance.itemPool.GetFromPool(coin, marker.transform, chunkContainer);
 
             Destroy(marker.gameObject,duration);
-
+            Debug.Log("코인생성");
             if (y < startPosition.y) break; // 땅에 닿으면 종료
         }
     }

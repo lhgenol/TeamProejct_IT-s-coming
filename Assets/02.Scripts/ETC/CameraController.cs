@@ -5,14 +5,34 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    new static Camera camera=Camera.main;
-
-    public static void Moveleft()
+    [SerializeField] public static Camera camera;
+    private float duration = 0.5f;
+    private void Awake()
     {
-        camera.gameObject.transform.position += new Vector3(-3.5f, 0, 0);
+        camera = Camera.main;
     }
-    public static void MoveRight()
+    public static void Init()
     {
-        camera.gameObject.transform.position += new Vector3(3.5f, 0, 0);
+        camera.transform.position = new Vector3(0, 6.5f, -10f);
+    }
+
+    public static void CameraMove(Vector3 targetPos)
+    {
+        camera.GetComponent<CameraController>().StartCoroutine(camera.GetComponent<CameraController>().Move(targetPos));
+    }
+
+
+    private IEnumerator Move(Vector3 targetPos)
+    {
+        float elapsedTime = 0f;
+        Vector3 initPosition = camera.transform.position;
+        Vector3 targetPositon = new Vector3(targetPos.x, initPosition.y, initPosition.z);
+        while (elapsedTime < duration)
+        {
+            camera.transform.position = Vector3.Lerp(initPosition, targetPositon, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        camera.transform.position = targetPositon;
     }
 }
