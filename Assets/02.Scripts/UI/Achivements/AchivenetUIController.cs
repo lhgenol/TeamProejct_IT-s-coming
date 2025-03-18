@@ -32,10 +32,9 @@ public class AchievementUIController : MonoBehaviour
 	{
 		// 도전과제 데이터 등록
 		achievements.Add("TenCoin", new AchievementData { name = "코인10개!", description = "코인을 10개모았습니다.", image = iconlist[0] });
-		achievements.Add("Ailve", new AchievementData { name = "30초 생존!", description = "생존의 달인입니다.", image = iconlist[1] });
-		achievements.Add("RoundClear", new AchievementData { name = "라운드클리어!", description = "처음으로 라운드를 클리어했습니다.", image = iconlist[2] });
-		achievements.Add("Rank", new AchievementData { name = "첫 등수!", description = "처음으로 랭크에 올랐습니다.", image = iconlist[3] });
-		achievements.Add("Costomizing", new AchievementData { name = "첫 커스터마이징!", description = "처음으로 캐릭터를 꾸였습니다..", image = iconlist[4] });
+		achievements.Add("RoundClear", new AchievementData { name = "라운드클리어!", description = "처음으로 라운드를 클리어했습니다.", image = iconlist[1] });
+		achievements.Add("Rank", new AchievementData { name = "첫 등수!", description = "처음으로 랭크에 올랐습니다.", image = iconlist[2] });
+		achievements.Add("Costomizing", new AchievementData { name = "첫 커스터마이징!", description = "처음으로 캐릭터를 꾸였습니다..", image = iconlist[3] });
 	}
 
 	/// <summary>
@@ -59,8 +58,6 @@ public class AchievementUIController : MonoBehaviour
 		// 이벤트 등록
 		Achievements.OnFirstCoin += () => ShowAchievement("TenCoin");
         Achievements.OnFirstCoin += () => UpdatePannel("TenCoin");
-        Achievements.OnFirstThirtySecond += () => ShowAchievement("Ailve");
-        Achievements.OnFirstThirtySecond += () => UpdatePannel("Ailve");
         Achievements.OnFristRoundClear += () => ShowAchievement("RoundClear");
         Achievements.OnFristRoundClear += () => UpdatePannel("RoundClear");
         Achievements.OnFirstRank += () => ShowAchievement("Rank");
@@ -78,8 +75,6 @@ public class AchievementUIController : MonoBehaviour
         // 이벤트 해제
         Achievements.OnFirstCoin -= () => ShowAchievement("TenCoin");
         Achievements.OnFirstCoin -= () => UpdatePannel("TenCoin");
-        Achievements.OnFirstThirtySecond -= () => ShowAchievement("Ailve");
-        Achievements.OnFirstThirtySecond -= () => UpdatePannel("Ailve");
         Achievements.OnFristRoundClear -= () => ShowAchievement("RoundClear");
         Achievements.OnFristRoundClear -= () => UpdatePannel("RoundClear");
         Achievements.OnFirstRank -= () => ShowAchievement("Rank");
@@ -104,17 +99,15 @@ public class AchievementUIController : MonoBehaviour
 			case "TenCoin":
 				UpdateUIData(achievementKey, 0);
 				break;
-			case "Alive":
+
+			case "RoundClear":
 				UpdateUIData(achievementKey, 1);
 				break;
-			case "RoundClear":
+			case "Rank":
 				UpdateUIData(achievementKey, 2);
 				break;
-			case "Rank":
-				UpdateUIData(achievementKey, 3);
-				break;
 			case "Costomizing":
-				UpdateUIData(achievementKey, 4);
+				UpdateUIData(achievementKey, 3);
 				break;
 		}
 	}

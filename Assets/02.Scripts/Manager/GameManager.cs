@@ -39,10 +39,6 @@ public class GameManager : Singleton<GameManager>
                 lastUpdateTime = Time.time;
                 Score += 1;
             }
-            if(Score>30)
-            {
-                Achievements.TriggerThirtySecond();
-            }
         }
     }
     public void StartGame()
