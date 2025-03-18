@@ -46,6 +46,8 @@ public class GameManager : Singleton<GameManager>
         Coin = 0;
         PlayerManager.Instance.Player.health = 2;
         PlayerManager.Instance.controller.Init();
+        SoundManager.Instance.PlayBGM();
+        MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkContainer.ResumeMovement();
     }
     public void GetCoin()
@@ -59,7 +61,6 @@ public class GameManager : Singleton<GameManager>
         Started = false;
         NowPlaying = false;
         CameraController.Init();
-        MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkContainer.PauseMovement();
     }
 
