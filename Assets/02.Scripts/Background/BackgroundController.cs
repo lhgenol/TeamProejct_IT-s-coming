@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,22 +10,35 @@ public enum BackgroundType
 }
 public class BackgroundController : MonoBehaviour
 {
-    public BackgroundType currentBackgroundType;
+    //public BackgroundType currentBackgroundType;
 
-    // °¢ ¹è°æ »óÅÂ¿¡ ¸Â´Â MaterialÀ» ¿¬°á
-    public Material cityMaterial;
+    // ê° ë°°ê²½ ìƒíƒœì— ë§ëŠ” Materialì„ ì—°ê²°
+    public Material curThemeMaterial;
+    /*public Material cityMaterial;
     public Material westernMaterial;
-    public Material toyMaterial;
+    public Material toyMaterial;*/
 
     private Renderer planeRenderer;
 
-    private void Start()
+    private void Awake()
     {
-        planeRenderer = GetComponent<Renderer>();
-        SwitchBackground(currentBackgroundType);
+        GameManager.Instance.backgroundController = this;
     }
 
-    public void SwitchBackground(BackgroundType backgroundType)
+    private void Start()
+    {
+        curThemeMaterial = MapManager.Instance.themeData[0].background;
+        planeRenderer = GetComponent<Renderer>();
+        ChangeBackground(curThemeMaterial);
+    }
+
+    public void ChangeBackground(Material background)
+    {
+        curThemeMaterial = background;
+        planeRenderer.material = curThemeMaterial;
+    }
+
+    /*public void SwitchBackground(BackgroundType backgroundType)
     {
         switch (backgroundType)
         {
@@ -50,5 +63,5 @@ public class BackgroundController : MonoBehaviour
     {
         currentBackgroundType = newBackgroundType;
         SwitchBackground(newBackgroundType);
-    }
+    }*/
 }

@@ -13,23 +13,11 @@ public class CurChunkCheck : MonoBehaviour
         MapManager.Instance.CurChunkCheck = this;
     }
 
-    private void Update()
-    {
-        //if (GameManager.Instance.NowPlaying)
-        {
-            if (curTheme != newTheme)
-            {
-                curTheme = newTheme;
-                SoundManager.Instance.SetBGM(curTheme.BGM);//오디오 재생
-                SoundManager.Instance.PlayBGM();
-                Debug.Log("bgm changed");
-            }
-        }
-    }
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Chunk"))
+        if (other.CompareTag("Chunk"))
         {
             curChunk = other.gameObject;
 
@@ -39,9 +27,20 @@ public class CurChunkCheck : MonoBehaviour
                 newTheme = curTheme;
                 SoundManager.Instance.SetBGM(curTheme.BGM);
             }
-            else newTheme = curChunk.GetComponent<Chunk>().themeData;
+            else
+            {
+                newTheme = curChunk.GetComponent<Chunk>().themeData;
+                if (curTheme != newTheme)
+                {
+                    curTheme = newTheme;
+                    SoundManager.Instance.SetBGM(curTheme.BGM);//오디오 재생
+                    SoundManager.Instance.PlayBGM();
+                    GameManager.Instance.backgroundController.ChangeBackground(curTheme.background);
+                    Debug.Log("theme changed");
+                }
+            }
         }
+
     }
-
-
 }
+

@@ -4582,7 +4582,7 @@ MonoBehaviour:
   themeData: {fileID: 11400000, guid: 20230a804ab808c4c8375ed2ddfd5040, type: 2}
   obstaclePosition:
   - spawnPosition: {fileID: 8379186675113753745}
-    prefab: {fileID: 1564139507363088018, guid: aac3b722c550a13438115b93ac421fc6, type: 3}
+    prefab: {fileID: 100000, guid: 8f250248887b160488e39ca31e4da337, type: 3}
   - spawnPosition: {fileID: 374685459899670910}
     prefab: {fileID: 100000, guid: 8f250248887b160488e39ca31e4da337, type: 3}
   - spawnPosition: {fileID: 6587301537054011072}
