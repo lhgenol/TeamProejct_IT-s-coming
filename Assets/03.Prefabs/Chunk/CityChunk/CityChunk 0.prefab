@@ -2510,8 +2510,6 @@ MonoBehaviour:
     prefab: {fileID: 2444322821583412841, guid: 4760dd5150e4bb74c98f97f4d219f757, type: 3}
   - spawnPosition: {fileID: 99882853664228649}
     prefab: {fileID: 100000, guid: 7e5467a014c7ce141973060f7501d12f, type: 3}
-  - spawnPosition: {fileID: 1924022519362805958}
-    prefab: {fileID: 100000, guid: 9ac593275db71fc4688986b2a1d57153, type: 3}
   - spawnPosition: {fileID: 2022635264698327542}
     prefab: {fileID: 100000, guid: 9e4b50fd43afcdc46a7981c689e926c4, type: 3}
   - spawnPosition: {fileID: 3947291396436625227}
