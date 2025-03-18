@@ -10,7 +10,7 @@ public class ChunkCollector : MonoBehaviour
         {
             Chunk chunk = other.GetComponent<Chunk>();
             //chunk.CollectObjects();
-            MapManager.Instance.chunkPool.ReturnToPool(other.GetComponent<Chunk>() ,other.gameObject);
+            MapManager.Instance.chunkPool.ReturnToPool(chunk ,other.gameObject);
         }
     }
 }

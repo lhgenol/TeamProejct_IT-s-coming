@@ -7,7 +7,6 @@ public class Player : Entity
 {
     public PlayerController controller;
     public int health;          // 플레이어 체력 (2번 부딪히면 게임 오버)
-    public int score;           // 플레이어 점수
     private bool isCaught = false; // 플레이어가 잡혔는지 여부
 
     public void Awake()
@@ -22,11 +21,6 @@ public class Player : Entity
         animator = GetComponentInChildren<Animator>();
     }
     
-    private void OnEnable()
-    {
-        animator.SetBool("IsRun", true); 
-        animator.SetBool("IsDie", false); // 죽은 상태 초기화
-    }
     
     private void Update()
     {
@@ -40,18 +34,12 @@ public class Player : Entity
         //PlayAnimation("Run");
         animator.SetBool("IsRun", true); 
     }
-
-    // 점수를 추가하는 함수
-    public void AddScore(int amount)
-    {
-        score += amount;
-    }
     
     // 플레이어가 죽었을 때 실행되는 함수
     private void Die()
     {
         Debug.Log("Game Over");
-        
+        animator.SetBool("IsRun", false);
         animator.SetBool("IsDie", true); 
         
         // 플레이어 이동 & 점프 막기
@@ -93,7 +81,12 @@ public class Player : Entity
             GetCaught(); // 플레이어 사망 연출
         }
     }
-    
+    public void Init()
+    {
+        health = 2;
+        isCaught = false; // 플레이어가 잡혔는지 여부
+    }
+
     // 플레이어가 잡혔을 때 실행
     private void GetCaught()
     {

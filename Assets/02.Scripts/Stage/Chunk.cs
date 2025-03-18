@@ -151,8 +151,14 @@ public class Chunk : MonoBehaviour
             }
             else if (obj.spawnPosition.childCount > 0) //스폰된 오브젝트가 있는지 확인
             {
-                GameObject spawnedObstacle = obj.spawnPosition.GetChild(0).gameObject;
-                MapManager.Instance.obstaclePool.ReturnToPool(spawnedObstacle.GetComponent<Obstacle>(), spawnedObstacle);
+                Obstacle spawnedObstacle = obj.spawnPosition.GetComponentInChildren<Obstacle>();
+
+                if (spawnedObstacle != null)
+                {
+                    GameObject gameObject = spawnedObstacle.gameObject;
+                    MapManager.Instance.obstaclePool.ReturnToPool(gameObject.GetComponent<Obstacle>(), gameObject);
+                }
+                else DestroyAllChildren(obj.spawnPosition);
             }
             
         }
@@ -183,8 +189,14 @@ public class Chunk : MonoBehaviour
             }
             else if (obj.spawnPosition.childCount > 0) // 🚨 실제 스폰된 오브젝트가 있는지 확인
             {
-                GameObject spawnedStructure = obj.spawnPosition.GetChild(0).gameObject;
-                MapManager.Instance.structurePool.ReturnToPool(spawnedStructure.GetComponent<Structure>(), spawnedStructure);
+                Structure spawnedStructure = obj.spawnPosition.GetComponentInChildren<Structure>();
+                
+                if (spawnedStructure != null)
+                {
+                    GameObject gameObject = spawnedStructure.gameObject;
+                    MapManager.Instance.structurePool.ReturnToPool(gameObject.GetComponent<Structure>(), gameObject);
+                }
+                else DestroyAllChildren(obj.spawnPosition);
             }
         }
     }
@@ -213,8 +225,14 @@ public class Chunk : MonoBehaviour
             }
             else if (obj.spawnPosition.childCount > 0) //  실제 스폰된 오브젝트가 있는지 확인
             {
-                GameObject spawnedItem = obj.spawnPosition.GetChild(0).gameObject;
-                MapManager.Instance.itemPool.ReturnToPool(spawnedItem.GetComponent<Item>(), spawnedItem);
+                Item spawnedItem = obj.spawnPosition.GetComponentInChildren<Item>();
+
+                if (spawnedItem != null)
+                {
+                    GameObject gameObject = spawnedItem.gameObject;
+                    MapManager.Instance.itemPool.ReturnToPool(gameObject.GetComponent<Item>(), gameObject);
+                }
+                else DestroyAllChildren(obj.spawnPosition);
             }
         }
     }
@@ -237,8 +255,9 @@ public class Chunk : MonoBehaviour
             }
             else if (coinTransform.childCount > 0)
             {
-                GameObject coinObject = coinTransform.GetChild(0).gameObject;
-                MapManager.Instance.itemPool.ReturnToPool(coinObject.GetComponent<Item>(), coinObject);
+                GameObject coinObject = coinTransform.GetComponentInChildren<Item>().gameObject;
+                if (coinObject != null) MapManager.Instance.itemPool.ReturnToPool(coinObject.GetComponent<Item>(), coinObject);
+                else DestroyAllChildren(coinTransform);
             }
         }
     }

@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    new static Camera camera=Camera.main;
 
-    // Update is called once per frame
-    void Update()
+    public static void Moveleft()
     {
-        
+        camera.gameObject.transform.position += new Vector3(-3.5f, 0, 0);
+    }
+    public static void MoveRight()
+    {
+        camera.gameObject.transform.position += new Vector3(3.5f, 0, 0);
     }
 }

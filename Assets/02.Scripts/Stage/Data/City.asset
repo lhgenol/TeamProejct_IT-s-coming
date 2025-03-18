@@ -25,6 +25,7 @@ MonoBehaviour:
   - {fileID: 4125536917984924479, guid: b8af54a3206056445aac4b98d761feb9, type: 3}
   - {fileID: 1564139507363088018, guid: aac3b722c550a13438115b93ac421fc6, type: 3}
   - {fileID: 2444322821583412841, guid: 29812d25ed21c4144ba319493aebe971, type: 3}
+  - {fileID: 2444322821583412841, guid: 4760dd5150e4bb74c98f97f4d219f757, type: 3}
   - {fileID: 100000, guid: 1db70a4a337461e4cb6f07c637f948aa, type: 3}
   - {fileID: 100000, guid: 7e5467a014c7ce141973060f7501d12f, type: 3}
   - {fileID: 100000, guid: 8f250248887b160488e39ca31e4da337, type: 3}
@@ -34,7 +35,9 @@ MonoBehaviour:
   - {fileID: 100000, guid: fa159bea0e1e52a4c92815fe7de6bc7a, type: 3}
   - {fileID: 3744547650054197815, guid: 9f53c88aa8d19d74883f01d09ff8c873, type: 3}
   - {fileID: 100000, guid: 292d6694cc63fb344bccd1034804c8d8, type: 3}
+  - {fileID: 100000, guid: 9e4b50fd43afcdc46a7981c689e926c4, type: 3}
   - {fileID: 100000, guid: b0c9c78bbc992d343bf20abc8760240c, type: 3}
+  - {fileID: 100000, guid: 96c4b05358fcbc042ba453806e6cfa05, type: 3}
   - {fileID: 100000, guid: 7f6f27ff396315442a811cae9bee107d, type: 3}
   - {fileID: 100000, guid: 618cc72f1001ff242a39defb599889b7, type: 3}
   - {fileID: 100000, guid: ded390250b9e8f440bedf62334fe326e, type: 3}
@@ -79,5 +82,11 @@ MonoBehaviour:
   chunkList:
   - {fileID: 4701149620469552942, guid: 272077d0c6c0b914280eeb4a134cd761, type: 3}
   - {fileID: 8221959929997278154, guid: c32072e424fdfe84a8e9bd0bfe6120df, type: 3}
+  - {fileID: 620147888823079649, guid: a4b60b0b94bbe0443b50941517184b7f, type: 3}
+  - {fileID: 5319493254607257669, guid: 2f4ffef5cfa1ffa41b410577c4cc06ee, type: 3}
+  - {fileID: 7359544219451189022, guid: caed6d4de367b1d47b2b23f99cf586bf, type: 3}
   Templates:
   - chunkIndexCombine: 000000000000000000000000
+  - chunkIndexCombine: 020000000300000004000000
+  - chunkIndexCombine: 030000000200000004000000
+  - chunkIndexCombine: 000000000100000003000000

@@ -106,12 +106,12 @@ public class ChunkSpawner : MonoBehaviour
             if (curTheme.chunkList.Count > 2) chunkQueue.Enqueue(curTheme.chunkList[1]);//바꾸기 전에 테마 종료 청크 인큐
             else chunkQueue.Enqueue(curTheme.chunkList[0]);
 
-            curTheme = RandomTheme(curThemeIndex);//본인제외 랜덤 테마
+            curTheme = RandomTheme();//본인제외 랜덤 테마
             leftTemplate = RandomThemeChangeThreshold();
             chunkQueue.Enqueue(curTheme.chunkList[0]);//바꾼후 테마 시작 청크 인큐
         }
 
-        curTemplate = RandomTemplet(curTemplateIndex);
+        curTemplate = RandomTemplet();
 
         foreach (int i in curTemplate.chunkIndexCombine)//랜덤 템플릿을 받아와서 data의 chunklist에서 골라서 인큐
         {
@@ -128,19 +128,20 @@ public class ChunkSpawner : MonoBehaviour
         return Random.Range(themeChangeMinThreshold, themeChangeMaxThreshold);
     }
 
-    ChunkTemplate RandomTemplet(int curTempIndex)
+    ChunkTemplate RandomTemplet()
     {
+        int newTempIndex;
         int i = 0;
         do
         {
-            curTempIndex = RandomTempletIndex();
+            newTempIndex = RandomTempletIndex();
             i++;
         }
-        while (curTempIndex != this.curTemplateIndex || i > 30);//지금 템플릿과 같다면 다시돌림 최대 30번
+        while (newTempIndex == this.curTemplateIndex && i < 5);//지금 템플릿과 같다면 다시돌림 최대 30번
 
-        this.curTemplateIndex = curTempIndex;
+        this.curTemplateIndex = newTempIndex;
 
-        return (themeData[curThemeIndex].Templates != null) ? themeData[curThemeIndex].Templates[curTempIndex] : null;
+        return (themeData[curThemeIndex].Templates != null) ? themeData[curThemeIndex].Templates[newTempIndex] : null;
     }
 
     int RandomTempletIndex()
@@ -148,19 +149,20 @@ public class ChunkSpawner : MonoBehaviour
         return (themeData[curThemeIndex].Templates != null) ? Random.Range(0, themeData[curThemeIndex].Templates.Count) : 0;
     }
 
-    ThemeDataSO RandomTheme(int curThemeIndex)
+    ThemeDataSO RandomTheme()
     {
+        int newThemeIndex;
         int i = 0;
         do
         {
-            curThemeIndex = RandomThemeIndex();
+            newThemeIndex = RandomThemeIndex();
             i++;
         }
-        while (curThemeIndex != this.curThemeIndex || i > 30);
+        while (newThemeIndex == this.curThemeIndex && i < 5);
 
-        this.curThemeIndex = curThemeIndex;
+        this.curThemeIndex = newThemeIndex;
 
-        return (curThemeIndex != -1) ? themeData[curThemeIndex] : null;
+        return (newThemeIndex != -1) ? themeData[newThemeIndex] : null;
     }
 
     int RandomThemeIndex()
@@ -176,11 +178,21 @@ public class ChunkSpawner : MonoBehaviour
 
     void CollectAllChunks()
     {
-        Chunk[] allChunksOnContainer = chunkContainer.gameObject.GetComponentsInChildren<Chunk>();
+        //  chunkContainer 내부의 모든 Chunk 컴포넌트를 가져오기
+        Chunk[] allChunks = chunkContainer.GetComponentsInChildren<Chunk>();
 
-        foreach (Chunk chunk in allChunksOnContainer)
+        //  Chunk가 붙어 있는 GameObject 리스트 생성
+        List<GameObject> chunkObjects = new List<GameObject>();
+
+        foreach (Chunk chunk in allChunks)
         {
-            MapManager.Instance.chunkPool.ReturnToPool(chunk, chunk.gameObject);
+            chunkObjects.Add(chunk.gameObject);
+        }
+
+        //  반환 로직 실행
+        foreach (GameObject chunkObj in chunkObjects)
+        {
+            MapManager.Instance.chunkPool.ReturnToPool(chunkObj.GetComponent<Chunk>(), chunkObj);
         }
     }
 }

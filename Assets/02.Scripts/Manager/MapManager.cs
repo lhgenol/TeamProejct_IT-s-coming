@@ -30,6 +30,7 @@ public class MapManager : Singleton<MapManager>
 
     public void KnockBack(float knockBackSpeedMultiplier, float knockBackDuration)
     {
+        Debug.Log("넉백");
         if (chunkContainer != null) chunkContainer.KnockBack(knockBackSpeedMultiplier, knockBackDuration);
         else Debug.Log($"{chunkContainer.name} is null");
     }
