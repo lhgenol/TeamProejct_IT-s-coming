@@ -25,23 +25,24 @@ public class CustomizingUI : BaseUI
         for (int i = 0; i < hats.Length; i++)
         {
             int index = i + 1; 
-            hats[i].onClick.AddListener(() => OnButtonClick("Hat", index));
+            hats[i].onClick.AddListener(() => OnButtonClick(Parts.Hat, index));
         }
 
         for (int i = 0; i < outWears.Length; i++)
         {
             int index = i + 1; 
-            outWears[i].onClick.AddListener(() => OnButtonClick("OutWears", index));
+            outWears[i].onClick.AddListener(() => OnButtonClick(Parts.OutWear, index));
         }
 
         for (int i = 0; i < pants.Length; i++)
         {
             int index = i + 1;
-            pants[i].onClick.AddListener(() => OnButtonClick("Pant", index));
+            pants[i].onClick.AddListener(() => OnButtonClick(Parts.Pants, index));
         }
     }
-    void OnButtonClick(string itemType, int index)
+    void OnButtonClick(Parts part, int index)
     {
-        Debug.Log($"Selected Item: {itemType},{index}");
+        Debug.Log(part);Debug.Log(index);
+        PlayerManager.Instance.customizing.ChangeMesh(part, index);
     }
 }
