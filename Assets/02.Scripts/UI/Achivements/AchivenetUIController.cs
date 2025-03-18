@@ -7,11 +7,14 @@ using UnityEngine.UI;
 public class AchievementUIController : MonoBehaviour
 {
 	// UI 요소들
+	[Header("HUD")]
 	[SerializeField] private RectTransform achievementUI;
 	[SerializeField] private TextMeshProUGUI achievementNameText;
 	[SerializeField] private TextMeshProUGUI achievementDescriptionText;
 	[SerializeField] private Image achievementImage;
 	[SerializeField] private Sprite[] iconlist;
+
+	[Header("AchivementUI")]
 	[SerializeField] private TextMeshProUGUI[] achievementPanelName;
 	[SerializeField] private TextMeshProUGUI[] achievementPanelDiscription;
 	[SerializeField] private Image[] achievementPanelImage;
@@ -43,7 +46,7 @@ public class AchievementUIController : MonoBehaviour
 	private void UpdateUIData(string achievementKey, int index)
 	{
 		AchievementData achievement = achievements[achievementKey];
-		//achievementPanelName[index].text = achievement.name;
+		achievementPanelName[index].text = achievement.name;
 		achievementPanelDiscription[index].text = achievement.description;
 		achievementPanelImage[index].sprite = achievement.image;
 	}
@@ -55,31 +58,42 @@ public class AchievementUIController : MonoBehaviour
 	{
 		// 이벤트 등록
 		Achievements.OnFirstCoin += () => ShowAchievement("TenCoin");
-		Achievements.OnFirstThirtySecond += () => ShowAchievement("Ailve");
-		Achievements.OnFristRoundClear += () => ShowAchievement("RoundClear");
-		Achievements.OnFirstRank += () => ShowAchievement("Rank");
-		Achievements.OnFirstCostomizing += () => ShowAchievement("Costomizing");
+        Achievements.OnFirstCoin += () => UpdatePannel("TenCoin");
+        Achievements.OnFirstThirtySecond += () => ShowAchievement("Ailve");
+        Achievements.OnFirstThirtySecond += () => UpdatePannel("Ailve");
+        Achievements.OnFristRoundClear += () => ShowAchievement("RoundClear");
+        Achievements.OnFristRoundClear += () => UpdatePannel("RoundClear");
+        Achievements.OnFirstRank += () => ShowAchievement("Rank");
+        Achievements.OnFirstRank += () => UpdatePannel("Rank");
+        Achievements.OnFirstCostomizing += () => ShowAchievement("Costomizing");
+        Achievements.OnFirstCostomizing += () => UpdatePannel("Costomizing");
 
-	}
+    }
 
 	/// <summary>
 	/// 이벤트 해제
 	/// </summary>
 	private void OnDisable()
 	{
-		// 이벤트 해제
-		Achievements.OnFirstCoin -= () => ShowAchievement("TenCoin");
-		Achievements.OnFirstThirtySecond -= () => ShowAchievement("Ailve");
-		Achievements.OnFristRoundClear -= () => ShowAchievement("RoundClear");
-		Achievements.OnFirstRank -= () => ShowAchievement("Rank");
-		Achievements.OnFirstCostomizing -= () => ShowAchievement("Costomizing");
-	}
+        // 이벤트 해제
+        Achievements.OnFirstCoin -= () => ShowAchievement("TenCoin");
+        Achievements.OnFirstCoin -= () => UpdatePannel("TenCoin");
+        Achievements.OnFirstThirtySecond -= () => ShowAchievement("Ailve");
+        Achievements.OnFirstThirtySecond -= () => UpdatePannel("Ailve");
+        Achievements.OnFristRoundClear -= () => ShowAchievement("RoundClear");
+        Achievements.OnFristRoundClear -= () => UpdatePannel("RoundClear");
+        Achievements.OnFirstRank -= () => ShowAchievement("Rank");
+        Achievements.OnFirstRank -= () => UpdatePannel("Rank");
+        Achievements.OnFirstCostomizing -= () => ShowAchievement("Costomizing");
+        Achievements.OnFirstCostomizing -= () => UpdatePannel("Costomizing");
+    }
 	/// <summary>
 	/// 도전과제 패널을 업데이트하는 메서드
 	/// </summary>
 	/// <param name = "achievementKey" ></ param >
 	private void UpdatePannel(string achievementKey)
 	{
+		Debug.Log(achievementKey);
 		if (!achievements.ContainsKey(achievementKey))
 		{
 			Debug.LogWarning($"도전과제 데이터가 존재하지 않습니다: {achievementKey}");
@@ -126,11 +140,11 @@ public class AchievementUIController : MonoBehaviour
 		// UI 애니메이션 실행
 
 
-		float targetX = achievementUI.transform.localPosition.x - 600f;
+		float targetX = achievementUI.transform.localPosition.x - 300f;
 		float originalX = achievementUI.transform.localPosition.x;
 
 		Sequence sequence = DOTween.Sequence();
-		sequence.Append(achievementUI.transform.DOLocalMoveX(targetX, 0.5f).SetEase(Ease.OutCubic)) // 360 위로 이동
+		sequence.Append(achievementUI.transform.DOLocalMoveX(targetX, 0.5f).SetEase(Ease.OutCubic)) 
 				.AppendInterval(1f) // 1초 대기
 				.Append(achievementUI.transform.DOLocalMoveX(originalX, 0.5f).SetEase(Ease.InCubic)); // 다시 원래 위치로 이동
 	}

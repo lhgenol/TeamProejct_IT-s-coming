@@ -39,6 +39,10 @@ public class GameManager : Singleton<GameManager>
                 lastUpdateTime = Time.time;
                 Score += 1;
             }
+            if(Score>30)
+            {
+                Achievements.TriggerThirtySecond();
+            }
         }
     }
     public void StartGame()
@@ -58,6 +62,10 @@ public class GameManager : Singleton<GameManager>
     {
         Score += 10;
         Coin += 1;
+        if(Coin>10)
+        {
+            Achievements.TriggerFirstTenCoin();
+        }
     }
 
     public void StopGame()
@@ -92,6 +100,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (Score > Rank[9])
         {
+            Achievements.TriggerFirstRank();
             NewRank = true;
             Rank[9] = Score;
             Array.Sort(Rank);
