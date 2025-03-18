@@ -230,6 +230,15 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(MoveToLane());
             }
         }
+        else
+        {
+            if (other.gameObject.CompareTag("Obstacle1") || other.gameObject.CompareTag("Obstacle2_Hit"))
+            {
+                Obstacle obj = other.gameObject.GetComponent<Obstacle>();
+                if (obj != null) MapManager.Instance.obstaclePool.ReturnToPool(obj, other.gameObject);
+                else Debug.Log("not obstacle");
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -258,6 +267,7 @@ public class PlayerController : MonoBehaviour
                 Obstacle obj = collision.gameObject.GetComponent<Obstacle>();
                 if (obj != null) MapManager.Instance.obstaclePool.ReturnToPool(obj, collision.gameObject);
             }
+            else Debug.Log("not obstacle");
         }
     }
     
