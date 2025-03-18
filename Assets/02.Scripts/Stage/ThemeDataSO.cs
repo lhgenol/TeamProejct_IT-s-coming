@@ -11,10 +11,12 @@ public class ChunkTemplate
 public class ThemeDataSO : ScriptableObject
 {
     public int index;
-    public string ThemeName;
+    public string themeName;
     public List<GameObject> itemList;
     public List<GameObject> obstacleList; // 사용할 프리팹 리스트
     public List<GameObject> structureList;
     public List<GameObject> chunkList;
-    public List<ChunkTemplate> Templates;
+    public List<ChunkTemplate> templates;
+    public AudioClip BGM;
+    public Material background;
 }

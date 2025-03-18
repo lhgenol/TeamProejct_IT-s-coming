@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
+public enum ItemType
+{ Coin,Magnet, JumpBoost,Star,Trophy }
+public enum UsedItemType 
+{ Magnet,Star, Trophy,NonUse }
 public class Item : MonoBehaviour
 {
-    public enum ItemType { Coin, Magnet, JumpBoost, Star , Trophy }
-    public ItemType itemType;
+    public UsedItemType itemType;
     public float rotationSpeed = 100f; // 회전 속도 조절
     Item item;
 
@@ -22,6 +25,9 @@ public class Item : MonoBehaviour
         {
             ApplyEffect(other.gameObject);
             MapManager.Instance.itemPool.ReturnToPool(item, gameObject); // 아이템을 먹으면 제거
+
+            if (!(itemType == UsedItemType.NonUse))
+            UIManager.Instance.GetItem(itemType);
         }
     }
 

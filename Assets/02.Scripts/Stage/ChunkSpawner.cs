@@ -141,12 +141,12 @@ public class ChunkSpawner : MonoBehaviour
 
         this.curTemplateIndex = newTempIndex;
 
-        return (themeData[curThemeIndex].Templates != null) ? themeData[curThemeIndex].Templates[newTempIndex] : null;
+        return (themeData[curThemeIndex].templates != null) ? themeData[curThemeIndex].templates[newTempIndex] : null;
     }
 
     int RandomTempletIndex()
     {
-        return (themeData[curThemeIndex].Templates != null) ? Random.Range(0, themeData[curThemeIndex].Templates.Count) : 0;
+        return (themeData[curThemeIndex].templates != null) ? Random.Range(0, themeData[curThemeIndex].templates.Count) : 0;
     }
 
     ThemeDataSO RandomTheme()

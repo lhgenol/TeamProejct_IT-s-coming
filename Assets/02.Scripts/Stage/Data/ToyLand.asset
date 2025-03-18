@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ToyLand
   m_EditorClassIdentifier: 
   index: 0
-  ThemeName: Toy
+  themeName: 
   itemList:
   - {fileID: 6867175340535876064, guid: 27eb5f90fec113c44a9f111dc7e6e940, type: 3}
   - {fileID: 5856638529640352021, guid: 50e260f821baa56419af96b848301e5d, type: 3}
@@ -30,8 +30,6 @@ MonoBehaviour:
   - {fileID: 5421258464156938650, guid: 208553493a6049d439b2b70ddb23f335, type: 3}
   - {fileID: 7536955298989023206, guid: b3320f62905aba34982d953822c1f888, type: 3}
   - {fileID: 4287525912796169193, guid: 6ca8dfb1e38d17341a7e5e1eb1caaac6, type: 3}
-  - {fileID: 1388354555049857610, guid: 40fa8fd898ce2c5449bef88c9696cfe3, type: 3}
-  - {fileID: 1388354555049857610, guid: 8714191f03a871240b2e48259b32771b, type: 3}
   structureList:
   - {fileID: 7450015248136123026, guid: c69ef20c4f71f7842a9898e95730c433, type: 3}
   - {fileID: 2900148878580453232, guid: 0f7c099ebf5d52642bbfe5afedb03d03, type: 3}
@@ -51,5 +49,9 @@ MonoBehaviour:
   - {fileID: 6148822034897707147, guid: f1ecfa32ad59a3e41b4ce61d81f9fae7, type: 3}
   - {fileID: 902424163925813678, guid: 3c0026bacc46a9d47bb2be6401e407cf, type: 3}
   - {fileID: 1305010681452916507, guid: 45ae9f1e8af5daa43ad202497ece70ac, type: 3}
-  Templates:
-  - chunkIndexCombine: 000000000100000002000000030000000400000005000000
+  templates:
+  - chunkIndexCombine: 010000000200000003000000
+  - chunkIndexCombine: 040000000500000002000000
+  - chunkIndexCombine: 000000000100000002000000
+  BGM: {fileID: 8300000, guid: ccb336cb715f817409b196b74f60cb0d, type: 3}
+  background: {fileID: 2100000, guid: e43707969dd593b40926c1a363e8b1e0, type: 2}
