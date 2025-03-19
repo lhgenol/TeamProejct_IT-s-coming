@@ -2388,13 +2388,13 @@ MonoBehaviour:
   moveSpeed: 7
   jumpForce: 18
   laneDistance: 3.5
-  slideDuration: 0.1
+  slideDuration: 0.5
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 503
   isInvincible: 0
   nomalColliderSize: {x: 1, y: 1, z: 1}
-  slideColliderSize: {x: 0, y: 0, z: 0}
+  slideColliderSize: {x: 1, y: 0.5, z: 1}
   dieColliderSize: {x: 0, y: 0, z: 0}
   moveDuration: 0.5
 --- !u!114 &369101359
@@ -4616,6 +4616,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 693cedebe6edc9641a7d48773921e85d, type: 3}
   bgmVolumeSlider: {fileID: 789752653}
   sfxVolumeSlider: {fileID: 1150408592}
+  maxBGMVolume: 0.3
+  maxSFXVolume: 0.2
 --- !u!4 &533641012
 Transform:
   m_ObjectHideFlags: 0
