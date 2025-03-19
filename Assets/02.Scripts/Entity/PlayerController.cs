@@ -163,6 +163,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started && isGrounded())
         {
+            SoundManager.Instance.PlaySFX(0);
             // 위 방향으로 순간적인 힘을 가함. 순간적으로 힘을 줄 수 있게 Impulse로 설정
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
             _animator.SetBool("IsJump", true); // 점프 애니메이션 실행
@@ -219,6 +220,7 @@ public class PlayerController : MonoBehaviour
         {// 장애물과 충돌했을 때
             if (other.gameObject.CompareTag("Obstacle1") || other.gameObject.CompareTag("Obstacle2_Hit"))
             {
+                SoundManager.Instance.PlaySFX(1);
                 Debug.Log("넉백");
                 PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
                 MapManager.Instance.KnockBack(0.01f, 0.1f);
