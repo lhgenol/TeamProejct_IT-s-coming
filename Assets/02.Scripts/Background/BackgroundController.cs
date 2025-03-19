@@ -10,14 +10,7 @@ public enum BackgroundType
 }
 public class BackgroundController : MonoBehaviour
 {
-    //public BackgroundType currentBackgroundType;
-
-    // 각 배경 상태에 맞는 Material을 연결
     public Material curThemeMaterial;
-    /*public Material cityMaterial;
-    public Material westernMaterial;
-    public Material toyMaterial;*/
-
     private Renderer planeRenderer;
 
     private void Awake()
@@ -31,37 +24,13 @@ public class BackgroundController : MonoBehaviour
         planeRenderer = GetComponent<Renderer>();
         ChangeBackground(curThemeMaterial);
     }
-
+    /// <summary>
+    /// 백그라운드 이미지 바꾸는메서드
+    /// </summary>
+    /// <param name="background"></param>
     public void ChangeBackground(Material background)
     {
         curThemeMaterial = background;
         planeRenderer.material = curThemeMaterial;
     }
-
-    /*public void SwitchBackground(BackgroundType backgroundType)
-    {
-        switch (backgroundType)
-        {
-            case BackgroundType.City:
-                planeRenderer.material = cityMaterial;
-                break;
-
-            case BackgroundType.Western:
-                planeRenderer.material = westernMaterial;
-                break;
-
-            case BackgroundType.Toy:
-                planeRenderer.material = toyMaterial;
-                break;
-
-            default:
-                planeRenderer.material = cityMaterial;
-                break;
-        }
-    }
-    public void ChangeBackground(BackgroundType newBackgroundType)
-    {
-        currentBackgroundType = newBackgroundType;
-        SwitchBackground(newBackgroundType);
-    }*/
 }

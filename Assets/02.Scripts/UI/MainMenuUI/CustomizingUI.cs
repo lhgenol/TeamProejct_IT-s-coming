@@ -21,6 +21,11 @@ public class CustomizingUI : BaseUI
     {
         return UIState.Customizing;
     }
+
+    /// <summary>
+    /// 버튼을 할당하여 버튼 클릭시 Costomizing에
+    /// 키값과 인덱스번호를 전달
+    /// </summary>
     void SetUpButtonListeners()
     {
         for (int i = 0; i < hats.Length; i++)

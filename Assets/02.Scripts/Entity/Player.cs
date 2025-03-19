@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 플레이어의 체력, 점수, 점프 횟수 등을 관리하는 클래스
+/// <summary>
+/// 플레이어의 체력, 점수, 점프 횟수 등을 관리하는 클래스
+/// </summary>
 public class Player : Entity
 {
     public PlayerController controller;
-    public int health;          // 플레이어 체력 (2번 부딪히면 게임 오버)
-    private bool isCaught = false; // 플레이어가 잡혔는지 여부
+    public int health;              // 플레이어 체력 (2번 부딪히면 게임 오버)
+    private bool isCaught = false;  // 플레이어가 잡혔는지 여부
     
-    private Chaser chaser;  // Chaser 저장 변수
+    private Chaser chaser;          // 추적자(Chaser) 객체
 
     public void Awake()
     {
@@ -24,30 +26,27 @@ public class Player : Entity
 
         // Chaser 찾기
         chaser = FindObjectOfType<Chaser>(true);
-        if (chaser == null)
-        {
-            Debug.Log("Chaser를 찾을 수 없습니다");
-        }
     }
     
+    /// <summary>
+    /// 플레이어 상태를 초기화하는 함수
+    /// </summary>
     public void Init()
     {
         health = 2;
         isCaught = false; // 플레이어가 잡혔는지 여부
     }
     
-    // 플레이어의 체력은 기본 2로 설정
-    // 플레이어가 한 대 맞으면 체력이 1이 되고, Chaser가 화면에 등장(추적)
-    // 일정 시간이 지나면 Chaser가 뒤로 서서히 빠지고 체력은 다시 2
-    // 체력 1인 상태에서 플레이어다 한 번 더 맞으면 플레이어는 Die, Chaser는 잡는 모션 실행
-    
-    // 플레이어 체력 감소 관리
+    /// <summary>
+    /// 플레이어 체력을 감소시키는 함수
+    /// 체력이 1이 되면 Chaser가 추격 시작.
+    /// 체력이 0이 되면 Chaser에게 잡히고 게임 종료.
+    /// </summary>
     public void ReduceHealth()
     {
-        Debug.Log($"체력 감소! 현재 체력: {health}"); // 디버그 로그 추가
         if (health > 0)
         {
-            animator.SetTrigger("Hit"); // Hit 애니메이션 실행
+            animator.SetTrigger("Hit");
             health--; // 체력 감소
 
             if (chaser != null)
@@ -66,7 +65,11 @@ public class Player : Entity
         }
     }
     
-    // 플레이어 체력 회복(충돌 후 일정 시간이 지나면)
+    /// <summary>
+    /// 충돌 후 일정 시간이 지나면 체력을 회복하는 함수
+    /// 체력이 1이면 5초 후 2로 회복, Chaser는 물러남.
+    /// </summary>
+    /// <param name="delay">회복되기까지의 대기 시간(초)</param>
     private IEnumerator RecoverHealth(float delay)
     {
         yield return new WaitForSeconds(delay); // 일정 시간 대기
@@ -81,7 +84,10 @@ public class Player : Entity
         }
     }
     
-    // 플레이어 체력 회복(아이템 사용 시)
+    /// <summary>
+    /// 아이템을 통해 체력을 회복하는 함수
+    /// 체력이 2 미만이면 1 증가, Chaser의 상태를 갱신.
+    /// </summary>
     public void AddHealth()
     {
         if (health < 2)
@@ -104,10 +110,12 @@ public class Player : Entity
         }
     }
     
-    // 플레이어가 죽었을 때 실행되는 함수
+    /// <summary>
+    /// 플레이어가 사망했을 때 실행되는 함수
+    /// 애니메이션을 변경, 이동을 막은 후 게임을 종료.
+    /// </summary>
     private void Die()
     {
-        Debug.Log("Game Over");
         animator.SetBool("IsRun", false);
         animator.SetBool("IsDie", true); 
         
@@ -120,7 +128,9 @@ public class Player : Entity
         GameManager.Instance.EndGame(); // 게임 종료
     }
 
-    // 플레이어가 잡혔을 때 실행
+    /// <summary>
+    /// 플레이어가 Chaser에게 잡혔을 때 실행되는 함수
+    /// </summary>
     private void GetCaught()
     {
         isCaught = true;

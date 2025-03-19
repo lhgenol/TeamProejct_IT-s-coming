@@ -9,7 +9,6 @@ public class ChunkCollector : MonoBehaviour
         if(other.CompareTag("Chunk"))
         {
             Chunk chunk = other.GetComponent<Chunk>();
-            //chunk.CollectObjects();
             MapManager.Instance.chunkPool.ReturnToPool(chunk ,other.gameObject);
         }
     }

@@ -2388,13 +2388,13 @@ MonoBehaviour:
   moveSpeed: 7
   jumpForce: 18
   laneDistance: 3.5
-  slideDuration: 0.1
+  slideDuration: 0.5
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 503
   isInvincible: 0
   nomalColliderSize: {x: 1, y: 1, z: 1}
-  slideColliderSize: {x: 0, y: 0, z: 0}
+  slideColliderSize: {x: 1, y: 0.5, z: 1}
   dieColliderSize: {x: 0, y: 0, z: 0}
   moveDuration: 0.5
 --- !u!114 &369101359
@@ -4087,7 +4087,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 760, y: 1280}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -4178,27 +4178,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7072457920822533841, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
       propertyPath: startingTemaplates.Array.data[1].chunkIndexCombine.Array.data[0]
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7072457920822533841, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
       propertyPath: startingTemaplates.Array.data[1].chunkIndexCombine.Array.data[1]
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7072457920822533841, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
       propertyPath: startingTemaplates.Array.data[1].chunkIndexCombine.Array.data[2]
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7072457920822533841, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
-      propertyPath: startingTemaplates.Array.data[2].chunkIndexCombine.Array.data[0]
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7072457920822533841, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
-      propertyPath: startingTemaplates.Array.data[2].chunkIndexCombine.Array.data[1]
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7072457920822533841, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
-      propertyPath: startingTemaplates.Array.data[2].chunkIndexCombine.Array.data[2]
+      propertyPath: startingTemaplates.Array.data[2].chunkIndexCombine.Array.data[0]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072457920822533841, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
+      propertyPath: startingTemaplates.Array.data[2].chunkIndexCombine.Array.data[1]
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072457920822533841, guid: bc6ce4c8970740e4c8480a963e38b37a, type: 3}
+      propertyPath: startingTemaplates.Array.data[2].chunkIndexCombine.Array.data[2]
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4610,9 +4610,14 @@ MonoBehaviour:
   bgmSource: {fileID: 0}
   sfxSource: {fileID: 0}
   bgmClip: {fileID: 0}
-  sfxClips: []
+  sfxClips:
+  - {fileID: 8300000, guid: 0b59060f2c8af2544bd246aec90947c9, type: 3}
+  - {fileID: 8300000, guid: d63f238fed7b4af4c8ffc522a72fc4b7, type: 3}
+  - {fileID: 8300000, guid: 693cedebe6edc9641a7d48773921e85d, type: 3}
   bgmVolumeSlider: {fileID: 789752653}
   sfxVolumeSlider: {fileID: 1150408592}
+  maxBGMVolume: 0.3
+  maxSFXVolume: 0.2
 --- !u!4 &533641012
 Transform:
   m_ObjectHideFlags: 0

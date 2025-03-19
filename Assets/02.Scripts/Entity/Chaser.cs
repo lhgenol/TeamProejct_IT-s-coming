@@ -10,7 +10,10 @@ public enum ChaserState
     Catching    // 추적한 상태
 }
 
-// 추적자 NPC를 관리하는 클래스. 플레이어를 따라 이동하고, 플레이어가 장애물에 부딪히면 등장하고 추격하는 역할
+/// <summary>
+/// 추적자 NPC를 관리하는 클래스.
+/// 플레이어가 장애물에 부딪히면 등장해 플레이어를 따라 이동하고, 특정 조건에서 행동을 수행.
+/// </summary>
 public class Chaser : Entity
 {
     public Transform player;        // 플레이어 위치 정보
@@ -30,6 +33,9 @@ public class Chaser : Entity
         Init();
     }
     
+    /// <summary>
+    /// Chaser를 초기화하고 기본 상태로 설정하는 메서드
+    /// </summary>
     public void Init()
     {
         gameObject.SetActive(false); // 시작할 때 비활성화
@@ -50,7 +56,9 @@ public class Chaser : Entity
         animator.SetBool("IsRun", true); // 다시 달리는 상태로 변경
     }
     
-    // 추적 시작 함수 (장애물과 충돌 시 실행됨)
+    /// <summary>
+    /// 플레이어가 장애물에 부딪혔을 때 추적을 시작하는 메서드
+    /// </summary>
     public void StartChasing()
     {
         if (player == null) return; // 플레이어가 없으면 추적 X
@@ -78,7 +86,9 @@ public class Chaser : Entity
         return animator;
     }
     
-    // 추적 메서드
+    /// <summary>
+    /// 플레이어의 X축을 따라 이동하는 추적 메서드
+    /// </summary>
     public void FollowPlayer()
     {
         if (player == null) return; // 플레이어가 없으면 추격하지 않도록 처리
@@ -90,7 +100,9 @@ public class Chaser : Entity
         transform.position = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
     }
     
-    // 추적이 종료되고 Chaser가 서서히 물러남
+    /// <summary>
+    /// 일정 시간 동안 뒤로 물러난 후 추적자를 비활성화하는 코루틴
+    /// </summary>
     public IEnumerator RetreatAndDeactivate()
     {
         float elapsedTime = 0f;
@@ -108,7 +120,9 @@ public class Chaser : Entity
         state = ChaserState.Inactive;
     }
     
-    // 플레이어가 점프할 때 호출할 메서드
+    /// <summary>
+    /// 플레이어가 점프할 때 호출. 추적자도 일정 딜레이 후 점프하는 메서드
+    /// </summary>
     public void Jump()
     {
         if (!isJumping && state == ChaserState.Chasing)
@@ -117,7 +131,9 @@ public class Chaser : Entity
         }
     }
     
-    // 플레이어보다 약간 늦게 점프
+    /// <summary>
+    /// 일정 시간 후 추적자가 점프하는 코루틴
+    /// </summary>
     private IEnumerator DelayedJump()
     {
         isJumping = true;
@@ -128,11 +144,12 @@ public class Chaser : Entity
         isJumping = false;
     }
 
-    // 플레이어가 2번째 충돌하면 잡기 애니메이션 실행
+    /// <summary>
+    /// 플레이어가 두 번째 충돌을 하면 추적자가 플레이어를 잡는 메서드
+    /// </summary>
     public void CatchPlayer()
     {
         state = ChaserState.Catching; // 잡기 상태
         animator.SetBool("Catch", true);
-        Debug.Log("게임 오버! 추적자에게 잡혔습니다.");
     }
 }

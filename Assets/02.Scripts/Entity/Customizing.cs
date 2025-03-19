@@ -21,6 +21,11 @@ public class Customizing : MonoBehaviour
     public Mesh[] outWearMeshs;
     public Mesh[] pantsMeshs;
 
+    /// <summary>
+    /// 캐릭터안에 있는 오브젝트(옷)의 mesh를 바꿔준다
+    /// </summary>
+    /// <param name="part"></param>
+    /// <param name="index"></param>
     public void ChangeMesh(Parts part,int index)
     {
         Debug.Log(part);Debug.Log(index);
