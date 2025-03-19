@@ -25,12 +25,10 @@ public class AchievementUIController : MonoBehaviour
 		public Sprite image;
 	}
 
-	// 도전과제 데이터 매핑
 	private Dictionary<string, AchievementData> achievements = new Dictionary<string, AchievementData>();
 
 	private void Start()
 	{
-		// 도전과제 데이터 등록
 		achievements.Add("TenCoin", new AchievementData { name = "코인10개!", description = "코인을 10개모았습니다.", image = iconlist[0] });
 		achievements.Add("RoundClear", new AchievementData { name = "라운드클리어!", description = "처음으로 라운드를 클리어했습니다.", image = iconlist[1] });
 		achievements.Add("Rank", new AchievementData { name = "첫 등수!", description = "처음으로 랭크에 올랐습니다.", image = iconlist[2] });
@@ -88,10 +86,8 @@ public class AchievementUIController : MonoBehaviour
 	/// <param name = "achievementKey" ></ param >
 	private void UpdatePannel(string achievementKey)
 	{
-		Debug.Log(achievementKey);
 		if (!achievements.ContainsKey(achievementKey))
 		{
-			Debug.LogWarning($"도전과제 데이터가 존재하지 않습니다: {achievementKey}");
 			return;
 		}
 		switch (achievementKey)
@@ -119,19 +115,13 @@ public class AchievementUIController : MonoBehaviour
 	{
 		if (!achievements.ContainsKey(achievementKey))
 		{
-			Debug.LogWarning($"도전과제 데이터가 존재하지 않습니다: {achievementKey}");
 			return;
 		}
 
 		AchievementData achievement = achievements[achievementKey];
-
-		// UI 요소 업데이트
 		achievementNameText.text = achievement.name;
 		achievementDescriptionText.text = achievement.description;
 		achievementImage.sprite = achievement.image;
-
-		// UI 애니메이션 실행
-
 
 		float targetX = achievementUI.transform.localPosition.x - 300f;
 		float originalX = achievementUI.transform.localPosition.x;

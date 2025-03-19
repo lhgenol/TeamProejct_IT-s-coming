@@ -11,6 +11,9 @@ public class VolumeUIController : MonoBehaviour
     private bool isAnimating = false;
     private bool isVolumeOpen = false;
 
+    /// <summary>
+    /// 볼륨이미지를 누르면 볼륨ui팝업
+    /// </summary>
     public void OnClickVolume()
     {
         if (isAnimating)
@@ -35,6 +38,13 @@ public class VolumeUIController : MonoBehaviour
         MovingUI(volumeUI,300, 0);
     }
 
+    /// <summary>
+    /// 볼륨UI가 움직인다.
+    /// DOTWEEN이용
+    /// </summary>
+    /// <param name="gameobject"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void MovingUI(GameObject gameobject,float x ,float  y)
     {
 

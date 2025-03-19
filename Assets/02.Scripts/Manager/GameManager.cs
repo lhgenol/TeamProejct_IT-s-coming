@@ -45,6 +45,11 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
+
+    /// <summary>
+    /// 게임시작을 누를때 초기화해주는 메서드
+    /// 매니저들에게 초기화 메서드를 받아와 실행
+    /// </summary>
     public void StartGame()
     {
         Started = true;
@@ -67,7 +72,9 @@ public class GameManager : Singleton<GameManager>
             Achievements.TriggerFirstTenCoin();
         }
     }
-
+    /// <summary>
+    /// 게임을 멈추어주는 메서드
+    /// </summary>
     public void StopGame()
     {
         Started = false;
@@ -75,7 +82,10 @@ public class GameManager : Singleton<GameManager>
         CameraController.Init();
         MapManager.Instance.chunkContainer.PauseMovement();
     }
-
+    /// <summary>
+    /// 게임 종료시 호출되는 메서드
+    /// 리더보드도 같이 호출해서 랭킹 갱신
+    /// </summary>
     public void EndGame()
     {
         StopGame();
@@ -83,19 +93,26 @@ public class GameManager : Singleton<GameManager>
         UIManager.Instance.ChangeState(UIState.GameEnd);
     }
 
+    /// <summary>
+    /// 게임을 일시정지 해주는 메서드
+    /// </summary>
     public void PauseGame()
     {
         NowPlaying = false;
         MapManager.Instance.chunkContainer.PauseMovement();
-        //일시정지
     }
-
+    /// <summary>
+    /// 일시정지한 게임을 재시작해주는 메서드
+    /// </summary>
     public void Resume()
     {
         NowPlaying = true;
         MapManager.Instance.chunkContainer.ResumeMovement();
     }
-
+    /// <summary>
+    /// 현재 랭킹 10등과 비교하여 랭크에 등재해주는 메서드
+    /// 랭킹에 넣은이후 올림차순을 해준다.
+    /// </summary>
     public void ManagementLeaderBorad()
     {
         if (Score > Rank[9])
@@ -113,16 +130,4 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
-
-    /// ui매니저에서 관리중 끝까지 필요없으면 삭제
-    //public void BackToHome()
-    //{
-    //    //홈메뉴로
-    //}
-
-    ///업데이트에서 스코어 계산중 끝까지 필요없으면 삭제
-    //public void CalculationScore()
-    //{
-    //    //점수계산
-    //}
 }

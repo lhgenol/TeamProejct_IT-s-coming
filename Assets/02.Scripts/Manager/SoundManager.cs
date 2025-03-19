@@ -55,7 +55,11 @@ public class SoundManager : Singleton<SoundManager>
         sfxVolume = Mathf.Clamp01(volume);
         sfxSource.volume = Mathf.Clamp(sfxVolume, 0, maxSFXVolume);
     }
-
+    /// <summary>
+    /// SFX사운드 재생 메서드
+    /// 원하는 곳에 클립번호와 함께 실행
+    /// </summary>
+    /// <param name="clipIndex"></param>
     public void PlaySFX(int clipIndex)
     {
         if (sfxSource != null && sfxClips != null)
@@ -73,12 +77,14 @@ public class SoundManager : Singleton<SoundManager>
         bgmSource.loop = true;
         bgmSource.Play();
     }
-
     public void SetBGM(AudioClip clip)
     {
         bgmSource.clip = clip;
     }
-
+    /// <summary>
+    /// BGM실행 메서드
+    /// 테마가 바뀔때 실행
+    /// </summary>
     public void PlayBGM()
     {
         bgmSource.loop = true;

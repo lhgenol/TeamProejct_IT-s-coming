@@ -21,7 +21,11 @@ public class CameraController : MonoBehaviour
         camera.GetComponent<CameraController>().StartCoroutine(camera.GetComponent<CameraController>().Move(targetPos));
     }
 
-
+    /// <summary>
+    /// 플레이어가 움직일때 따라가주는 메서드
+    /// </summary>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
     private IEnumerator Move(Vector3 targetPos)
     {
         float elapsedTime = 0f;
