@@ -3,6 +3,9 @@
 ## 🎮 게임 소개
 **IT's Coming!**은 *Subway Surfers* 스타일의 러너 게임입니다. 단순한 모방이 아닌, 놀이공원을 배경으로 한 독창적인 컨셉과 속도감 넘치는 플레이를 제공합니다. 공포와 코믹 요소를 결합하여 재미있는 게임 경험을 제공합니다.
 
+## 🗓️ 개발 기간  
+- 2025.03.12 - 2025.03.19
+
 ## 🏃 게임 방식
 - **A, D 키** → 좌우 이동
 - **Space 키** → 점프
@@ -46,14 +49,14 @@
 즐겁게 플레이하세요! 🚀
 
 ## 🎨 사용한 에셋
-아래 에셋들은 게임 개발에 활용되었습니다.
-Creative Characters FREE - Animated Low Poly 3D Models // https://assetstore.unity.com/packages/3d/characters/humanoids/creative-characters-free-animated-low-poly-3d-models-304841
-SimplePoly City - Low Poly Assets // https://assetstore.unity.com/packages/3d/environments/simplepoly-city-low-poly-assets-58899#content
-Low Poly Wild West Village // https://assetstore.unity.com/packages/3d/environments/historic/low-poly-wild-west-village-312360
-Low Poly Atmospheric Locations Pack // https://assetstore.unity.com/packages/3d/environments/landscapes/low-poly-atmospheric-locations-pack-278928
-POLY STYLE - Platformer Starter Pack // https://assetstore.unity.com/packages/3d/environments/poly-style-platformer-starter-pack-284167
-Low Poly Cars: Toy Cars // https://assetstore.unity.com/packages/3d/vehicles/land/low-poly-cars-toy-cars-258470#content
-6 x 3D Cute Toy Models // https://assetstore.unity.com/packages/3d/characters/6-x-3d-cute-toy-models-105033
-Simple Gems and Items Ultimate Animated Customizable Pack // https://assetstore.unity.com/packages/3d/props/simple-gems-and-items-ultimate-animated-customizable-pack-73764
-Low Poly Simple Medieval Props // https://assetstore.unity.com/packages/3d/props/low-poly-simple-medieval-props-258397
-Violet Themed UI // https://assetstore.unity.com/packages/2d/gui/violet-themed-ui-235559
+아래 에셋들은 게임 개발에 활용되었습니다.  
+Creative Characters FREE - Animated Low Poly 3D Models // https://assetstore.unity.com/packages/3d/characters/humanoids/creative-characters-free-animated-low-poly-3d-models-304841  
+SimplePoly City - Low Poly Assets // https://assetstore.unity.com/packages/3d/environments/simplepoly-city-low-poly-assets-58899#content  
+Low Poly Wild West Village // https://assetstore.unity.com/packages/3d/environments/historic/low-poly-wild-west-village-312360  
+Low Poly Atmospheric Locations Pack // https://assetstore.unity.com/packages/3d/environments/landscapes/low-poly-atmospheric-locations-pack-278928  
+POLY STYLE - Platformer Starter Pack // https://assetstore.unity.com/packages/3d/environments/poly-style-platformer-starter-pack-284167  
+Low Poly Cars: Toy Cars // https://assetstore.unity.com/packages/3d/vehicles/land/low-poly-cars-toy-cars-258470#content  
+6 x 3D Cute Toy Models // https://assetstore.unity.com/packages/3d/characters/6-x-3d-cute-toy-models-105033  
+Simple Gems and Items Ultimate Animated Customizable Pack // https://assetstore.unity.com/packages/3d/props/simple-gems-and-items-ultimate-animated-customizable-pack-73764  
+Low Poly Simple Medieval Props // https://assetstore.unity.com/packages/3d/props/low-poly-simple-medieval-props-258397  
+Violet Themed UI // https://assetstore.unity.com/packages/2d/gui/violet-themed-ui-235559  
