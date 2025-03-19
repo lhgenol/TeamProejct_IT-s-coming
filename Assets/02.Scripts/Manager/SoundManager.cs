@@ -17,6 +17,9 @@ public class SoundManager : Singleton<SoundManager>
     private float sfxVolume;
     private float bgmVolume;
 
+    public float maxBGMVolume = 0.3f;
+    public float maxSFXVolume = 0.2f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -44,13 +47,13 @@ public class SoundManager : Singleton<SoundManager>
     public void SetBGMVolume(float volume)
     {
         bgmVolume = Mathf.Clamp01(volume);
-        bgmSource.volume = bgmVolume;
+        bgmSource.volume = Mathf.Clamp(bgmVolume, 0, maxBGMVolume);
     }
 
     public void SetSFXVolume(float volume)
     {
-            sfxVolume = Mathf.Clamp01(volume);
-            sfxSource.volume = volume;
+        sfxVolume = Mathf.Clamp01(volume);
+        sfxSource.volume = Mathf.Clamp(sfxVolume, 0, maxSFXVolume);
     }
 
     public void PlaySFX(int clipIndex)

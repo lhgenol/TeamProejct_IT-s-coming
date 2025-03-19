@@ -30,6 +30,10 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
         Rank = new int[] { 1000, 500, 300, 200, 50, 50, 50, 50, 50,50 };
     }
+    private void Start()
+    {
+        Screen.SetResolution(380, 640, false);
+    }
     private void Update()
     {
         if (NowPlaying)
