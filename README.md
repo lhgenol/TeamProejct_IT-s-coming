@@ -2,6 +2,8 @@
 
 ## 🎮 게임 소개
 **IT's Coming!**은 *Subway Surfers* 스타일의 러너 게임입니다. 단순한 모방이 아닌, 놀이공원을 배경으로 한 독창적인 컨셉과 속도감 넘치는 플레이를 제공합니다. 공포와 코믹 요소를 결합하여 재미있는 게임 경험을 제공합니다.
+## 📺 프로젝트 시연 영상
+[![Watch the video](https://img.youtube.com/vi/8Gse419kOKY/0.jpg)](https://youtube.com/shorts/8Gse419kOKY)
 
 ## 🗓️ 개발 기간  
 - 2025.03.12 - 2025.03.19
