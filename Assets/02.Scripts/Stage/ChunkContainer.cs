@@ -78,10 +78,4 @@ public class ChunkContainer : MonoBehaviour
     {
         isMoving = true;
     }
-
-    /*public void StopMovement()
-    {
-        isMoving = false;
-        moveSpeed = 0f;
-    }*/
 }

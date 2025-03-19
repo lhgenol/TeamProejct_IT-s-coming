@@ -64,26 +64,43 @@ public class InGameUI : BaseUI
         }
     }
 
+    /// <summary>
+    /// 아이템을 얻으면 실행
+    /// 슬롯에서 사용중인지 판별하고
+    /// 사용중이면 시간 초기화
+    /// 사용중인 슬롯이없다면 슬롯할당
+    /// </summary>
+    /// <param name="itemType"></param>
     public void GetItem(UsedItemType itemType)
     {
-        int slotNum = GetUsedSlot(itemType);
+        int slotNum = GetUsedSlot(itemType); 
 
-        if (slotNum != -1)
+        if (slotNum != -1) 
         {
             ShowGauge(itemType, slotNum);
         }
         else
         {
-            slotNum = CanUse();
+            slotNum = CanUse(); 
+
             if (slotNum != -1)
             {
-                itemSlot[slotNum].item.gameObject.SetActive(true);
+                itemSlot[slotNum].item.gameObject.SetActive(true); 
                 itemSlot[slotNum].type = itemType;
-                ShowGauge(itemType, slotNum);
+                ShowGauge(itemType, slotNum); 
+            }
+            else
+            {
+                Debug.Log("아이템 슬롯이 모두 사용 중입니다.");
             }
         }
     }
 
+    /// <summary>
+    /// 슬롯에서 사용중인지 판별
+    /// </summary>
+    /// <param name="itemType"></param>
+    /// <returns></returns>
     private int GetUsedSlot(UsedItemType itemType)
     {
         for (int i = 0; i < itemSlot.Length; i++)
@@ -96,6 +113,10 @@ public class InGameUI : BaseUI
         return -1;
     }
 
+    /// <summary>
+    /// 비어있는 슬롯 찾아서 반환
+    /// </summary>
+    /// <returns></returns>
     public int CanUse()
     {
         for (int i = 0; i < itemSlot.Length; i++)
@@ -108,6 +129,12 @@ public class InGameUI : BaseUI
         return -1;
     }
 
+    /// <summary>
+    /// 5초동안 UI표출 이후 사라짐
+    /// 5초동안 색이 초록->빨강 변환
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="slotNum"></param>
     public void ShowGauge(UsedItemType type, int slotNum)
     {
         itemSlot[slotNum].used = true;

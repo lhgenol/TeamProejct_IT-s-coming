@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
     }
     public static void Init()
     {
-        camera.transform.position = new Vector3(0, 6.5f, -10f);
+        camera.transform.position = new Vector3(0, 6.5f, -13f);
     }
 
     public static void CameraMove(Vector3 targetPos)
@@ -21,7 +21,11 @@ public class CameraController : MonoBehaviour
         camera.GetComponent<CameraController>().StartCoroutine(camera.GetComponent<CameraController>().Move(targetPos));
     }
 
-
+    /// <summary>
+    /// 플레이어가 움직일때 따라가주는 메서드
+    /// </summary>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
     private IEnumerator Move(Vector3 targetPos)
     {
         float elapsedTime = 0f;

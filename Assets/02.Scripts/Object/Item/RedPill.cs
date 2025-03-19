@@ -21,7 +21,6 @@ public class RedPill : Item
 
     protected override void ApplyEffect(GameObject player)
     {
-        //PlayerManager.Instance.Player.health = 2;
         MapManager.Instance.SpeedUp(speedMultiplier, duration);
         moveSpeed = MapManager.Instance.chunkContainer.moveSpeed * MapManager.Instance.chunkContainer.speedMultiplier;
         PlayerManager.Instance.Player.controller.HighJump(jumpPower);
@@ -41,12 +40,12 @@ public class RedPill : Item
             float z = startPosition.z + (moveSpeed * t);
 
             Vector3 newPosition = new Vector3(x, y, z);
-            Transform marker = new GameObject("Coin").transform;
+            Transform marker = new GameObject("CoinParabol").transform;
             marker.position = newPosition;
             MapManager.Instance.itemPool.GetFromPool(coin, marker, MapManager.Instance.CurChunkCheck.curChunk.transform);
+            Destroy(marker.gameObject);
 
-            Debug.Log("코인생성");
-            if (y < startPosition.y) break; // 땅에 닿으면 종료
+            if (y < startPosition.y) break;
         }
     }
 }

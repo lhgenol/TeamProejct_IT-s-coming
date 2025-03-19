@@ -22,10 +22,17 @@ public class GameManager : Singleton<GameManager>
     public bool NowPlaying { get; private set; }
  
     private float lastUpdateTime = 0;
+    
+    public Chaser chaser;
+    
     protected override void Awake()
     {
         base.Awake();
         Rank = new int[] { 1000, 500, 300, 200, 50, 50, 50, 50, 50,50 };
+    }
+    private void Start()
+    {
+        Screen.SetResolution(380, 640, false);
     }
     private void Update()
     {
@@ -38,6 +45,11 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
+
+    /// <summary>
+    /// 게임시작을 누를때 초기화해주는 메서드
+    /// 매니저들에게 초기화 메서드를 받아와 실행
+    /// </summary>
     public void StartGame()
     {
         Started = true;
@@ -46,23 +58,34 @@ public class GameManager : Singleton<GameManager>
         Coin = 0;
         PlayerManager.Instance.Player.health = 2;
         PlayerManager.Instance.controller.Init();
+        SoundManager.Instance.PlayBGM();
+        MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkContainer.ResumeMovement();
+        chaser.Init();
     }
     public void GetCoin()
     {
         Score += 10;
         Coin += 1;
+        if(Coin>10)
+        {
+            Achievements.TriggerFirstTenCoin();
+        }
     }
-
+    /// <summary>
+    /// 게임을 멈추어주는 메서드
+    /// </summary>
     public void StopGame()
     {
         Started = false;
         NowPlaying = false;
         CameraController.Init();
-        MapManager.Instance.ResetChunks();
         MapManager.Instance.chunkContainer.PauseMovement();
     }
-
+    /// <summary>
+    /// 게임 종료시 호출되는 메서드
+    /// 리더보드도 같이 호출해서 랭킹 갱신
+    /// </summary>
     public void EndGame()
     {
         StopGame();
@@ -70,23 +93,31 @@ public class GameManager : Singleton<GameManager>
         UIManager.Instance.ChangeState(UIState.GameEnd);
     }
 
+    /// <summary>
+    /// 게임을 일시정지 해주는 메서드
+    /// </summary>
     public void PauseGame()
     {
         NowPlaying = false;
         MapManager.Instance.chunkContainer.PauseMovement();
-        //일시정지
     }
-
+    /// <summary>
+    /// 일시정지한 게임을 재시작해주는 메서드
+    /// </summary>
     public void Resume()
     {
         NowPlaying = true;
         MapManager.Instance.chunkContainer.ResumeMovement();
     }
-
+    /// <summary>
+    /// 현재 랭킹 10등과 비교하여 랭크에 등재해주는 메서드
+    /// 랭킹에 넣은이후 올림차순을 해준다.
+    /// </summary>
     public void ManagementLeaderBorad()
     {
         if (Score > Rank[9])
         {
+            Achievements.TriggerFirstRank();
             NewRank = true;
             Rank[9] = Score;
             Array.Sort(Rank);
@@ -99,16 +130,4 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
-
-    /// ui매니저에서 관리중 끝까지 필요없으면 삭제
-    //public void BackToHome()
-    //{
-    //    //홈메뉴로
-    //}
-
-    ///업데이트에서 스코어 계산중 끝까지 필요없으면 삭제
-    //public void CalculationScore()
-    //{
-    //    //점수계산
-    //}
 }

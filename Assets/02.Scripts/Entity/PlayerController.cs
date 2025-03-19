@@ -1,11 +1,13 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.PlayerSettings;
+//using static UnityEditor.PlayerSettings;
 
-// 플레이어의 좌우 이동, 점프, 슬라이드, 아이템 효과 등을 관리하는 클래스
+/// <summary>
+// /// 플레이어의 이동, 점프, 슬라이드, 아이템 효과 등을 관리하는 클래스.
+// /// </summary>
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
@@ -41,6 +43,9 @@ public class PlayerController : MonoBehaviour
     
     private bool isHighJumpActive = false; // 높은 점프 모드 활성화 여부
     
+    /// <summary>
+    /// 컴포넌트 초기화
+    /// </summary>
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();   // 애니메이터 컴포넌트 가져오기
@@ -48,17 +53,21 @@ public class PlayerController : MonoBehaviour
         _collider = GetComponent<BoxCollider>();
     }
 
+    /// <summary>
+    /// 플레이어 초기 설정
+    /// </summary>
     private void Start()
     {
        Init();
     }
     
-    // private void FixedUpdate()
-    // {
-    //     // 목표 위치로 Rigidbody를 움직이기
-    //     _rigidbody.MovePosition(Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
-    //     
-    // }
+    /// <summary>
+    /// 플레이어 중력 설정
+    /// </summary>
+    void FixedUpdate()
+    {
+        Physics.gravity = new Vector3(0, -50f, 0);
+    }
 
     private void Update()
     {
@@ -67,14 +76,15 @@ public class PlayerController : MonoBehaviour
         {
             if (Time.time - jumpTime > 0.5f)
             {
-                // 점프 애니메이션 해제
                 _animator.SetBool("IsJump", false);
             }
         }
     }
 
-    // 왼쪽 이동 입력 처리 (A 키)
-    public void OnMoveLeft(InputAction.CallbackContext context) // context는 현재 상태를 받아올 수가 있음
+    /// <summary>
+    /// 왼쪽 이동 입력 처리 (A 키)
+    /// </summary>
+    public void OnMoveLeft(InputAction.CallbackContext context)
     {
         // 키가 눌린 순간 실행
         if (context.phase == InputActionPhase.Started)
@@ -88,7 +98,9 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    // 오른쪽 이동 입력 처리 (D 키)
+    /// <summary>
+    /// 오른쪽 이동 입력 처리 (D 키)
+    /// </summary>
     public void OnMoveRight(InputAction.CallbackContext context)
     {
         // 키가 눌린 순간 실행
@@ -103,7 +115,9 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    // 슬라이드 입력 처리
+    /// <summary>
+    /// 슬라이드 입력 처리
+    /// </summary>
     public void OnSlide(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started && !isSliding && isGrounded())
@@ -116,7 +130,9 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    // 슬라이드 종료
+    /// <summary>
+    /// 슬라이드 종료
+    /// </summary>
     private void EndSlide()
     {
         _animator.SetBool("IsSlide", false); // 다시 Run 애니메이션 실행
@@ -124,24 +140,31 @@ public class PlayerController : MonoBehaviour
         isSliding = false; // 슬라이드 상태 해제
     }
 
+    /// <summary>
+    /// 플레이어가 죽었을 때 실행되는 함수
+    /// </summary>
     public void OnDie()
     {
         _collider.size = dieColliderSize;
         _collider.center = new Vector3(0, 0.9f, 0);
         enabled = false;
-        Debug.Log("OnDie");
     }
 
-    // 위치를 갱신하는 함수 (현재 레인을 기반으로 X 좌표 설정)
+    /// <summary>
+    /// 위치를 갱신하는 함수. 현재 레인을 기반으로 X 좌표 설정
+    /// </summary>
     private void UpdatePosition()
     {
         // X 값만 변경, 현재 높이 유지
         targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
-
+    
         // 바로 위치 이동
         transform.position = targetPosition;
     }
     
+    /// <summary>
+    /// 현재 레인 위치로 이동하는 코루틴
+    /// </summary>
     private IEnumerator MoveToLane()
     {
         Vector3 startPosition = transform.position; // 시작 위치 저장
@@ -157,13 +180,17 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         transform.position = endPosition; // 최종 위치 보정
+        previousLane = currentLane;
     }
     
-    // 점프 입력 처리 (스페이스바)
+    /// <summary>
+    /// 점프 입력 처리 (스페이스바)
+    /// </summary>
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started && isGrounded())
         {
+            SoundManager.Instance.PlaySFX(0);
             // 위 방향으로 순간적인 힘을 가함. 순간적으로 힘을 줄 수 있게 Impulse로 설정
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
             _animator.SetBool("IsJump", true); // 점프 애니메이션 실행
@@ -171,7 +198,9 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    // 아이템 수집 시 높은 점프
+    /// <summary>
+    /// 아이템 수집 시 높은 점프를 실행하는 메서드
+    /// </summary>
     public void HighJump(float jumpPower)
     {
         // 위 방향으로 순간적인 힘을 가함. 순간적으로 힘을 줄 수 있게 Impulse로 설정
@@ -179,6 +208,10 @@ public class PlayerController : MonoBehaviour
         _animator.SetBool("IsJump", true); // 점프 애니메이션 실행
     }
 
+    /// <summary>
+    /// 플레이어의 초기 설정을 담당하는 메서드.
+    /// 초기 위치를 설정, 애니메이션 및 충돌 박스 초기화.
+    /// </summary>
     public void Init()
     {
         enabled = true;
@@ -192,7 +225,10 @@ public class PlayerController : MonoBehaviour
         previousLane = currentLane;
     }
 
-    // 플레이어가 바닥에 있는지 확인하는 함수
+    /// <summary>
+    /// 플레이어가 바닥에 있는지 확인하는 함수.
+    /// 네 개의 Ray를 아래 방향으로 쏘아 바닥 충돌 여부를 체크함.
+    /// </summary>
     bool isGrounded()
     {
         Ray[] rays = new Ray[4]     // 네 개의 Ray를 사용하여 플레이어가 바닥에 닿았는지 확인
@@ -214,13 +250,17 @@ public class PlayerController : MonoBehaviour
         return false;   // 모든 레이가 바닥에 닿지 않으면 false 반환
     }
 
+    /// <summary>
+    /// 플레이어가 트리거 충돌 감지 시 실행되는 함수.
+    /// 장애물과 충돌하면 넉백 효과 및 체력 감소, 무적 시간 적용.
+    /// </summary>
     private void OnTriggerEnter(Collider other)
     {
         if (!isInvincible)
         {// 장애물과 충돌했을 때
             if (other.gameObject.CompareTag("Obstacle1") || other.gameObject.CompareTag("Obstacle2_Hit"))
             {
-                Debug.Log("넉백");
+                SoundManager.Instance.PlaySFX(1);
                 PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
                 MapManager.Instance.KnockBack(0.01f, 0.1f);
 
@@ -232,15 +272,23 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(MoveToLane());
             }
         }
+        else
+        {
+            Obstacle obstacle=other.GetComponent<Obstacle>();
+            MapManager.Instance.obstaclePool.ReturnToPool(obstacle, other.gameObject);
+        }
     }
 
+    /// <summary>
+    /// 플레이어가 물리적 충돌 감지 시 실행되는 함수.
+    /// 트리거 충돌과 동일하게 넉백 효과와 무적 처리 진행.
+    /// </summary>
     private void OnCollisionEnter(Collision collision)
     {
         if (!isInvincible)
         {
             if (collision.gameObject.CompareTag("Obstacle1") || collision.gameObject.CompareTag("Obstacle2_Hit"))
             {
-                Debug.Log("넉백");
                 PlayerManager.Instance.Player.ReduceHealth(); // 체력 감소 및 Hit 애니메이션 실행
                 MapManager.Instance.KnockBack(0.01f, 0.1f);
                 isInvincible = true;
@@ -249,19 +297,28 @@ public class PlayerController : MonoBehaviour
                 // 충돌 후 원래 레인으로 복귀
                 currentLane = previousLane;
                 StartCoroutine(MoveToLane());
-                
-                Debug.Log("나는 무적이다");
             }
+        }
+        else
+        {
+            Obstacle obj = collision.gameObject.GetComponent<Obstacle>();
+            if (obj != null) MapManager.Instance.obstaclePool.ReturnToPool(obj, collision.gameObject);
+
         }
     }
     
+    /// <summary>
+    /// 일정 시간이 지난 후 무적 상태를 해제하는 함수
+    /// </summary>
     public void Invincivbleoff()
     {
-        Debug.Log("무적풀림");
         isInvincible = false;
     }
 
-    // 아이템 효과를 적용하는 메서드
+    /// <summary>
+    /// 아이템 효과를 적용하는 메서드.
+    /// 아이템 타입에 따라 점프력 증가 or 무적 효과 부여.
+    /// </summary>
     public void ApplyItemEffect(ItemType itemType, float duration, int value = 0)
     {
         switch (itemType)
@@ -278,7 +335,9 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    // 일정 시간 후 아이템 효과를 제거하는 코루틴. WaitForSeconds(duration)으로 대기 후 원래 값으로 복구
+    /// <summary>
+    /// 일정 시간이 지나면 아이템 효과를 제거하는 코루틴.
+    /// </summary>
     private IEnumerator RemoveEffectAfterTime(ItemType itemType, float duration)
     {
         yield return new WaitForSeconds(duration); // 설정된 시간 동안 대기
