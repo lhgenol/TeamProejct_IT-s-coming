@@ -187,7 +187,7 @@ public class Chunk : MonoBehaviour
             {
                 DestroyAllChildren(obj.spawnPosition);
             }
-            else if (obj.spawnPosition.childCount > 0) // 🚨 실제 스폰된 오브젝트가 있는지 확인
+            else if (obj.spawnPosition.childCount > 0) 
             {
                 Structure spawnedStructure = obj.spawnPosition.GetComponentInChildren<Structure>();
                 
@@ -223,7 +223,7 @@ public class Chunk : MonoBehaviour
             {
                 DestroyAllChildren(obj.spawnPosition);
             }
-            else if (obj.spawnPosition.childCount > 0) //  실제 스폰된 오브젝트가 있는지 확인
+            else if (obj.spawnPosition.childCount > 0) 
             {
                 Item spawnedItem = obj.spawnPosition.GetComponentInChildren<Item>();
 
@@ -286,14 +286,4 @@ public class Chunk : MonoBehaviour
                 return null;
         }
     }
-
-    /*public List<GameObject> GetObstaclePrefabList()
-    {
-        return themeData != null ? themeData.obstacleList : null;
-    }
-
-    public List<GameObject> GetStructurePrefabList()
-    {
-        return themeData != null ? themeData.structureList : null; 
-    }*/
 }

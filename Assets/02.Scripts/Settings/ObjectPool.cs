@@ -13,14 +13,6 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject); // 중복된 오브젝트 제거
-        }
     }
     protected virtual void Start()
     {
@@ -68,42 +60,6 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 
         return obj;
     }
-
-    /*public GameObject GetFromPool(GameObject prefab, Transform spawnPosition, Transform newParent = null)
-    {
-        if (prefab == null)
-        {
-            Debug.LogError("[ObjectPool] GetFromPool() - prefab이 null입니다!");
-            return null;
-        }
-
-        GameObject obj;
-
-        if (poolDictionary.ContainsKey(prefab.name) && poolDictionary[prefab.name].Count > 0)
-        {
-            obj = poolDictionary[prefab.name].Dequeue().gameObject;
-
-            // 🚨 원본 프리팹을 참조하는 경우 방지
-            if (PrefabUtility.IsPartOfPrefabAsset(obj))
-            {
-                Debug.LogError($"[ObjectPool] {obj.name}은 원본 프리팹입니다! 새로 인스턴스화합니다.");
-                obj = Instantiate(prefab);
-            }
-        }
-        else
-        {
-            obj = Instantiate(prefab); // ✅ 새 인스턴스 생성
-            obj.name = prefab.name + " (clone)";
-        }
-
-        if (newParent != null)
-            obj.transform.SetParent(newParent, false); // ✅ 부모 설정 (로컬 좌표 유지)
-
-        obj.transform.position = spawnPosition.position;
-        obj.SetActive(true);
-
-        return obj;
-    }*/
 
     public void ReturnToPool(T obj, GameObject prefab)
     {
