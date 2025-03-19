@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour
     public bool isInvincible = false;   // 무적 상태 여부
     private float defaultMoveSpeed;     // 기본 이동 속도를 저장하여 원래 상태로 복구할 때 사용
     
-    private Animator _animator;         // 애니메이터 변수 추가
+    private Animator _animator;         // Animator 변수 추가
     private Rigidbody _rigidbody;       // Rigidbody 변수 추가
-    private BoxCollider _collider;
+    private BoxCollider _collider;      // Collider 변수 추가
 
     [SerializeField]
     private Vector3 nomalColliderSize;
@@ -50,12 +50,12 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-       Init();
+       Init();  // 초기화 실행
     }
     
     void FixedUpdate()
     {
-        Physics.gravity = new Vector3(0, -50f, 0);
+        Physics.gravity = new Vector3(0, -50f, 0);  // 중력 강하게 설정
     }
 
     private void Update()
@@ -65,14 +65,13 @@ public class PlayerController : MonoBehaviour
         {
             if (Time.time - jumpTime > 0.5f)
             {
-                // 점프 애니메이션 해제
-                _animator.SetBool("IsJump", false);
+                _animator.SetBool("IsJump", false); // 점프 애니메이션 해제
             }
         }
     }
 
     // 왼쪽 이동 입력 처리 (A 키)
-    public void OnMoveLeft(InputAction.CallbackContext context) // context는 현재 상태를 받아올 수가 있음
+    public void OnMoveLeft(InputAction.CallbackContext context) 
     {
         // 키가 눌린 순간 실행
         if (context.phase == InputActionPhase.Started)
@@ -80,8 +79,8 @@ public class PlayerController : MonoBehaviour
             if (currentLane > 0)    // 왼쪽 이동 가능 여부 체크
             {
                 previousLane = currentLane; // 이동 전 위치 저장
-                currentLane--;
-                StartCoroutine(MoveToLane());
+                currentLane--;  // 현재 Lane을 왼쪽으로 1칸 이동
+                StartCoroutine(MoveToLane());   // 부드럽게 이동
             }
         }
     }
@@ -140,22 +139,27 @@ public class PlayerController : MonoBehaviour
         transform.position = targetPosition;
     }
     
+    // 일정 시간 동안 부드럽게 이동
     private IEnumerator MoveToLane()
     {
-        Vector3 startPosition = transform.position; // 시작 위치 저장
+        Vector3 startPosition = transform.position; // 플레이어 시작 위치를 저장
+        // 목표 위치 계산(currentLane 값에 따라 왼쪽 오른쪽 위치를 설정하고 laneDistance를 곱해 이동할 위치를 결정)
         Vector3 endPosition = new Vector3((currentLane - 1) * laneDistance, startPosition.y, startPosition.z);
-        float elapsedTime = 0f;
-        float duration = 0.2f; // 이동 시간
+        float elapsedTime = 0f; // 경과 시간을 0으로 초기화해 이동 시간 추적
+        float duration = 0.2f;  // 이동 시간 0.2초로 설정
 
-        CameraController.CameraMove(endPosition);
+        CameraController.CameraMove(endPosition);   // 카메라도 함께 이동
+        
+        // 이동 시간이 0.2초보다 작으면 반복
         while (elapsedTime < duration)
         {
+            // elapsedTime / duration 비율에 따라 서서히 이동. Lerp로 부드럽게 이동
             transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            elapsedTime += Time.deltaTime;  // 매 프레임마다 elapsedTime을 증가시켜 이동 진행도 업데이트
+            yield return null;  // 한 프레임 대기 후 다시 while 루프 실행
         }
-        transform.position = endPosition; // 최종 위치 보정
-        previousLane = currentLane;
+        transform.position = endPosition; // 최종적으로 목표 위치를 설정
+        previousLane = currentLane; // 이동이 끝난 후 이전 Lane을 기록
     }
     
     // 점프 입력 처리 (스페이스바)
@@ -216,7 +220,8 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!isInvincible)
-        {// 장애물과 충돌했을 때
+        {   
+            // 장애물과 충돌했을 때
             if (other.gameObject.CompareTag("Obstacle1") || other.gameObject.CompareTag("Obstacle2_Hit"))
             {
                 Debug.Log("넉백");
