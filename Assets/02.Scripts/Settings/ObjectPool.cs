@@ -13,14 +13,14 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (instance == null)
+        /*if (instance == null)
         {
             instance = this;
         }
         else
         {
             Destroy(gameObject); // 중복된 오브젝트 제거
-        }
+        }*/
     }
     protected virtual void Start()
     {
@@ -53,7 +53,16 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         GameObject obj;
         if (poolDictionary.ContainsKey(prefab.name) && poolDictionary[prefab.name].Count > 0)
         {
+            // 큐에서 오브젝트 가져오기
             obj = poolDictionary[prefab.name].Dequeue().gameObject;
+
+            // 가져온 오브젝트가 null인지 확인 (삭제되었을 가능성 체크)
+            if (obj == null)
+            {
+                Debug.LogWarning($"[ObjectPool] {prefab.name} 풀에서 가져온 오브젝트가 이미 삭제됨. 새로 생성합니다.");
+                obj = Instantiate(prefab);
+                obj.name = prefab.name;
+            }
         }
         else
         {
@@ -62,7 +71,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
             obj.name = prefab.name;
         }
 
-        if(newParent != null) obj.transform.SetParent(newParent); 
+        if (newParent != null) obj.transform.SetParent(newParent); 
         obj.transform.position = spawnPosition.position;
         obj.gameObject.SetActive(true);
 
@@ -110,7 +119,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         if (!poolDictionary.ContainsKey(prefab.name))
         {
             Debug.LogWarning($"ReturnToPool: {prefab.name} is not exist");
-            Destroy(obj.gameObject);
+            if(prefab != null) Destroy(prefab);
             return;
         }
 
