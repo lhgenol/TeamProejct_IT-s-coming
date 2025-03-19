@@ -47,9 +47,8 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         {
             obj = poolDictionary[prefab.name].Dequeue().gameObject;
         }
-        else
+        else // 풀에 남은 오브젝트가 없으면 새로 생성
         {
-            // 풀에 남은 오브젝트가 없으면 새로 생성
             obj = Instantiate(prefab);
             obj.name = prefab.name;
         }
@@ -65,12 +64,11 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(prefab.name))
         {
-            Debug.LogWarning($"ReturnToPool: {prefab.name} is not exist");
             Destroy(obj.gameObject);
             return;
         }
 
-        obj.transform.SetParent(this.transform); // 다시 풀의 부모로 설정
+        obj.transform.SetParent(this.transform); 
         obj.transform.localPosition = Vector3.zero;
         obj.gameObject.SetActive(false);
         poolDictionary[prefab.name].Enqueue(obj);

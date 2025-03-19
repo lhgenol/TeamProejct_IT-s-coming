@@ -69,8 +69,6 @@ public class Chunk : MonoBehaviour
     {
         yield return null;
         CollectObjects();
-
-
     }
 
     public void PlaceObjects()
@@ -85,7 +83,7 @@ public class Chunk : MonoBehaviour
     {
         foreach (var obj in obstaclePosition)
         {
-            if(obj != null && obj.spawnPosition != null) MapManager.Instance.obstaclePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
+            if (obj != null && obj.spawnPosition != null) MapManager.Instance.obstaclePool.GetFromPool(obj.Prefab, obj.spawnPosition, obj.spawnPosition);
         }
     }
 
@@ -117,7 +115,6 @@ public class Chunk : MonoBehaviour
     {
         if (MapManager.Instance == null)
         {
-            Debug.LogWarning("[Chunk] CollectObjects() - MapManager가 null이므로 실행하지 않음");
             return;
         }
 
@@ -133,23 +130,21 @@ public class Chunk : MonoBehaviour
 
         foreach (var obj in obstaclePosition)
         {
-            if (obj == null) // null 체크
+            if (obj == null)
             {
-                Debug.LogWarning($"obstaclePosition is null");
                 continue;
             }
 
             if (obj.spawnPosition == null)
             {
-                Debug.LogWarning($"{obj.Prefab.name} is null");
                 continue;
             }
 
-             if (obj.spawnPosition.childCount > 1)
+            if (obj.spawnPosition.childCount > 1)
             {
                 DestroyAllChildren(obj.spawnPosition);
             }
-            else if (obj.spawnPosition.childCount > 0) //스폰된 오브젝트가 있는지 확인
+            else if (obj.spawnPosition.childCount > 0)
             {
                 Obstacle spawnedObstacle = obj.spawnPosition.GetComponentInChildren<Obstacle>();
 
@@ -160,7 +155,7 @@ public class Chunk : MonoBehaviour
                 }
                 else DestroyAllChildren(obj.spawnPosition);
             }
-            
+
         }
     }
 
@@ -173,13 +168,11 @@ public class Chunk : MonoBehaviour
         {
             if (obj == null) // null 체크
             {
-                Debug.LogWarning($"obstaclePosition is null");
                 continue;
             }
 
             if (obj.spawnPosition == null)
             {
-                Debug.LogWarning($"{obj.Prefab.name} is null");
                 continue;
             }
 
@@ -187,10 +180,10 @@ public class Chunk : MonoBehaviour
             {
                 DestroyAllChildren(obj.spawnPosition);
             }
-            else if (obj.spawnPosition.childCount > 0) 
+            else if (obj.spawnPosition.childCount > 0)
             {
                 Structure spawnedStructure = obj.spawnPosition.GetComponentInChildren<Structure>();
-                
+
                 if (spawnedStructure != null)
                 {
                     GameObject gameObject = spawnedStructure.gameObject;
@@ -207,15 +200,13 @@ public class Chunk : MonoBehaviour
 
         foreach (var obj in itemPosition)
         {
-            if (obj == null) // null 체크
+            if (obj == null)
             {
-                Debug.LogWarning($"itemPosition is null");
                 continue;
             }
 
             if (obj.spawnPosition == null)
             {
-                Debug.LogWarning($"{obj.Prefab.name} is null");
                 continue;
             }
 
@@ -223,7 +214,7 @@ public class Chunk : MonoBehaviour
             {
                 DestroyAllChildren(obj.spawnPosition);
             }
-            else if (obj.spawnPosition.childCount > 0) 
+            else if (obj.spawnPosition.childCount > 0)
             {
                 Item spawnedItem = obj.spawnPosition.GetComponentInChildren<Item>();
 
@@ -245,7 +236,6 @@ public class Chunk : MonoBehaviour
         {
             if (coinTransform == null)
             {
-                Debug.LogWarning("[CollectCoin] coinPosition has null");
                 continue;
             }
 

@@ -34,7 +34,7 @@ public class CurChunkCheck : MonoBehaviour
                 {
                     Achievements.TriggerFirstRoundClear();
                     curTheme = newTheme;
-                    SoundManager.Instance.SetBGM(curTheme.BGM);//오디오 재생
+                    SoundManager.Instance.SetBGM(curTheme.BGM);
                     SoundManager.Instance.PlayBGM();
                     GameManager.Instance.backgroundController.ChangeBackground(curTheme.background);
                     Debug.Log("theme changed");
