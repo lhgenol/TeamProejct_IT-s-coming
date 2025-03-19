@@ -2,13 +2,13 @@
 
 public class TransformSpawner : MonoBehaviour
 {
-    public Transform startPoint;  // 시작 지점
-    public Transform endPoint;    // 끝 지점
+    public Transform startPoint;  
+    public Transform endPoint;    
     public Transform parent;      // 부모 오브젝트 (선택 사항)
     public string objName = "Coin"; // 생성될 오브젝트 이름
     public GameObject prefab;     // 생성할 프리팹 (선택 사항)
 
-    public float spacing = 2f; // 오브젝트 간격 (무조건 2 유지)
+    public float spacing = 2f; // 오브젝트 간격 
 
     public void SpawnObjects()
     {
@@ -18,13 +18,12 @@ public class TransformSpawner : MonoBehaviour
             return;
         }
 
-        // 시작과 끝 지점 사이 거리 계산
         Vector3 startPosition = startPoint.position;
         Vector3 endPosition = endPoint.position;
         Vector3 direction = (endPosition - startPosition).normalized;
 
         float totalDistance = Vector3.Distance(startPosition, endPosition);
-        int count = Mathf.FloorToInt(totalDistance / spacing); // 개수 자동 계산 (2 간격 유지)
+        int count = Mathf.FloorToInt(totalDistance / spacing); 
 
         for (int i = 0; i <= count; i++)
         {
@@ -36,7 +35,6 @@ public class TransformSpawner : MonoBehaviour
 
             if (prefab != null)
             {
-                // 프리팹이 있을 경우 프리팹을 생성
                 obj = Instantiate(prefab, spawnPosition, Quaternion.identity,obj.transform);
             }
         }
