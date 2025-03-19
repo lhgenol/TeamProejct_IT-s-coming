@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/********************************************************************************************************************/
+//HUDUIController.cs와 같은기능                                                                                      /
+//수정 필요                                                                                                          /
+/********************************************************************************************************************/
 public class HUDUIController : MonoBehaviour
 {
     public GameObject volumeUI;
