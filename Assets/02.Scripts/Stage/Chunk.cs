@@ -121,11 +121,42 @@ public class Chunk : MonoBehaviour
             return;
         }
 
-        CollectObstacle();
-        CollectStructure();
-        CollectItem();
-        CollectCoin();
+        CollectObjects<Obstacle>(this.transform, MapManager.Instance.obstaclePool);
+        CollectObjects<Structure>(this.transform, MapManager.Instance.structurePool);
+        CollectObjects<Item>(this.transform, MapManager.Instance.itemPool);
+        CollectCoins();
     }
+
+    void CollectObjects<T>(Transform parentTransform, ObjectPool<T> pool) where T : MonoBehaviour
+    {
+        if (parentTransform == null) return;
+
+        T[] objects = parentTransform.GetComponentsInChildren<T>(true); // 모든 자식 T 객체 가져오기
+
+        foreach (T obj in objects)
+        {
+            if (obj == null) continue;
+            pool.ReturnToPool(obj,obj.gameObject); // 풀로 반환
+        }
+    }
+
+    void CollectCoins()
+    {
+        if (coinPosition == null) return;
+
+        foreach (Transform coinTransform in coinPosition)
+        {
+            if (coinTransform.childCount > 0)
+            {
+                Item spawnedCoin = coinTransform.GetComponentInChildren<Item>();
+                if (spawnedCoin != null)
+                {
+                    MapManager.Instance.itemPool.ReturnToPool(spawnedCoin,spawnedCoin.gameObject);
+                }
+            }
+        }
+    }
+
 
     void CollectObstacle()
     {
